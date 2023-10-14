@@ -4,7 +4,7 @@
 #' @export
 #'
 validate_token <- function(){
-  token <-  Sys.getenv("NIXTLAR_TOKEN")
+  token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
   url <- "https://dashboard.nixtla.io/api/timegpt"
   resp <- httr2::request(url) |>
     httr2::req_headers(

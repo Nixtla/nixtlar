@@ -16,7 +16,7 @@
 #'
 timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE){
 
-  token <- Sys.getenv("NIXTLAR_TOKEN")
+  token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
@@ -35,7 +35,7 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
 
   # Prepare request
   if(is.null(freq)){
-    freq <- find_frequency(df)
+    freq <- find_frequency(df, time_col)
   }
 
   timegpt_data <- list(

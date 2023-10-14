@@ -6,16 +6,6 @@
 #' @export
 #'
 set_token <- function(token) {
-  token_line <- paste0("NIXTLAR_TOKEN=", token)
-  renviron_path <- file.path(normalizePath("~"), ".Renviron")
-  if (!file.exists(renviron_path)) {
-    file.create(renviron_path)
-  }
-  current_content <- readLines(renviron_path, warn = FALSE)
-  if (!any(grepl("NIXTLAR_TOKEN", current_content))) {
-    write(token_line, renviron_path, append = TRUE)
-    message("Token has been set.")
-  } else {
-    message("Token is already set up.")
-  }
+  assign("NIXTLAR_TOKEN", token, envir = nixtlaR_env)
+  message("Token has been set for the current session.")
 }
