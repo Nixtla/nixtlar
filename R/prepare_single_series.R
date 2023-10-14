@@ -8,9 +8,11 @@
 #' @export
 #'
 prepare_single_series <- function(df, time_col, target_col){
+
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
   }
+
   df <- df[,c(time_col, target_col)]
   colnames(df) <- c("ds", "y")
   if(tsibble::is_tsibble(df)){

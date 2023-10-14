@@ -9,9 +9,11 @@
 #' @export
 #'
 prepare_multi_series <- function(df, id_col, time_col, target_col){
+
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
   }
+
   df <- df[,c(id_col, time_col, target_col)]
   colnames(df) <- c("unique_id", "ds", "y")
   if(tsibble::is_tsibble(df)){
