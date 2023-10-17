@@ -4,9 +4,9 @@
 \name{nixtlaR-package}
 \alias{nixtlaR}
 \alias{nixtlaR-package}
-\title{nixtlaR: What the Package Does (One Line, Title Case)}
+\title{nixtlaR: R SDK For TimeGPT}
 \description{
-What the package does (one paragraph).
+An SDK to interface with Nixtla's TimeGPT from R. It provides functions for setting and validating tokens, and for generating forecasts with TimeGPT via API calls. Compatible with the tsibble package and base R.
 }
 \seealso{
 Useful links:
@@ -16,7 +16,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.oi}
 
 }
 \keyword{internal}

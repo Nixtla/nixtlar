@@ -38,5 +38,7 @@ find_frequency <- function(df, time_col){
     message("I'm not sure about the frequency of the data. Will default to 1. Please provide it if you know it.")
   }
 
+  message(paste0("Frequency chosen: ", freq))
+
   return(freq)
 }

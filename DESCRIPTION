@@ -1,11 +1,12 @@
 Package: nixtlaR
-Title: What the Package Does (One Line, Title Case)
+Title: R SDK For TimeGPT
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+    person("Mariana", "Menchero", , "mariana@nixtla.oi", role = c("aut", "cre"))
+Description: An SDK to interface with Nixtla's TimeGPT from R. 
+    It provides functions for setting and validating tokens, and for generating forecasts with TimeGPT via API calls.
+    Compatible with the tsibble package and base R. 
+License: Apache License (>= 2.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
