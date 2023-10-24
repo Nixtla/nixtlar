@@ -15,11 +15,14 @@ prepare_single_series <- function(df, time_col, target_col){
 
   df <- df[,c(time_col, target_col)]
   colnames(df) <- c("ds", "y")
+
   if(tsibble::is_tsibble(df)){
     df$ds <- as.Date(df$ds) # this transforms dates from a tsibble
   }
+
   y <- df$y
   names(y) <- df$ds
   y <- as.list(y)
+
   return(y)
 }

@@ -6,7 +6,7 @@
 #' @param id_col Column that identifies each series.
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
-#' @param level Confidence levels (0-100) for the prediction intervals.
+#' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #' @param add_history Return fitted values of the model.
@@ -47,6 +47,8 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
     )
 
   if(!is.null(level)){
+    level <- as.list(level) # TimeGPT requires level to be a list.
+    # Users of the forecast package are used to define the level as a vector.
     timegpt_data[["level"]] <- level
   }
 
@@ -62,26 +64,31 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
 
   # Extract TimeGPT forecast
   fc <- httr2::resp_body_json(resp)
-
   if(series_type == "single"){
-    fcst <- data.frame(
-      ds = do.call(rbind, fc$data$timestamp),
-      TimeGPT = do.call(rbind, fc$data$value)
-      )
+    idx <- grep("^(timestamp|value|lo|hi)", names(fc$data))
+    fc_list <- fc$data[idx]
+    fcst <- data.frame(lapply(fc_list, unlist), stringsAsFactors=FALSE)
+    colnames(fcst) <- names(fc_list)
+    colnames(fcst)[1:2] <- c("ds", "TimeGPT")
+    if(!is.null(level)){
+      idx_level <- grep("^(lo|hi)", colnames(fcst))
+      colnames(fcst)[idx_level] <- paste0("TimeGPT-", colnames(fcst)[idx_level])
+    }
+
   }else{
-    # series_type == "multi"
     fc_list <- lapply(fc$data$forecast$data, unlist)
     fcst <- data.frame(do.call(rbind, fc_list))
-    fcst[,ncol(fcst)] <- as.numeric(fcst[,ncol(fcst)])
     colnames(fcst) <- fc$data$forecast$columns
+    fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
   }
 
-  if(series_type == "single"){ # for now, only single time series have fitted values
-    if(add_history == TRUE){
-      url_historic <-  "https://dashboard.nixtla.io/api/timegpt_historic"
+  if(add_history){
+    if(series_type == "single"){
+      url_historic <- "https://dashboard.nixtla.io/api/timegpt_historic"
       timegpt_historic <- list(
         y = y,
-        freq = freq
+        freq = freq,
+        clean_ex_first = clean_ex_first
       )
 
       if(!is.null(level)){
@@ -98,16 +105,68 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
         httr2::req_body_json(data = timegpt_historic) |>
         httr2::req_perform()
 
-      # Extract fitted values
       hist <- httr2::resp_body_json(resp_hist)
-      fitted <- data.frame(
-        ds = do.call(rbind, hist$data$timestamp),
-        TimeGPT = do.call(rbind, hist$data$value)
-      )
+
+      # Extract fitted values
+      idx_fit <- grep("^(timestamp|value|lo|hi)", names(hist$data))
+      fit_list <- hist$data[idx_fit]
+      fitted <- data.frame(lapply(fit_list, unlist), stringsAsFactors=FALSE)
+      colnames(fitted) <- names(fit_list)
+      colnames(fitted)[1:2] <- c("ds", "TimeGPT")
+      if(!is.null(level)){
+        idx_level <- grep("^(lo|hi)", colnames(fitted))
+        colnames(fitted)[idx_level] <- paste0("TimeGPT-", colnames(fitted)[idx_level])
+      }
 
       # Combine fitted values and TimeGPT forecast
       fcst <- rbind(fitted, fcst)
+
+    }else{
+      #series_type == "multi"
+      url_historic <- "https://dashboard.nixtla.io/api/timegpt_multi_series_historic"
+      timegpt_historic <- list(
+        y = y,
+        freq = freq,
+        clean_ex_first = clean_ex_first
+      )
+
+      if(!is.null(level)){
+        timegpt_historic[["level"]] <- level
+      }
+
+      # Make request
+      resp_hist <- httr2::request(url_historic) |>
+        httr2::req_headers(
+          "accept" = "application/json",
+          "content-type" = "application/json",
+          "authorization" = paste("Bearer", token)
+        ) |>
+        httr2::req_body_json(data = timegpt_historic) |>
+        httr2::req_perform()
+
+      hist <- httr2::resp_body_json(resp_hist)
+
+      # Extract fitted values
+      fit_list <- lapply(hist$data$forecast$data, unlist)
+      fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
+      colnames(fitted) <- hist$data$forecast$columns
+      fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
+      fitted <- fitted[,-which(colnames(fitted) == "y")]
+
+      fcst <- rbind(fitted, fcst)
     }
+  }
+
+  # This part needs work
+  # Return a tsibble if the input was a tsibble
+  #if(tsibble::is_tsibble(df)){
+  #  fcst <- tsibble::as_tsibble(fcst, key = "unique_id", index = "ds")
+  #}
+
+  # Rename columns to original names
+  colnames(fcst)[which(colnames(fcst) == "ds")] <- time_col
+  if(!is.null(id_col)){
+    colnames(fcst)[which(colnames(fcst) == "unique_id")] <- id_col
   }
 
   return(fcst)

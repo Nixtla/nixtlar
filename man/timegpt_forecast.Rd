@@ -30,7 +30,7 @@ timegpt_forecast(
 
 \item{target_col}{Column that contains the target variable.}
 
-\item{level}{Confidence levels (0-100) for the prediction intervals.}
+\item{level}{The confidence levels (0-100) for the prediction intervals.}
 
 \item{finetune_steps}{Number of steps used to finetune TimeGPT in the new data.}
 

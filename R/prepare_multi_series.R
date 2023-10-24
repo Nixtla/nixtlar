@@ -16,12 +16,15 @@ prepare_multi_series <- function(df, id_col, time_col, target_col){
 
   df <- df[,c(id_col, time_col, target_col)]
   colnames(df) <- c("unique_id", "ds", "y")
+
   if(tsibble::is_tsibble(df)){
     df$ds <- as.Date(df$ds) # this transforms dates from a tsibble
   }
+
   y <- list(
     columns = colnames(df),
     data = lapply(1:nrow(df), function(i) as.list(df[i,]))
     )
+
   return(y)
 }

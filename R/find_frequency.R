@@ -8,6 +8,10 @@
 #'
 find_frequency <- function(df, time_col){
 
+  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
+    stop("Only tsibbles or data frames are allowed.")
+  }
+
   idx <- which(colnames(df) == time_col)
   colnames(df)[idx] <- "ds" # rename to use tsibble::guess_frequency()
   df$ds <- as.Date(df$ds)
@@ -21,7 +25,7 @@ find_frequency <- function(df, time_col){
   freq_list = list(
     list(alias = "Y", value = c(365,366)),
     list(alias = "Q", value = c(91,92)),
-    list(alias = "M", value = c(30,31)),
+    list(alias = "MS", value = c(30,31)),
     list(alias = "W", value = c(7)),
     list(alias = "D", value = c(1))
   )
