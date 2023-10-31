@@ -6,6 +6,7 @@
 #' @param id_col Column that identifies each series.
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
+#' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
@@ -14,7 +15,7 @@
 #' @return TimeGPT forecasts for point predictions and probabilistic predictions (if level is not NULL).
 #' @export
 #'
-timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE){
+timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE){
 
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
 
@@ -22,21 +23,35 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
     stop("Only tsibbles or data frames are allowed.")
   }
 
+  # Rename columns
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
+  if(!is.null(id_col)){
+    names(df)[which(names(df) == id_col)] <- "unique_id"
+  }
+
+  # If df is a tsibble, convert dates to strings and infer frequency
+  if(tsibble::is_tsibble(df)){
+    res <- date_conversion(df)
+    df <- res$df
+    freq <- res$freq
+  }
+
+  # Infer frequency if not available
+  if(is.null(freq)){
+    freq <- infer_frequency(df)
+  }
+
   # Check if single or multi-series and prepare data
   if(is.null(id_col)){
     url <- "https://dashboard.nixtla.io/api/timegpt"
     series_type <- "single"
-    y <- prepare_single_series(df, time_col, target_col)
   }else{
     url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
     series_type <- "multi"
-    y <- prepare_multi_series(df, id_col, time_col, target_col)
   }
 
-  # Prepare request
-  if(is.null(freq)){
-    freq <- find_frequency(df, time_col)
-  }
+  y <- prepare_data(df)
 
   timegpt_data <- list(
     fh = h,
@@ -45,6 +60,18 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
     finetune_steps = finetune_steps,
     clean_ex_first = clean_ex_first
     )
+
+  # if(!is.null(X_df)){
+  #   names(X_df)[which(names(X_df) == time_col)] <- "ds"
+  #   if(!is.null(id_col)){
+  #     names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
+  #   }
+  #   x <- list(
+  #     columns = names(X_df),
+  #     data = lapply(1:nrow(X_df), function(i) as.list(X_df[i,]))
+  #   )
+  #   timegpt_data[["x"]] <- x
+  # }
 
   if(!is.null(level)){
     level <- as.list(level) # TimeGPT requires level to be a list.
@@ -157,11 +184,15 @@ timegpt_forecast <- function(df, h, freq=NULL, id_col=NULL, time_col="ds", targe
     }
   }
 
-  # This part needs work
   # Return a tsibble if the input was a tsibble
-  #if(tsibble::is_tsibble(df)){
-  #  fcst <- tsibble::as_tsibble(fcst, key = "unique_id", index = "ds")
-  #}
+  if(tsibble::is_tsibble(df)){
+    if(freq == "H"){
+      fcst$ds <- lubridate::ymd_hms(fcst$ds)
+    }else{
+      fcst$ds <- lubridate::ymd(fcst$ds)
+    }
+    fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
+  }
 
   # Rename columns to original names
   colnames(fcst)[which(colnames(fcst) == "ds")] <- time_col
