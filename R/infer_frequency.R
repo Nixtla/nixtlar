@@ -6,8 +6,7 @@
 #' @export
 #'
 infer_frequency <- function(df){
-
-  freq <- NA
+  freq <- NULL
   dates <- sort(unique(df$ds))
 
   # Check if it's hourly data
@@ -42,7 +41,7 @@ infer_frequency <- function(df){
     }
   }
 
-  if(is.na(freq)){
+  if(is.null(freq)){
     freq <- "D"
     message("I'm not sure about the frequency of the data. Will default to daily (D). Please provide it if you know it.")
   }

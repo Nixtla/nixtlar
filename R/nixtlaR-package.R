@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom dplyr bind_rows
 #' @importFrom httr2 req_headers
 #' @importFrom httr2 req_perform
 #' @importFrom httr2 request
