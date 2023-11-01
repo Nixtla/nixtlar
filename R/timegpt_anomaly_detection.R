@@ -23,7 +23,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
 
   # Prepare data ----
   if(is.null(id_col)){
-    url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_anomalies"
+    url_anomaly <- "Write here the url for the single series case"
   }else{
     url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_multi_series_anomalies"
   }

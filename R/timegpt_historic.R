@@ -58,9 +58,8 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 
-  hist <- httr2::resp_body_json(resp_hist)
-
   # Extract fitted values ----
+  hist <- httr2::resp_body_json(resp_hist)
   if(is.null(id_col)){
     idx_fit <- grep("^(timestamp|value|lo|hi)", names(hist$data))
     fit_list <- hist$data[idx_fit]
