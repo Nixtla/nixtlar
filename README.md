@@ -11,6 +11,7 @@ API](https://docs.nixtla.io/).
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nixtlaR)](https://CRAN.R-project.org/package=nixtlaR)
 [![R-CMD-check](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
 ## 🔄 nixtlaR: Your Gateway to TimeGPT from R

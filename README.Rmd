@@ -20,6 +20,7 @@ The `nixtlaR` package provides R users with a SDK for [Nixtla's TimeGPT API](htt
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/nixtlaR)](https://CRAN.R-project.org/package=nixtlaR)
 [![R-CMD-check](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
 
