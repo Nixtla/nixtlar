@@ -15,8 +15,11 @@ Depends:
 LazyData: true
 Imports: 
     dplyr,
+    ggplot2,
     httr2,
     lubridate,
+    rlang,
+    tidyr,
     tsibble
 Suggests: 
     httptest2,
