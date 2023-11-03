@@ -37,7 +37,7 @@ timegpt_plot <- function(df, fcst=NULL, id_col=NULL, time_col="ds", target_col="
   }else{
     # Plot historical values and forecast
     df_long <- tidyr::pivot_longer(df[,c("unique_id", "ds", "y")], cols=y, names_to="variable", values_to="value")
-    fcst_long <- tidyr::pivot_longer(fcst[,c("unique_id", "ds", "TimeGPT")], cols=fcst$TimeGPT, names_to="variable", values_to="value")
+    fcst_long <- tidyr::pivot_longer(fcst[,c("unique_id", "ds", "TimeGPT")], cols=TimeGPT, names_to="variable", values_to="value")
     data_long <- rbind(df_long, fcst_long)
 
     plot <- ggplot2::ggplot(data_long)+
