@@ -81,7 +81,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
     res$cutoff <- lubridate::ymd_hms(res$cutoff)
   }
 
-  # Convert to tsibble ----
+  # Data transformation ----
   if(tsibble::is_tsibble(df)){
     res$ds <- switch(freq,
                      "Y" = as.numeric(substr(res$ds, 1, 4)),
@@ -105,6 +105,15 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
       res <- tsibble::as_tsibble(res, index="ds")
     }else{
       res <- tsibble::as_tsibble(res, key="unique_id", index="ds")
+    }
+  }else{
+    # If df is a data frame, convert ds to dates
+    if(freq == "H"){
+      res$ds <- lubridate::ymd_hms(res$ds)
+      res$cutoff <- lubridate::ymd_hms(res$cutoff)
+    }else{
+      res$ds <- lubridate::ymd(res$ds)
+      res$cutoff <- lubridate::ymd(res$cutoff)
     }
   }
 

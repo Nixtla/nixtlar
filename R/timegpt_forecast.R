@@ -76,20 +76,24 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
     idx <- grep("^(timestamp|value|lo|hi)", names(fc$data))
     fc_list <- fc$data[idx]
     fcst <- data.frame(lapply(fc_list, unlist), stringsAsFactors=FALSE)
-    colnames(fcst) <- names(fc_list)
-    colnames(fcst)[1:2] <- c("ds", "TimeGPT")
+    names(fcst) <- names(fc_list)
+    names(fcst)[1:2] <- c("ds", "TimeGPT")
     if(!is.null(level)){
-      idx_level <- grep("^(lo|hi)", colnames(fcst))
-      colnames(fcst)[idx_level] <- paste0("TimeGPT-", colnames(fcst)[idx_level])
+      idx_level <- grep("^(lo|hi)", names(fcst))
+      names(fcst)[idx_level] <- paste0("TimeGPT-", names(fcst)[idx_level])
     }
   }else{
     fc_list <- lapply(fc$data$forecast$data, unlist)
     fcst <- data.frame(do.call(rbind, fc_list))
-    colnames(fcst) <- fc$data$forecast$columns
-    fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
+    names(fcst) <- fc$data$forecast$columns
+    if(!is.null(level)){
+      fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
+    }else{
+      fcst$TimeGPT <- as.numeric(fcst$TimeGPT)
+    }
   }
 
-  # Convert to tsibble ----
+  # Data transformation ----
   if(tsibble::is_tsibble(df)){
     fcst$ds <- switch(freq,
                       "Y" = as.numeric(substr(fcst$ds, 1, 4)),
@@ -105,12 +109,19 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
     }else{
       fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
     }
+  }else{
+    # If df is a data frame, convert ds to dates
+    if(freq == "H"){
+      fcst$ds <- lubridate::ymd_hms(fcst$ds)
+    }else{
+      fcst$ds <- lubridate::ymd(fcst$ds)
+    }
   }
 
   # Rename columns ----
-  colnames(fcst)[which(colnames(fcst) == "ds")] <- time_col
+  names(fcst)[which(names(fcst) == "ds")] <- time_col
   if(!is.null(id_col)){
-    colnames(fcst)[which(colnames(fcst) == "unique_id")] <- id_col
+    names(fcst)[which(names(fcst) == "unique_id")] <- id_col
   }
 
   # Generate fitted values ----

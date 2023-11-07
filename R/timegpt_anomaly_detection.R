@@ -69,7 +69,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
     res[,3:ncol(res)] <- lapply(res[,3:ncol(res)], as.numeric)
   }
 
-  # Convert to tsibble ----
+  # Data transformation ----
   if(tsibble::is_tsibble(df)){
     res$ds <- switch(freq,
                       "Y" = as.numeric(substr(res$ds, 1, 4)),
@@ -84,6 +84,13 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
       res <- tsibble::as_tsibble(res, index="ds")
     }else{
       res <- tsibble::as_tsibble(res, key="unique_id", index="ds")
+    }
+  }else{
+    # If df is a data frame, convert ds to dates
+    if(freq == "H"){
+      res$ds <- lubridate::ymd_hms(res$ds)
+    }else{
+      res$ds <- lubridate::ymd(res$ds)
     }
   }
 

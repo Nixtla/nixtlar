@@ -64,21 +64,21 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     idx_fit <- grep("^(timestamp|value|lo|hi)", names(hist$data))
     fit_list <- hist$data[idx_fit]
     fitted <- data.frame(lapply(fit_list, unlist), stringsAsFactors=FALSE)
-    colnames(fitted) <- names(fit_list)
-    colnames(fitted)[1:2] <- c("ds", "TimeGPT")
+    names(fitted) <- names(fit_list)
+    names(fitted)[1:2] <- c("ds", "TimeGPT")
     if(!is.null(level)){
-      idx_level <- grep("^(lo|hi)", colnames(fitted))
-      colnames(fitted)[idx_level] <- paste0("TimeGPT-", colnames(fitted)[idx_level])
+      idx_level <- grep("^(lo|hi)", names(fitted))
+      names(fitted)[idx_level] <- paste0("TimeGPT-", names(fitted)[idx_level])
     }
   }else{
     fit_list <- lapply(hist$data$forecast$data, unlist)
     fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
-    colnames(fitted) <- hist$data$forecast$columns
+    names(fitted) <- hist$data$forecast$columns
     fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
-    fitted <- fitted[,-which(colnames(fitted) == "y")]
+    fitted <- fitted[,-which(names(fitted) == "y")]
   }
 
-  # Convert to tsibble ----
+  # Data transformation ----
   if(tsibble::is_tsibble(df)){
     fitted$ds <- switch(freq,
                         "Y" = as.numeric(substr(fitted$ds, 1, 4)),
@@ -93,12 +93,19 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     }else{
       fitted <- tsibble::as_tsibble(fitted, key="unique_id", index="ds")
     }
+  }else{
+    # If df is a data frame, convert ds to dates
+    if(freq == "H"){
+      fitted$ds <- lubridate::ymd_hms(fitted$ds)
+    }else{
+      fitted$ds <- lubridate::ymd(fitted$ds)
+    }
   }
 
   # Rename columns ----
-  colnames(fitted)[which(colnames(fitted) == "ds")] <- time_col
+  names(fitted)[which(names(fitted) == "ds")] <- time_col
   if(!is.null(id_col)){
-    colnames(fitted)[which(colnames(fitted) == "unique_id")] <- id_col
+    names(fitted)[which(names(fitted) == "unique_id")] <- id_col
   }
 
   return(fitted)

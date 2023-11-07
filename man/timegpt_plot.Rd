@@ -7,16 +7,20 @@
 timegpt_plot(
   df,
   fcst = NULL,
+  h = NULL,
   id_col = NULL,
   time_col = "ds",
   target_col = "y",
-  max_insample_length = NULL
+  max_insample_length = NULL,
+  plot_anomalies = FALSE
 )
 }
 \arguments{
 \item{df}{A tsibble or a data frame with time series data (insample values).}
 
-\item{fcst}{A tsibble or a data frame with the TimeGPT point forecast and the prediction intervals (if available)}
+\item{fcst}{A tsibble or a data frame with the TimeGPT point forecast and the prediction intervals (if available).}
+
+\item{h}{Forecast horizon.}
 
 \item{id_col}{Column that identifies each series.}
 
@@ -25,6 +29,8 @@ timegpt_plot(
 \item{target_col}{Column that contains the target variable.}
 
 \item{max_insample_length}{Max number of insample observations to be plotted.}
+
+\item{plot_anomalies}{Whether or not to plot anomalies.}
 }
 \value{
 Plot with the forecast and insample values
