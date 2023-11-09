@@ -11,6 +11,7 @@ timegpt_plot(
   id_col = NULL,
   time_col = "ds",
   target_col = "y",
+  unique_ids = NULL,
   max_insample_length = NULL,
   plot_anomalies = FALSE
 )
@@ -27,6 +28,8 @@ timegpt_plot(
 \item{time_col}{Column that identifies each timestep.}
 
 \item{target_col}{Column that contains the target variable.}
+
+\item{unique_ids}{Time series to plot. If NULL (default), selection will be random.}
 
 \item{max_insample_length}{Max number of insample observations to be plotted.}
 
