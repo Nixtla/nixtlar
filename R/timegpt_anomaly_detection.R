@@ -7,11 +7,12 @@
 #' @param target_col Column that contains the target variable.
 #' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
 #' @return A tsibble or a data frame with the anomalies detected in the historical period.
 #' @export
 #'
-timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE){
+timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validation ----
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
@@ -32,6 +33,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
   y <- data$y
 
   timegpt_data <- list(
+    model = model,
     y = y,
     freq = freq,
     clean_ex_first = clean_ex_first

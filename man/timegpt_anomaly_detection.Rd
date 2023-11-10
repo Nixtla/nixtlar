@@ -11,7 +11,8 @@ timegpt_anomaly_detection(
   time_col = "ds",
   target_col = "y",
   level = c(99),
-  clean_ex_first = TRUE
+  clean_ex_first = TRUE,
+  model = "timegpt-1"
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ timegpt_anomaly_detection(
 \item{level}{The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
+
+\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
 \value{
 A tsibble or a data frame with the anomalies detected in the historical period.

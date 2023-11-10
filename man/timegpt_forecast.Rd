@@ -15,7 +15,8 @@ timegpt_forecast(
   level = NULL,
   finetune_steps = 0,
   clean_ex_first = TRUE,
-  add_history = FALSE
+  add_history = FALSE,
+  model = "timegpt-1"
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ timegpt_forecast(
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
 
 \item{add_history}{Return fitted values of the model.}
+
+\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
 \value{
 TimeGPT's forecast.

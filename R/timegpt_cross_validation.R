@@ -12,11 +12,12 @@
 #' @param step_size Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
 #' @return A tsibble or a data frame with TimeGPT's cross validation.
 #' @export
 #'
-timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE){
+timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validation ----
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
@@ -41,6 +42,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
   }
 
   timegpt_data <- list(
+    model = model,
     fh = h,
     y = y,
     freq = freq,

@@ -11,11 +11,12 @@
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #' @param add_history Return fitted values of the model.
+#' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
 #' @return TimeGPT's forecast.
 #' @export
 #'
-timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE){
+timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Validation ----
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
@@ -36,6 +37,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   y <- data$y
 
   timegpt_data <- list(
+    model = model,
     fh = h,
     y = y,
     freq = freq,
