@@ -5,14 +5,13 @@
 #' @param id_col Column that identifies each series.
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
-#' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #'
 #' @return A tsibble or a data frame with the anomalies detected in the historical period.
 #' @export
 #'
-timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=c(99), clean_ex_first=TRUE){
+timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE){
 
   # Validation ----
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
@@ -38,8 +37,17 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
     clean_ex_first = clean_ex_first
   )
 
-  # Add exogenous regressors here
-  # ----------------------------*
+  if(any(!(names(df) %in% c("unique_id", "ds", "y")))){
+    exogenous <- df |>
+      dplyr::select(-y)
+
+    x <- list(
+      columns = names(exogenous),
+      data = lapply(1:nrow(exogenous), function(i) as.list(exogenous[i,]))
+    )
+
+    timegpt_data[['x']] <- x
+  }
 
   if(length(level) > 1){
     message("Multiple levels are not allowed for anomaly detection. Will use the largest.")

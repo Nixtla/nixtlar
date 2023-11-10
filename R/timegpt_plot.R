@@ -15,6 +15,10 @@
 #'
 timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", target_col="y", unique_ids = NULL, max_insample_length=NULL, plot_anomalies=FALSE){
 
+  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
+    stop("Only tsibbles or data frames are allowed.")
+  }
+
   # Select facets ----
   nrow <- 4
   ncol <- 2
@@ -25,14 +29,16 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
   if(!is.null(id_col)){
     names(df)[which(names(df) == id_col)] <- "unique_id"
 
+    ids <- unique(df$unique_id)
+    if(length(ids) == 2){ # reshape for better viz
+      nrow <- 2
+      ncol <- 1
+    }
+
     ## Select time series if there are more than 8 ----
-    if(length(unique(df$unique_id)) > 8){
+    if(length(ids) > 8){
       if(!is.null(unique_ids)){
         ids <- unique_ids[1:min(length(unique_ids), 8)]
-        if(length(ids) == 2){ # reshape for better viz
-          nrow = 2
-          ncol = 1
-        }
       }else{
         ids <- sample(unique(df$unique_id), size=8, replace=FALSE)
       }
@@ -47,13 +53,27 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
     }
   }
 
-  # Check for cross validation output
-  cross_validation <- FALSE
-  if("cutoff" %in% names(fcst)){
-    cross_validation <- TRUE
-    if(plot_anomalies){
-      message("Can't plot anomalies and cross validation output at the same time. Setting plot_anomalies=FALSE")
-      plot_anomalies <- FALSE
+  # Convert dates if necessary ----
+  # ggplot2 requires ds to be Dates while TimeGPT's API requires them to be chr
+  cls <- class(df$ds)[1]
+  if(!(cls %in% c("Date", "POSIXt", "POSIXct", "POSIXlt"))){
+
+    if(tsibble::is_tsibble(df)){
+      df_list <- nixtlaR::date_conversion(df)
+      df <- df_list$df
+      freq <- df_list$freq
+    }else{
+      freq <- nixtlaR::infer_frequency(df)
+    }
+
+    if(is.null(freq)){
+      stop("Can't figure out the frequency of the data. Please convert time_col to Date or POSIXt.")
+    }
+
+    if(freq == "H"){
+      df$ds <- lubridate::ymd_hms(df$ds)
+    }else{
+      df$ds <- lubridate::ymd(df$ds)
     }
   }
 
@@ -74,6 +94,10 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
 
   }else{
     # Plot historical values and forecast ----
+    if(!tsibble::is_tsibble(fcst) & !is.data.frame(fcst)){
+      stop("fcst needs to be the output of timegpt_forecast, timegpt_historic, timegpt_anomaly_detection or timegpt_cross_validation.")
+    }
+
     color_vals <- c("#B5838D", "steelblue")
 
     # Rename forecast columns ----
@@ -81,6 +105,16 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
     names(fcst)[which(names(fcst) == target_col)] <- "y"
     if(!is.null(id_col)){
       names(fcst)[which(names(fcst) == id_col)] <- "unique_id"
+    }
+
+    # Check for cross validation output
+    cross_validation <- FALSE
+    if("cutoff" %in% names(fcst)){
+      cross_validation <- TRUE
+      if(plot_anomalies){
+        message("Can't plot anomalies and cross validation output at the same time. Setting plot_anomalies=FALSE")
+        plot_anomalies <- FALSE
+      }
     }
 
     if(!is.null(max_insample_length)){

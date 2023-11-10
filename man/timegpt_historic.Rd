@@ -10,7 +10,6 @@ timegpt_historic(
   id_col = NULL,
   time_col = "ds",
   target_col = "y",
-  X_df = NULL,
   level = NULL,
   finetune_steps = 0,
   clean_ex_first = TRUE
@@ -26,8 +25,6 @@ timegpt_historic(
 \item{time_col}{Column that identifies each timestep.}
 
 \item{target_col}{Column that contains the target variable.}
-
-\item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
 

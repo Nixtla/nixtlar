@@ -23,7 +23,7 @@ date_conversion <- function(df){
   }else if(cls == "Date"){
     freq <- "D"
 
-  }else if(cls %in% c("POSIXct", "POSIXt")){
+  }else if(cls %in% c("POSIXt", "POSIXct", "POSIXlt")){
     freq <- "H"
 
   }else{

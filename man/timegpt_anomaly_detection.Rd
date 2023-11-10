@@ -10,7 +10,6 @@ timegpt_anomaly_detection(
   id_col = NULL,
   time_col = "ds",
   target_col = "y",
-  X_df = NULL,
   level = c(99),
   clean_ex_first = TRUE
 )
@@ -25,8 +24,6 @@ timegpt_anomaly_detection(
 \item{time_col}{Column that identifies each timestep.}
 
 \item{target_col}{Column that contains the target variable.}
-
-\item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.}
 

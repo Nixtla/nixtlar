@@ -5,7 +5,6 @@
 #' @param id_col Column that identifies each series.
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
-#' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
@@ -13,7 +12,7 @@
 #' @return TimeGPT's forecast for the in-sample period.
 #' @export
 #'
-timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE){
+timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
 
   # Validation ----
   token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
@@ -40,8 +39,17 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     clean_ex_first = clean_ex_first
   )
 
-  # Add exogenous regressors here
-  # ----------------------------*
+  if(any(!(names(df) %in% c("unique_id", "ds", "y")))){
+    exogenous <- df |>
+      dplyr::select(-y)
+
+    x <- list(
+      columns = names(exogenous),
+      data = lapply(1:nrow(exogenous), function(i) as.list(exogenous[i,]))
+    )
+
+    timegpt_data[['x']] <- x
+  }
 
   if(!is.null(level)){
     level <- as.list(level)

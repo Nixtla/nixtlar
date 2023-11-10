@@ -43,17 +43,24 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
     clean_ex_first = clean_ex_first
     )
 
-  # if(!is.null(X_df)){
-  #   names(X_df)[which(names(X_df) == time_col)] <- "ds"
-  #   if(!is.null(id_col)){
-  #     names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
-  #   }
-  #   x <- list(
-  #     columns = names(X_df),
-  #     data = lapply(1:nrow(X_df), function(i) as.list(X_df[i,]))
-  #   )
-  #   timegpt_data[["x"]] <- x
-  # }
+  if(!is.null(X_df)){
+    names(X_df)[which(names(X_df) == time_col)] <- "ds"
+    if(!is.null(id_col)){
+      names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
+    }
+
+    exogenous <-  df |>
+      dplyr::select(-y)
+
+    exogenous <- rbind(exogenous, X_df)
+
+    x <- list(
+      columns = names(exogenous),
+      data = lapply(1:nrow(exogenous), function(i) as.list(exogenous[i,]))
+    )
+
+    timegpt_data[['x']] <- x
+  }
 
   if(!is.null(level)){
     level <- as.list(level)
@@ -126,7 +133,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
 
   # Generate fitted values ----
   if(add_history){
-    fitted <- timegpt_historic(df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, X_df=X_df, level=level, finetune_steps=finetune_steps, clean_ex_first=clean_ex_first)
+    fitted <- timegpt_historic(df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, level=level, finetune_steps=finetune_steps, clean_ex_first=clean_ex_first)
     if(tsibble::is_tsibble(df)){
       fcst <- dplyr::bind_rows(fitted, fcst)
     }else{

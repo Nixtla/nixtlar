@@ -50,8 +50,24 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
     clean_ex_first = clean_ex_first
   )
 
-  # Add exogenous regressors here
-  # ----------------------------*
+  if(!is.null(X_df)){
+    names(X_df)[which(names(X_df) == time_col)] <- "ds"
+    if(!is.null(id_col)){
+      names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
+    }
+
+    exogenous <-  df |>
+      dplyr::select(-y)
+
+    exogenous <- rbind(exogenous, X_df)
+
+    x <- list(
+      columns = names(exogenous),
+      data = lapply(1:nrow(exogenous), function(i) as.list(exogenous[i,]))
+    )
+
+    timegpt_data[['x']] <- x
+  }
 
   if(!is.null(level)){
     level <- as.list(level)
