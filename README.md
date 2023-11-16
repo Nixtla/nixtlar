@@ -70,4 +70,5 @@ data frames.
 ## 🐍 Python SDK
 
 Are you a Python user? If yes, then check out
-[NixtlaTS](https://github.com/Nixtla/nixtla), a Python SDK for TimeGPT.
+[NixtlaTS](https://github.com/Nixtla/nixtla), a Python SDK for TimeGPT
+and check out the [documentation](https://docs.nixtla.io/docs).

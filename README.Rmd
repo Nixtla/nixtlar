@@ -68,4 +68,4 @@ You don't need to validate the token every time you set it up, only when you wan
 ```
 
 ## 🐍 Python SDK
-Are you a Python user? If yes, then check out [NixtlaTS](https://github.com/Nixtla/nixtla), a Python SDK for TimeGPT. 
+Are you a Python user? If yes, then check out [NixtlaTS](https://github.com/Nixtla/nixtla), a Python SDK for TimeGPT and check out the [documentation](https://docs.nixtla.io/docs). 
