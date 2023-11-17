@@ -15,8 +15,6 @@
 timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validation ----
-  token <- .get_token()
-
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
   }
@@ -63,7 +61,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", token)
+      "authorization" = paste("Bearer", .get_token())
     ) |>
     httr2::req_user_agent("nixtla-r") |>
     httr2::req_body_json(data = timegpt_data) |>
