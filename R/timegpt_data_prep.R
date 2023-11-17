@@ -1,4 +1,5 @@
 #' Prepares data for TimeGPT's API
+#' This is a private function of the package
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.
@@ -6,10 +7,9 @@
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
 #'
-#' @return A list with the given/inferred frequency and the prepared data.
-#' @export
+#' @return A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
 #'
-timegpt_data <- function(df, freq, id_col, time_col, target_col){
+.timegpt_data_prep <- function(df, freq, id_col, time_col, target_col){
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
@@ -48,9 +48,10 @@ timegpt_data <- function(df, freq, id_col, time_col, target_col){
     y <- as.list(y)
   }
 
-  res <- list(freq = freq,
+  res <- list(df = df,
+              freq = freq,
               y = y
-  )
+              )
 
   return(res)
 }

@@ -6,6 +6,6 @@
 #' @export
 #'
 set_token <- function(token) {
-  assign("NIXTLAR_TOKEN", token, envir = nixtlaR_env)
+  options("TIMEGPT_TOKEN"=token)
   message("Token has been set for the current session.")
 }

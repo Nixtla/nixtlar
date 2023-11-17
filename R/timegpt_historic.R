@@ -15,7 +15,7 @@
 timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
 
   # Validation ----
-  token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
+  token <- .get_token()
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
@@ -28,7 +28,8 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     url_historic <- "https://dashboard.nixtla.io/api/timegpt_multi_series_historic"
   }
 
-  data <- timegpt_data(df, freq, id_col, time_col, target_col)
+  data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
+  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -63,6 +64,7 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
       "content-type" = "application/json",
       "authorization" = paste("Bearer", token)
     ) |>
+    httr2::req_user_agent("nixtla-r") |>
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_token.R
 \name{validate_token}
 \alias{validate_token}
-\title{Validate token set in global environment}
+\title{Validate token}
 \usage{
 validate_token()
 }
@@ -10,5 +10,5 @@ validate_token()
 A message indicating whether the token is valid.
 }
 \description{
-Validate token set in global environment
+Validate token
 }

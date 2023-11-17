@@ -19,7 +19,7 @@
 timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Validation ----
-  token <- get("NIXTLAR_TOKEN", envir = nixtlaR_env)
+  token <- .get_token()
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
@@ -32,7 +32,8 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
     url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
   }
 
-  data <- timegpt_data(df, freq, id_col, time_col, target_col)
+  data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
+  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -76,6 +77,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
       "content-type" = "application/json",
       "authorization" = paste("Bearer", token)
       ) |>
+    httr2::req_user_agent("nixtla-r") |>
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 
