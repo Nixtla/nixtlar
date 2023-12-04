@@ -4,14 +4,14 @@
 \name{nixtlar-package}
 \alias{nixtlar}
 \alias{nixtlar-package}
-\title{nixtlar: R SDK For TimeGPT}
+\title{nixtlar: R SDK For Nixtla's TimeGPT}
 \description{
-An SDK to interface with Nixtla's TimeGPT from R. It provides functions for setting and validating tokens, and for generating forecasts with TimeGPT via API calls. Compatible with the tsibble package and base R.
+An SDK to interface with Nixtla's TimeGPT from R. It provides functions for setting and validating tokens and for generating forecasts with TimeGPT via API calls. Compatible with the tsibble package and base R.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://mmenchero.github.io/nixtlaR/}
+  \item \url{https://mmenchero.github.io/nixtlar/}
 }
 
 }
