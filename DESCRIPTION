@@ -1,4 +1,4 @@
-Package: nixtlaR
+Package: nixtlar
 Title: R SDK For TimeGPT
 Version: 0.0.0.9000
 Authors@R: 
@@ -23,6 +23,10 @@ Imports:
     tsibble
 Suggests: 
     httptest2,
-    testthat (>= 3.0.0)
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    usethis
 Config/testthat/edition: 3
 URL: https://mmenchero.github.io/nixtlaR/
+VignetteBuilder: knitr

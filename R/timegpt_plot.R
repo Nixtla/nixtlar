@@ -59,11 +59,11 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
   if(!(cls %in% c("Date", "POSIXt", "POSIXct", "POSIXlt"))){
 
     if(tsibble::is_tsibble(df)){
-      df_list <- nixtlaR::date_conversion(df)
+      df_list <- date_conversion(df)
       df <- df_list$df
       freq <- df_list$freq
     }else{
-      freq <- nixtlaR::infer_frequency(df)
+      freq <- infer_frequency(df)
     }
 
     if(is.null(freq)){

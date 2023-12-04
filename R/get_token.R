@@ -17,6 +17,6 @@
   if(nzchar(token)){
     return(token)
   }else{
-    stop("Please set TIMEGPT_TOKEN. Use set_token() or set it as an environment variable in .Renviron")
+    stop("Please set TIMEGPT_TOKEN. Use nixtla_set_token() or set it as an environment variable in .Renviron")
   }
 }

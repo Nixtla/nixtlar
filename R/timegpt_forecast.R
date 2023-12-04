@@ -81,6 +81,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
 
   # Extract forecast ----
   fc <- httr2::resp_body_json(resp)
+
   if(is.null(id_col)){
     idx <- grep("^(timestamp|value|lo|hi)", names(fc$data))
     fc_list <- fc$data[idx]

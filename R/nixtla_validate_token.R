@@ -3,7 +3,7 @@
 #' @return A message indicating whether the token is valid.
 #' @export
 #'
-validate_token <- function(){
+nixtla_validate_token <- function(){
 
   token <- .get_token()
 
