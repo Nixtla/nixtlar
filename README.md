@@ -1,33 +1,33 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nixtlaR
+# nixtlar
 
-The `nixtlaR` package provides R users with a SDK for [Nixtla’s TimeGPT
+The `nixtlar` package provides R users with a SDK for [Nixtla’s TimeGPT
 API](https://docs.nixtla.io/).
 
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/nixtlaR)](https://CRAN.R-project.org/package=nixtlaR)
-[![R-CMD-check](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MMenchero/nixtlaR/actions/workflows/R-CMD-check.yaml)
+status](https://www.r-pkg.org/badges/version/nixtlar)](https://CRAN.R-project.org/package=nixtlar)
+[![R-CMD-check](https://github.com/MMenchero/nixtlar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MMenchero/nixtlar/actions/workflows/R-CMD-check.yaml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-## 🔄 nixtlaR: Your Gateway to TimeGPT from R
+## 🔄 nixtlar: Your Gateway to TimeGPT from R
 
-With `nixtlaR` you can easily interact with TimeGPT through simple API
+With `nixtlar` you can easily interact with TimeGPT through simple API
 calls, making the power of TimeGPT readily accessible in your projects.
 Learn more about TimeGPT [here](https://arxiv.org/abs/2310.03589).
 
 ## 💻 Installation
 
-You can install the development version of `nixtlaR` from
+You can install the development version of `nixtlar` from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-#devtools::install_github("MMenchero/nixtlaR")
+#devtools::install_github("MMenchero/nixtlar")
 ```
 
 ## 🎈Quick Start
@@ -36,17 +36,17 @@ To use TimeGPT, you first need to request a token from Nixtla. You can
 do this at <https://dashboard.nixtla.io/>.
 
 Once you have the token, you’ll need to set it up in your R session. The
-`nixtlaR` package provides a function to do this.
+`nixtlar` package provides a function to do this.
 
 ``` r
-#library(nixtlaR)
+#library(nixtlar)
 
 # Set up token 
 #set_token("YOUR_TOKEN") 
 ```
 
 You’ll need to set the token every time you re-start your R session.
-`nixtlaR` also includes a function to validate the token.
+`nixtlar` also includes a function to validate the token.
 
 ``` r
 # Validate token
@@ -56,7 +56,7 @@ You’ll need to set the token every time you re-start your R session.
 You don’t need to validate the token every time you set it up, only when
 you want to ensure its validity.
 
-`nixtlaR provides` an easy-to-use function to call the TimeGPT API. It
+`nixtlar provides` an easy-to-use function to call the TimeGPT API. It
 works with both [tsibbles](https://tsibble.tidyverts.org/) and base R
 data frames.
 
