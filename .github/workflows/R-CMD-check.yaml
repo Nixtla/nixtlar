@@ -44,10 +44,11 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: List mock files
-        run: |
-          pwd
-          ls -R vignettes/nixtlar/0/
+      - name: List files in testthat directory
+        run: ls tests/testthat/dashboard.nixtla.io/api
+
+      - name: List files in vignette directory
+        run: ls vignette/nixtlar/
 
       - uses: r-lib/actions/check-r-package@v2
         with:
