@@ -44,8 +44,10 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: Set dummy token for vignette
-        run: echo "TIMEGPT_TOKEN=dummy_token" >> $GITHUB_ENV
+      - name: List mock files
+        run: |
+          pwd
+          ls -R tests/testthat/mock-api/
 
       - uses: r-lib/actions/check-r-package@v2
         with:
