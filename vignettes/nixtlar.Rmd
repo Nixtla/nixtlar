@@ -9,6 +9,7 @@ vignette: >
 ```{r setup, include=FALSE}
 library(httptest2)
 start_vignette("nixtlar")
+options(token = "dummy_token")
 ```
 
 ```{r, include = FALSE}
