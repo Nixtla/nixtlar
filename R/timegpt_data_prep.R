@@ -36,7 +36,7 @@
 
   # Prepare data
   if("unique_id" %in% names(df)){
-    df <- df[, c("unique_id", "ds", "y")]
+    df <- df[,c("unique_id", "ds", "y")]
     y <- list(
       columns = names(df),
       data = lapply(1:nrow(df), function(i) as.list(df[i,]))
@@ -48,8 +48,7 @@
     y <- as.list(y)
   }
 
-  res <- list(df = df,
-              freq = freq,
+  res <- list(freq = freq,
               y = y
               )
 

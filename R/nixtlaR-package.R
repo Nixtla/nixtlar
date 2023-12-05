@@ -8,6 +8,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom dplyr n
 #' @importFrom dplyr nth
+#' @importFrom dplyr select
 #' @importFrom dplyr slice
 #' @importFrom dplyr slice_tail
 #' @importFrom dplyr summarize

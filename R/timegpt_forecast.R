@@ -31,7 +31,6 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
-  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -75,7 +74,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
       "content-type" = "application/json",
       "authorization" = paste("Bearer", .get_token())
       ) |>
-    httr2::req_user_agent("nixtla-r") |>
+    httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 

@@ -47,7 +47,7 @@ jobs:
       - name: List mock files
         run: |
           pwd
-          ls -R tests/testthat/mock-api/
+          ls -R vignettes/nixtlar/0/
 
       - uses: r-lib/actions/check-r-package@v2
         with:
