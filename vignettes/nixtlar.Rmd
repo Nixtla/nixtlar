@@ -10,6 +10,8 @@ vignette: >
 library(httptest2)
 start_vignette("nixtlar")
 
+options("TIMEGPT_TOKEN"="dummy_token")
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
