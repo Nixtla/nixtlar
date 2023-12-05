@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(nixtlaR)
+library(nixtlar)
 
-test_check("nixtlaR")
+test_check("nixtlar")
