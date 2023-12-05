@@ -44,9 +44,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: List files in testthat directory
-        run: ls tests/testthat/dashboard.nixtla.io/api
-
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
