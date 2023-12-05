@@ -47,9 +47,6 @@ jobs:
       - name: List files in testthat directory
         run: ls tests/testthat/dashboard.nixtla.io/api
 
-      - name: List files in vignette directory
-        run: ls vignette/nixtlar/
-
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
