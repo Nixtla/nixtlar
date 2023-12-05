@@ -2,11 +2,11 @@
 title: "nixtlar"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nixtla-r}
+  %\VignetteIndexEntry{nixtlar}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-```{r, include=FALSE}
+```{r setup, include=FALSE}
 library(httptest2)
 start_vignette("nixtlar")
 ```
@@ -14,26 +14,27 @@ start_vignette("nixtlar")
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
 )
 ```
 
-```{r setup}
+```{r}
 library(nixtlar)
-library(usethis)
 ```
 
-nixtla-r provides an R interface to [Nixtla's TimeGPT](https://docs.nixtla.io/), a generative pre-trained forecasting model for time series data. TimeGPT is the first foundation model capable of producing accurate forecasts for new time series not seen during training, using only its historical values as inputs. TimeGPT can also be used for other time series related tasks, such as anomaly detection and cross validation. Here we explain how to get started with TimeGPT in R and gives a quick overview of the main features of nixtla-r. 
+`nixtlar` provides an R interface to [Nixtla's TimeGPT](https://docs.nixtla.io/), a generative pre-trained forecasting model for time series data. TimeGPT is the first foundation model capable of producing accurate forecasts for new time series not seen during training, using only its historical values as inputs. TimeGPT can also be used for other time series related tasks, such as anomaly detection and cross validation. Here we explain how to get started with TimeGPT in R and gives a quick overview of the main features of `nixtlar`. 
 
 ## 1. Setting up your authentication token
-First, you need to set up your authentication token. A token is a string of characters that allows you to authenticate your requests when using TimeGPT via nixtla-r. This token needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/). 
+First, you need to set up your authentication token. A token is a string of characters that allows you to authenticate your requests when using TimeGPT via `nixtlar`. This token needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/). 
 
-When using nixtla-r, there are two ways of setting up your token: 
+When using `nixtlar`, there are two ways of setting up your token: 
 
-### a. Using the `set_token` function 
-nixtla-r has a function to easily set up your token for your current R session. Simply call 
+### a. Using the `nixtla_set_token` function 
+`nixtlar` has a function to easily set up your token for your current R session. Simply call 
 
-```{r}
+```{r eval=FALSE}
 nixtla_set_token(token = "paste your token here")
 ```
 
@@ -47,7 +48,7 @@ library(usethis)
 usethis::edit_r_environ()
 ```
 
-This will open your `.Reviron` file. Place your token here and make sure it's named `TIMEGPT_TOKEN`. 
+This will open your `.Reviron` file. Place your token here and named it `TIMEGPT_TOKEN`. 
 
 ```{r}
 # Inside the .Renviron file 
@@ -57,10 +58,10 @@ TIMEGPT_TOKEN="paste your token here"
 You'll need to restart R for changes to take effect. 
 
 ### Validate your token 
-If you want to validate your token, call `validate_token`. 
+If you want to validate your token, call `nixtla_validate_token`. 
 
 ```{r}
-#nixtla_validate_token()
+nixtla_validate_token()
 ```
 
 You don't need to validate your token every time you set it up, only when you want to check if it's valid. 
@@ -76,18 +77,18 @@ head(df)
 To generate a forecast for this dataset, use `timegpt_forecast`. Since it has multiple ids (one for every electricity market), you'll need to specify the name of the column that contains the ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`. You can also choose confidence levels (0-100) for prediction intervals with `level`. 
 
 ```{r}
-# fcst <- timegpt_forecast(df, h=8, id_col="unique_id")
-# head(fcst)
+fcst <- timegpt_forecast(df, h=8, id_col="unique_id")
+head(fcst)
 ```
 
 ## 3. Plot TimeGPT forecast 
-nixtla-r includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+`nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-#timegpt_plot(df, fcst, id_col="unique_id", max_insample_length=200)
+timegpt_plot(df, fcst, id_col="unique_id", max_insample_length=200)
 ```
 
 ```{r, include=FALSE}
-#end_vignette()
+end_vignette()
 ```
 
