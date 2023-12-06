@@ -1,5 +1,5 @@
 ---
-title: "nixtlar"
+title: "Getting started"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{nixtlar}
@@ -8,9 +8,9 @@ vignette: >
 ---
 ```{r setup, include=FALSE}
 library(httptest2)
-start_vignette("vignettes/mocks")
+start_vignette("mocks")
 
-options("TIMEGPT_TOKEN"= "dummy_token")
+options("TIMEGPT_TOKEN"="dummy_token")
 
 knitr::opts_chunk$set(
   collapse = TRUE,

@@ -33,7 +33,7 @@ jobs:
         run: pwd
 
       - name: List files in repository root
-        run: ls -la
+        run: ls vignettes/
 
       - uses: actions/checkout@v3
 
