@@ -29,6 +29,15 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Print working directory
+        run: pwd
+
+      - name: List files in vignettes directory
+        run: ls vignettes/
+
+      - name: List files in mock directory
+        run: ls vignettes/mocks/0/dashboard.nixtla.io/api/
+
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2

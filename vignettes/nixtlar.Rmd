@@ -8,7 +8,7 @@ vignette: >
 ---
 ```{r setup, include=FALSE}
 library(httptest2)
-start_vignette("mocks")
+start_vignette("vignettes/mocks")
 
 options("TIMEGPT_TOKEN"= "dummy_token")
 

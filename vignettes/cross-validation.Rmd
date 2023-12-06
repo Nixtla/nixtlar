@@ -8,7 +8,7 @@ vignette: >
 ---
 ```{r setup, include=FALSE}
 library(httptest2)
-start_vignette("mocks")
+start_vignette("vignettes/mocks")
 
 knitr::opts_chunk$set(
   collapse = TRUE,
