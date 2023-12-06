@@ -32,11 +32,8 @@ jobs:
       - name: Print working directory
         run: pwd
 
-      - name: List files in vignettes directory
-        run: ls vignettes/
-
-      - name: List files in mock directory
-        run: ls vignettes/mocks/0/dashboard.nixtla.io/api/
+      - name: List files in root directory
+        run: ls -l
 
       - uses: actions/checkout@v3
 
