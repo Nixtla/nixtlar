@@ -33,7 +33,7 @@ jobs:
         run: pwd
 
       - name: List files in root directory
-        run: ls -l
+        run: ls
 
       - uses: actions/checkout@v3
 
