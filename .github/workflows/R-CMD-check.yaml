@@ -32,8 +32,8 @@ jobs:
       - name: Print working directory
         run: pwd
 
-      - name: List files in root directory
-        run: ls
+      - name: List files in repository root
+        run: ls -la
 
       - uses: actions/checkout@v3
 
