@@ -8,9 +8,9 @@ vignette: >
 ---
 ```{r setup, include=FALSE}
 library(httptest2)
-start_vignette("nixtlar")
+start_vignette("mocks")
 
-options("TIMEGPT_TOKEN"="dummy_token")
+options("TIMEGPT_TOKEN"= "dummy_token")
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -74,18 +74,18 @@ df <- read.csv('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-
 head(df)
 ```
 
-To generate a forecast for this dataset, use `timegpt_forecast`. Default names for the time and the target columns are `ds` and `y`, so in this case, Since it has multiple ids (one for every electricity market), you'll need to specify the name of the column that contains the ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`. You can also choose confidence levels (0-100) for prediction intervals with `level`. 
+To generate a forecast for this dataset, use `timegpt_forecast`. Default names for the time and the target columns are `ds` and `y`. If your time and target columns have different names, specify them with `time_col` and `target_col`. Since it has multiple ids (one for every electricity market), you'll need to specify the name of the column that contains the ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`. You can also choose confidence levels (0-100) for prediction intervals with `level`. 
 
 ```{r}
-fcst <- timegpt_forecast(df, h = 8, id_col = "unique_id")
-head(fcst)
+timegpt_fcst_df <- timegpt_forecast(df, h = 8, id_col = "unique_id")
+head(timegpt_fcst_df)
 ```
 
 ## 3. Plot TimeGPT forecast 
 `nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-timegpt_plot(df, fcst, id_col = "unique_id", max_insample_length = 200)
+timegpt_plot(df, timegpt_fcst_df, id_col = "unique_id", max_insample_length = 200)
 ```
 
 ```{r, include=FALSE}

@@ -201,7 +201,7 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
         dplyr::ungroup()
 
       plot <- plot+
-        ggplot2::geom_vline(ggplot2::aes(xintercept=.data$ds), data=cutoff, linetype="dotted", linewidth=0.6, color="#822681FF")
+        ggplot2::geom_vline(ggplot2::aes(xintercept=.data$ds), data=cutoff, linewidth=0.5, color="#822681FF")
     }
   }
 

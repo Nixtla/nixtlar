@@ -63,7 +63,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
       "content-type" = "application/json",
       "authorization" = paste("Bearer", .get_token())
     ) |>
-    httr2::req_user_agent("nixtla-r") |>
+    httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 
