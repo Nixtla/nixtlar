@@ -32,8 +32,8 @@ jobs:
       - name: Print working directory
         run: pwd
 
-      - name: List files in vignettes/
-        run: ls -R vignettes/
+      - name: List directory contents
+        run: ls -al
 
       - uses: actions/checkout@v3
 
