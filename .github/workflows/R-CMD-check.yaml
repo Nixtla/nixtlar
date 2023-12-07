@@ -29,11 +29,6 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - name: Print working directory
-        run: pwd
-
-      - name: List directory contents
-        run: ls -al
 
       - uses: actions/checkout@v3
 
