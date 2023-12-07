@@ -10,6 +10,7 @@ vignette: >
 library(httptest2)
 start_vignette("mocks")
 
+options("TIMEGPT_TOKEN"="dummy_token")
 options(digits=7)
 
 knitr::opts_chunk$set(
@@ -71,7 +72,8 @@ Once your token has been set up, you're ready to use TimeGPT. Here we'll show yo
 
 ```{r}
 df <- readRDS("elec.RDS")
-#substr(digest::digest(df), 1, 6)
+packageVersion("digest")
+substr(digest::digest(df), 1, 6)
 head(df)
 ```
 
