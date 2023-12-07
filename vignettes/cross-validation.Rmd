@@ -28,21 +28,21 @@ library(nixtlar)
 ## 1. Load data 
 
 ```{r}
-df <- read.table('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv', sep = ",", header = TRUE)
-head(df)
+# df <- read.table('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv', sep = ",", header = TRUE)
+# head(df)
 ```
 
 ## 2. Use cross validation with TimeGPT 
 
 ```{r}
-timegpt_cv_df <- timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5, step_size = 2)
-head(timegpt_cv_df)
+# timegpt_cv_df <- timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5, step_size = 2)
+# head(timegpt_cv_df)
 ```
 
 ## 3. Plot TimeGPT forecasts 
 
 ```{r}
-timegpt_plot(df, timegpt_cv_df, h=8, max_insample_length = 200)
+# timegpt_plot(df, timegpt_cv_df, h=8, max_insample_length = 200)
 ```
 
 
