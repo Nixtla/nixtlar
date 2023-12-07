@@ -11,6 +11,7 @@ library(httptest2)
 start_vignette("mocks")
 
 options("TIMEGPT_TOKEN"="dummy_token")
+options(digits=7)
 
 knitr::opts_chunk$set(
   collapse = TRUE,

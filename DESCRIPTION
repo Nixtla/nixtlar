@@ -2,7 +2,7 @@ Package: nixtlar
 Title: R SDK For Nixtla's TimeGPT
 Version: 0.0.0.9000
 Authors@R: 
-    person("Mariana", "Menchero", , "mariana@nixtla.oi", role = c("aut", "cre"))
+    person("Mariana", "Menchero", , "mariana@nixtla.io", role = c("aut", "cre"))
 Description: An SDK to interface with Nixtla's TimeGPT from R. 
     It provides functions for setting and validating tokens and for generating forecasts with TimeGPT via API calls.
     Compatible with the tsibble package and base R. 
