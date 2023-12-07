@@ -32,6 +32,9 @@ jobs:
       - name: Print working directory
         run: pwd
 
+      - name: List files in vignettes/
+        run: ls -R vignettes/
+
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
