@@ -28,7 +28,7 @@ library(nixtlar)
 ## 1. Load data 
 
 ```{r}
-df <- read.csv('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv')
+df <- read.table('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv', sep = ",", header = TRUE)
 head(df)
 ```
 

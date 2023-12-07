@@ -71,7 +71,7 @@ You don't need to validate your token every time you set it up, only when you wa
 Once your token has been set up, you're ready to use TimeGPT. Here we'll show you how this is done using a dataset that contains prices of different electricity markets. 
 
 ```{r}
-df <- read.csv('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv')
+df <- read.table('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv', sep = ",", header = TRUE)
 head(df)
 ```
 
