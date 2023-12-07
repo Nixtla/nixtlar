@@ -75,7 +75,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
       "authorization" = paste("Bearer", .get_token())
       ) |>
     httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = timegpt_data, digits=10) |>
+    httr2::req_body_json(data = timegpt_data) |>
     httr2::req_perform()
 
   # Extract forecast ----

@@ -16,7 +16,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.oi}
+\strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.io}
 
 }
 \keyword{internal}
