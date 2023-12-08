@@ -14,6 +14,7 @@ Depends:
     R (>= 2.10)
 LazyData: true
 Imports: 
+    data.table,
     dplyr,
     ggplot2,
     httr2,

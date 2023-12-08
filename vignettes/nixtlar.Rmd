@@ -71,9 +71,7 @@ You don't need to validate your token every time you set it up, only when you wa
 Once your token has been set up, you're ready to use TimeGPT. Here we'll show you how this is done using a dataset that contains prices of different electricity markets. 
 
 ```{r}
-df <- readRDS("elec.RDS")
-packageVersion("digest")
-substr(digest::digest(df), 1, 6)
+df <- nixtlar::electricity
 head(df)
 ```
 
