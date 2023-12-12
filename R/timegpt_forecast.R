@@ -18,16 +18,14 @@
 #'
 timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
-  # Validation ----
-  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
-    stop("Only tsibbles or data frames are allowed.")
-  }
-
   # Prepare data ----
+  url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
+
   if(is.null(id_col)){
-    url <- "https://dashboard.nixtla.io/api/timegpt"
-  }else{
-    url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
+    # create unique_id for single series
+    df <- df |>
+      dplyr::mutate(unique_id = "id") |>
+      dplyr::select(c("unique_id", tidyselect::everything()))
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
@@ -80,26 +78,13 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
 
   # Extract forecast ----
   fc <- httr2::resp_body_json(resp)
-
-  if(is.null(id_col)){
-    idx <- grep("^(timestamp|value|lo|hi)", names(fc$data))
-    fc_list <- fc$data[idx]
-    fcst <- data.frame(lapply(fc_list, unlist), stringsAsFactors=FALSE)
-    names(fcst) <- names(fc_list)
-    names(fcst)[1:2] <- c("ds", "TimeGPT")
-    if(!is.null(level)){
-      idx_level <- grep("^(lo|hi)", names(fcst))
-      names(fcst)[idx_level] <- paste0("TimeGPT-", names(fcst)[idx_level])
-    }
+  fc_list <- lapply(fc$data$forecast$data, unlist)
+  fcst <- data.frame(do.call(rbind, fc_list))
+  names(fcst) <- fc$data$forecast$columns
+  if(!is.null(level)){
+    fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
   }else{
-    fc_list <- lapply(fc$data$forecast$data, unlist)
-    fcst <- data.frame(do.call(rbind, fc_list))
-    names(fcst) <- fc$data$forecast$columns
-    if(!is.null(level)){
-      fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
-    }else{
-      fcst$TimeGPT <- as.numeric(fcst$TimeGPT)
-    }
+    fcst$TimeGPT <- as.numeric(fcst$TimeGPT)
   }
 
   # Data transformation ----
@@ -119,7 +104,6 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
       fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
     }
   }else{
-    # If df is a data frame, convert ds to dates
     if(freq == "H"){
       fcst$ds <- lubridate::ymd_hms(fcst$ds)
     }else{
@@ -131,6 +115,10 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   names(fcst)[which(names(fcst) == "ds")] <- time_col
   if(!is.null(id_col)){
     names(fcst)[which(names(fcst) == "unique_id")] <- id_col
+  }else{
+    # remove unique_id column
+    fcst <- fcst |>
+      dplyr::select(-unique_id)
   }
 
   # Generate fitted values ----

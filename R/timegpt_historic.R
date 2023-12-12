@@ -14,20 +14,17 @@
 #'
 timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
 
-  # Validation ----
-  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
-    stop("Only tsibbles or data frames are allowed.")
-  }
-
   # Prepare data ----
+  url_historic <- "https://dashboard.nixtla.io/api/timegpt_multi_series_historic"
+
   if(is.null(id_col)){
-    url_historic <- "https://dashboard.nixtla.io/api/timegpt_historic"
-  }else{
-    url_historic <- "https://dashboard.nixtla.io/api/timegpt_multi_series_historic"
+    # create unique_id for single series
+    df <- df |>
+      dplyr::mutate(unique_id = "id") |>
+      dplyr::select(c("unique_id", tidyselect::everything()))
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
-  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -37,6 +34,9 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     finetune_steps = finetune_steps,
     clean_ex_first = clean_ex_first
   )
+
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
 
   if(any(!(names(df) %in% c("unique_id", "ds", "y")))){
     exogenous <- df |>
@@ -68,23 +68,11 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
 
   # Extract fitted values ----
   hist <- httr2::resp_body_json(resp_hist)
-  if(is.null(id_col)){
-    idx_fit <- grep("^(timestamp|value|lo|hi)", names(hist$data))
-    fit_list <- hist$data[idx_fit]
-    fitted <- data.frame(lapply(fit_list, unlist), stringsAsFactors=FALSE)
-    names(fitted) <- names(fit_list)
-    names(fitted)[1:2] <- c("ds", "TimeGPT")
-    if(!is.null(level)){
-      idx_level <- grep("^(lo|hi)", names(fitted))
-      names(fitted)[idx_level] <- paste0("TimeGPT-", names(fitted)[idx_level])
-    }
-  }else{
-    fit_list <- lapply(hist$data$forecast$data, unlist)
-    fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
-    names(fitted) <- hist$data$forecast$columns
-    fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
-    fitted <- fitted[,-which(names(fitted) == "y")]
-  }
+  fit_list <- lapply(hist$data$forecast$data, unlist)
+  fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
+  names(fitted) <- hist$data$forecast$columns
+  fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
+  fitted <- fitted[,-which(names(fitted) == "y")]
 
   # Data transformation ----
   if(tsibble::is_tsibble(df)){
@@ -114,6 +102,10 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
   names(fitted)[which(names(fitted) == "ds")] <- time_col
   if(!is.null(id_col)){
     names(fitted)[which(names(fitted) == "unique_id")] <- id_col
+  }else{
+    # remove unique_id column
+    fitted <- fitted |>
+      dplyr::select(-unique_id)
   }
 
   return(fitted)

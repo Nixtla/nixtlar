@@ -14,20 +14,16 @@
 #'
 timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
-  # Validation ----
-  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
-    stop("Only tsibbles or data frames are allowed.")
-  }
-
   # Prepare data ----
+  url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_multi_series_anomalies"
   if(is.null(id_col)){
-    url_anomaly <- "Write here the url for the single series case"
-  }else{
-    url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_multi_series_anomalies"
+    # create unique_id for single series
+    df <- df |>
+      dplyr::mutate(unique_id = "id") |>
+      dplyr::select(c("unique_id", tidyselect::everything()))
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
-  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -38,6 +34,8 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
     clean_ex_first = clean_ex_first
   )
 
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
   if(any(!(names(df) %in% c("unique_id", "ds", "y")))){
     exogenous <- df |>
       dplyr::select(-y)
@@ -51,7 +49,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
   }
 
   if(length(level) > 1){
-    message("Multiple levels are not allowed for anomaly detection. Will use the largest.")
+    message("Multiple levels are not allowed for anomaly detection. Will use the largest level.")
   }
   level <- as.list(level)
   timegpt_data[["level"]] <- level
@@ -69,26 +67,21 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
 
   # Extract anomalies ----
   anomaly <- httr2::resp_body_json(resp_anomaly)
-  if(is.null(id_col)){
-    # Write here the code for the single series case once the url is available
-    res = 42
-  }else{
-    anomaly_list <- lapply(anomaly$data$forecast$data, unlist)
-    res <- data.frame(do.call(rbind, anomaly_list))
-    colnames(res) <- anomaly$data$forecast$columns
-    res[,3:ncol(res)] <- lapply(res[,3:ncol(res)], as.numeric)
-  }
+  anomaly_list <- lapply(anomaly$data$forecast$data, unlist)
+  res <- data.frame(do.call(rbind, anomaly_list))
+  colnames(res) <- anomaly$data$forecast$columns
+  res[,3:ncol(res)] <- lapply(res[,3:ncol(res)], as.numeric)
 
   # Data transformation ----
   if(tsibble::is_tsibble(df)){
     res$ds <- switch(freq,
-                      "Y" = as.numeric(substr(res$ds, 1, 4)),
-                      "A" = as.numeric(substr(res$ds, 1, 4)),
-                      "Q" = tsibble::yearquarter(res$ds),
-                      "MS" = tsibble::yearmonth(res$ds),
-                      "W" = tsibble::yearweek(res$ds),
-                      "H" = lubridate::ymd_hms(res$ds),
-                      lubridate::ymd(res$ds) # default (daily or other)
+                     "Y" = as.numeric(substr(res$ds, 1, 4)),
+                     "A" = as.numeric(substr(res$ds, 1, 4)),
+                     "Q" = tsibble::yearquarter(res$ds),
+                     "MS" = tsibble::yearmonth(res$ds),
+                     "W" = tsibble::yearweek(res$ds),
+                     "H" = lubridate::ymd_hms(res$ds),
+                     lubridate::ymd(res$ds) # default (daily or other)
     )
     if(is.null(id_col)){
       res <- tsibble::as_tsibble(res, index="ds")
@@ -108,6 +101,10 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
   colnames(res)[which(colnames(res) == "ds")] <- time_col
   if(!is.null(id_col)){
     colnames(res)[which(colnames(res) == "unique_id")] <- id_col
+  }else{
+    # remove unique_id column
+    res <- res |>
+      dplyr::select(-unique_id)
   }
 
   return(res)

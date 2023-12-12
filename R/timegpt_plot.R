@@ -19,6 +19,10 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
     stop("Only tsibbles or data frames are allowed.")
   }
 
+  if("unique_id" %in% names(df) & is.null(id_col)){
+    message("It seems that there are multiple ids. If so, please specify id_col")
+  }
+
   # Select facets ----
   nrow <- 4
   ncol <- 2
@@ -51,6 +55,11 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
           dplyr::filter(.data$unique_id %in% ids)
       }
     }
+
+  }else{
+    df <- df |>
+      dplyr::mutate(unique_id = "") |>
+      dplyr::select(c("unique_id", tidyselect::everything()))
   }
 
   # Convert dates if necessary ----
@@ -88,8 +97,8 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
 
     plot <- ggplot2::ggplot(ggplot2::aes(x=.data$ds, y=.data$y), data = df)+
       ggplot2::geom_line(color="steelblue")+
-      ggplot2::facet_wrap(~ .data$unique_id, scales = "free", ncol=ncol, nrow=nrow) +
-      ggplot2::labs(title = "Plots for unique_id", x = "Date", y = "Target") +
+      ggplot2::facet_wrap(~ .data$unique_id, scales = "free", ncol=ncol, nrow=nrow)+
+      ggplot2::labs(x = "Date", y = "Target") +
       ggplot2::theme_minimal()
 
   }else{
@@ -102,9 +111,21 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
 
     # Rename forecast columns ----
     names(fcst)[which(names(fcst) == time_col)] <- "ds"
-    names(fcst)[which(names(fcst) == target_col)] <- "y"
     if(!is.null(id_col)){
       names(fcst)[which(names(fcst) == id_col)] <- "unique_id"
+    }else{
+      fcst <- fcst |>
+        dplyr::mutate(unique_id = "") |>
+        dplyr::select(c("unique_id", everything()))
+    }
+
+    clsf <- class(fcst$ds)[1]
+    if(!(clsf %in% c("Date", "POSIXt", "POSIXct", "POSIXlt"))){
+      if(freq == "H"){
+        fcst$ds <- lubridate::ymd_hms(fcst$ds)
+      }else{
+        fcst$ds <- as.Date(fcst$ds)
+      }
     }
 
     # Check for cross validation output
@@ -142,7 +163,7 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
 
     plot <- ggplot2::ggplot(data_long)+
       ggplot2::facet_wrap(~ .data$unique_id, scales = "free", ncol=ncol, nrow=nrow)+
-      ggplot2::labs(title = "Plots for unique_id", x = "Date", y = "Target")+
+      ggplot2::labs(x = "Date", y = "Target")+
       ggplot2::theme_minimal()
 
     # Add prediction intervals ----
@@ -201,7 +222,7 @@ timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", targ
         dplyr::ungroup()
 
       plot <- plot+
-        ggplot2::geom_vline(ggplot2::aes(xintercept=.data$ds), data=cutoff, linewidth=0.5, color="#822681FF")
+        ggplot2::geom_vline(ggplot2::aes(xintercept=.data$ds), data=cutoff, linewidth=0.5, linetype="dashed", color="#E68613")
     }
   }
 

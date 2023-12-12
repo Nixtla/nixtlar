@@ -19,20 +19,15 @@
 #'
 timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
 
-  # Validation ----
-  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
-    stop("Only tsibbles or data frames are allowed.")
-  }
-
   # Prepare data ----
+  url_cv <- "https://dashboard.nixtla.io/api/timegpt_multi_series_cross_validation"
   if(is.null(id_col)){
-    url_cv <- "Write here the url for the single series case"
-  }else{
-    url_cv <- "https://dashboard.nixtla.io/api/timegpt_multi_series_cross_validation"
+    df <- df |>
+      dplyr::mutate(unique_id = "id") |>
+      dplyr::select(c("unique_id", tidyselect::everything()))
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
-  df <- data$df
   freq <- data$freq
   y <- data$y
 
@@ -53,6 +48,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
 
   if(!is.null(X_df)){
     names(X_df)[which(names(X_df) == time_col)] <- "ds"
+    names(X_df)[which(names(X_df) == target_col)] <- "y"
     if(!is.null(id_col)){
       names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
     }
@@ -88,16 +84,11 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
 
   # Extract cross-validation ----
   cv <- httr2::resp_body_json(resp_cv)
-  if(is.null(id_col)){
-    # Write here the code for the single series case once the url is available
-    res = 42
-  }else{
-    cv_list <- lapply(cv$data$forecast$data, unlist)
-    res <- data.frame(do.call(rbind, cv_list))
-    colnames(res) <- cv$data$forecast$columns
-    res[,4:ncol(res)] <- lapply(res[,4:ncol(res)], as.numeric)
-    res$cutoff <- lubridate::ymd_hms(res$cutoff)
-  }
+  cv_list <- lapply(cv$data$forecast$data, unlist)
+  res <- data.frame(do.call(rbind, cv_list))
+  colnames(res) <- cv$data$forecast$columns
+  res[,4:ncol(res)] <- lapply(res[,4:ncol(res)], as.numeric)
+  res$cutoff <- lubridate::ymd_hms(res$cutoff)
 
   # Data transformation ----
   if(tsibble::is_tsibble(df)){
@@ -139,6 +130,10 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
   colnames(res)[which(colnames(res) == "ds")] <- time_col
   if(!is.null(id_col)){
     colnames(res)[which(colnames(res) == "unique_id")] <- id_col
+  }else{
+    # remove unique_id column
+    res <- res |>
+      dplyr::select(-unique_id)
   }
 
   return(res)

@@ -30,6 +30,7 @@
 #' @importFrom lubridate ymd_hms
 #' @importFrom rlang .data
 #' @importFrom tidyr pivot_longer
+#' @importFrom tidyselect everything
 #' @importFrom tsibble is_tsibble
 ## usethis namespace: end
 NULL
