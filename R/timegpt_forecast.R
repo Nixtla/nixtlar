@@ -19,13 +19,17 @@
 timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Prepare data ----
-  url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
 
   if(is.null(id_col)){
     # create unique_id for single series
     df <- df |>
-      dplyr::mutate(unique_id = "id") |>
+      dplyr::mutate(unique_id = "ts_0") |>
       dplyr::select(c("unique_id", tidyselect::everything()))
+  }else{
+    # id_col is not NULL
+    names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
@@ -43,8 +47,18 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
 
   if(!is.null(X_df)){
     names(X_df)[which(names(X_df) == time_col)] <- "ds"
-    if(!is.null(id_col)){
+    if(is.null(id_col)){
+      X_df <- X_df |>
+        dplyr::mutate(unique_id = "ts_0") |>
+        dplyr::select(c("unique_id", tidyselect::everything()))
+    }else{
       names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
+    }
+
+    # Validation checks for exogenous variables
+    status <- .validate_exogenous(df, h, X_df)
+    if(!status$validation){
+      stop(print(status$message))
     }
 
     exogenous <-  df |>
@@ -66,6 +80,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   }
 
   # Make request ----
+  url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
   resp <- httr2::request(url) |>
     httr2::req_headers(
       "accept" = "application/json",
@@ -118,7 +133,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   }else{
     # remove unique_id column
     fcst <- fcst |>
-      dplyr::select(-unique_id)
+      dplyr::select(-c(.data$unique_id))
   }
 
   # Generate fitted values ----

@@ -20,11 +20,16 @@
 timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
-  url_cv <- "https://dashboard.nixtla.io/api/timegpt_multi_series_cross_validation"
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
+
   if(is.null(id_col)){
     df <- df |>
-      dplyr::mutate(unique_id = "id") |>
+      dplyr::mutate(unique_id = "ts_0") |>
       dplyr::select(c("unique_id", tidyselect::everything()))
+  }else{
+    # id_col is not NULL
+    names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
@@ -48,9 +53,18 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
 
   if(!is.null(X_df)){
     names(X_df)[which(names(X_df) == time_col)] <- "ds"
-    names(X_df)[which(names(X_df) == target_col)] <- "y"
-    if(!is.null(id_col)){
+    if(is.null(id_col)){
+      X_df <- X_df |>
+        dplyr::mutate(unique_id = "ts_0") |>
+        dplyr::select(c("unique_id", tidyselect::everything()))
+    }else{
       names(X_df)[which(names(X_df) == id_col)] <- "unique_id"
+    }
+
+    # Validation checks for exogenous variables
+    status <- .validate_exogenous(df, h, X_df)
+    if(!status$validation){
+      stop(print(status$message))
     }
 
     exogenous <-  df |>
@@ -72,6 +86,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
   }
 
   # Make request ----
+  url_cv <- "https://dashboard.nixtla.io/api/timegpt_multi_series_cross_validation"
   resp_cv <- httr2::request(url_cv) |>
     httr2::req_headers(
       "accept" = "application/json",
@@ -133,7 +148,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
   }else{
     # remove unique_id column
     res <- res |>
-      dplyr::select(-unique_id)
+      dplyr::select(-c(.data$unique_id))
   }
 
   return(res)

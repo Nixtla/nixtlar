@@ -15,12 +15,17 @@
 timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
-  url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_multi_series_anomalies"
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
+
   if(is.null(id_col)){
     # create unique_id for single series
     df <- df |>
-      dplyr::mutate(unique_id = "id") |>
+      dplyr::mutate(unique_id = "ts_0") |>
       dplyr::select(c("unique_id", tidyselect::everything()))
+  }else{
+    # id_col is not NULL
+    names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
   data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
@@ -34,11 +39,10 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
     clean_ex_first = clean_ex_first
   )
 
-  names(df)[which(names(df) == time_col)] <- "ds"
-  names(df)[which(names(df) == target_col)] <- "y"
-  if(any(!(names(df) %in% c("unique_id", "ds", "y")))){
-    exogenous <- df |>
-      dplyr::select(-y)
+  if(!any(names(df) %in% c("unique_id", "ds", "y"))){
+    # input includes exogenous variables
+    exogenous <-  df |>
+      dplyr::select(-c(.data$y))
 
     x <- list(
       columns = names(exogenous),
@@ -55,6 +59,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
   timegpt_data[["level"]] <- level
 
   # Make request ----
+  url_anomaly <- "https://dashboard.nixtla.io/api/timegpt_multi_series_anomalies"
   resp_anomaly <- httr2::request(url_anomaly) |>
     httr2::req_headers(
       "accept" = "application/json",
@@ -104,7 +109,7 @@ timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds",
   }else{
     # remove unique_id column
     res <- res |>
-      dplyr::select(-unique_id)
+      dplyr::select(-c(.data$unique_id))
   }
 
   return(res)

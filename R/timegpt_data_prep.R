@@ -1,11 +1,11 @@
 #' Prepares data for TimeGPT's API
-#' This is a private function of the package
+#' This is a private function of nixtlar
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.
-#' @param id_col Column that identifies each series.
-#' @param time_col Column that identifies each timestep.
-#' @param target_col Column that contains the target variable.
+#' @param id_col Column that identifies each series. Should be named unique_id.
+#' @param time_col Column that identifies each timestep. Should be named ds.
+#' @param target_col Column that contains the target variable. Should be named y.
 #'
 #' @return A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
 #'
@@ -13,13 +13,6 @@
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
-  }
-
-  # Rename columns
-  names(df)[which(names(df) == time_col)] <- "ds"
-  names(df)[which(names(df) == target_col)] <- "y"
-  if(!is.null(id_col)){
-    names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
   # If df is a tsibble, convert dates to strings and infer frequency if necessary
@@ -35,10 +28,11 @@
   }
 
   # Prepare data
-  df <- df[,c("unique_id", "ds", "y")]
+  filtered_df <- df[,c("unique_id", "ds", "y")]
+
   y <- list(
-    columns = names(df),
-    data = lapply(1:nrow(df), function(i) as.list(df[i,]))
+    columns = names(filtered_df),
+    data = lapply(1:nrow(filtered_df), function(i) as.list(filtered_df[i,]))
     )
 
   res <- list(freq = freq,

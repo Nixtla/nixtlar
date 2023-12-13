@@ -3,7 +3,7 @@
 \name{.timegpt_data_prep}
 \alias{.timegpt_data_prep}
 \title{Prepares data for TimeGPT's API
-This is a private function of the package}
+This is a private function of nixtlar}
 \usage{
 .timegpt_data_prep(df, freq, id_col, time_col, target_col)
 }
@@ -12,16 +12,16 @@ This is a private function of the package}
 
 \item{freq}{Frequency of the data.}
 
-\item{id_col}{Column that identifies each series.}
+\item{id_col}{Column that identifies each series. Should be named unique_id.}
 
-\item{time_col}{Column that identifies each timestep.}
+\item{time_col}{Column that identifies each timestep. Should be named ds.}
 
-\item{target_col}{Column that contains the target variable.}
+\item{target_col}{Column that contains the target variable. Should be named y.}
 }
 \value{
 A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
 }
 \description{
 Prepares data for TimeGPT's API
-This is a private function of the package
+This is a private function of nixtlar
 }
