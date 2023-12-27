@@ -1,4 +1,19 @@
 url: https://mmenchero.github.io/nixtlar/
 template:
   bootstrap: 5
+  params:
+    github:
+      repo: mmenchero/nixtlar
 
+navbar:
+  title: "nixtlar"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Get Started"
+      href: articles/get-started.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Articles"
+      menu:
+        - text: "Anomaly Detection"

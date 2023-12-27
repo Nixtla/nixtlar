@@ -1,7 +1,9 @@
 #' Get TIMEGPT_TOKEN from options or from .Renviron
-#' This is a private function of the package
+#' This is a private function of nixtlar
 #'
 #' @return If available, the TIMEGTP_TOKEN
+#' @export
+#' @keywords internal
 #'
 .get_token <- function(){
 

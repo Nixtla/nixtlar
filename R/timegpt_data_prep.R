@@ -8,6 +8,8 @@
 #' @param target_col Column that contains the target variable. Should be named y.
 #'
 #' @return A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
+#' @export
+#' @keywords internal
 #'
 .timegpt_data_prep <- function(df, freq, id_col, time_col, target_col){
 

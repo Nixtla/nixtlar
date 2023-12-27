@@ -7,6 +7,7 @@
 #'
 #' @return A list with the result of the validation (TRUE/FALSE) and an error message (if applicable)
 #' @export
+#' @keywords internal
 #'
 .validate_exogenous <- function(df, h, X_df){
 

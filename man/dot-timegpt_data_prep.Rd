@@ -25,3 +25,4 @@ A list with the given or inferred frequency, the prepared data, and the original
 Prepares data for TimeGPT's API
 This is a private function of nixtlar
 }
+\keyword{internal}

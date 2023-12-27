@@ -21,3 +21,4 @@ A list with the result of the validation (TRUE/FALSE) and an error message (if a
 Validate exogenous variables (if applicable)
 This is a private function of nixtlar
 }
+\keyword{internal}
