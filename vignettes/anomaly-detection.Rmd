@@ -1,19 +1,51 @@
 ---
-title: "anomaly-detection"
+title: "Anomaly Detection"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{anomaly-detection}
+  %\VignetteIndexEntry{nixtlar}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r setup, include=FALSE}
+library(httptest2)
+start_vignette("mocks")
 
-```{r, include = FALSE}
+options("TIMEGPT_TOKEN"="dummy_token")
+options(digits=7)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
 )
 ```
 
-```{r setup}
+```{r}
 library(nixtlar)
 ```
+
+## 1. Anomaly detection
+text 
+
+```{r}
+df <- nixtlar::electricity
+head(df)
+```
+
+```{r}
+timegpt_anomalies_df <- timegpt_anomaly_detection(df, id_col = "unique_id", level = c(95))
+head(timegpt_anomalies_df)
+```
+
+## 3. Plot TimeGPT forecast 
+`nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+
+```{r}
+timegpt_plot(df, timegpt_anomalies_df, id_col = "unique_id", plot_anomalies = TRUE)
+```
+
+```{r, include=FALSE}
+end_vignette()
+```
+
