@@ -17,3 +17,9 @@ navbar:
     - text: "Articles"
       menu:
         - text: "Anomaly Detection"
+        - href: articles/anomaly-detection.html
+        - text: "Cross validation"
+        - href: articles/cross-validation.html
+        - text: "Historical Forecast"
+        - href: articles/historical-forecast.html
+

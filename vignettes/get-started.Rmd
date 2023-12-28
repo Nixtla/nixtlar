@@ -2,7 +2,7 @@
 title: "Get Started"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nixtlar}
+  %\VignetteIndexEntry{Get Started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -78,15 +78,15 @@ head(df)
 To generate a forecast for this dataset, use `timegpt_forecast`. Default names for the time and the target columns are `ds` and `y`. If your time and target columns have different names, specify them with `time_col` and `target_col`. Since it has multiple ids (one for every electricity market), you'll need to specify the name of the column that contains the ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`. You can also choose confidence levels (0-100) for prediction intervals with `level`. 
 
 ```{r}
-timegpt_fcst_df <- timegpt_forecast(df, h = 8, id_col = "unique_id")
-head(timegpt_fcst_df)
+timegpt_fcst <- timegpt_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+head(timegpt_fcst)
 ```
 
 ## 3. Plot TimeGPT forecast 
 `nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-timegpt_plot(df, timegpt_fcst_df, id_col = "unique_id", max_insample_length = 200)
+timegpt_plot(df, timegpt_fcst, id_col = "unique_id", max_insample_length = 200)
 ```
 
 ```{r, include=FALSE}
