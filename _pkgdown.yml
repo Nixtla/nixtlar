@@ -1,6 +1,8 @@
 url: https://mmenchero.github.io/nixtlar/
+
 template:
   bootstrap: 5
+  bootswatch: flatly
   params:
     github:
       repo: mmenchero/nixtlar
@@ -8,8 +10,6 @@ template:
 navbar:
   title: "nixtlar"
   left:
-    - text: "Home"
-      href: index.html
     - text: "Get Started"
       href: articles/get-started.html
     - text: "Reference"
@@ -22,4 +22,3 @@ navbar:
         - href: articles/cross-validation.html
         - text: "Historical Forecast"
         - href: articles/historical-forecast.html
-
