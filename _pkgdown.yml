@@ -3,9 +3,6 @@ url: https://nixtla.github.io/nixtlar/
 template:
   bootstrap: 5
   bootswatch: flatly
-  params:
-    github:
-      repo: mmenchero/nixtlar
 
 navbar:
   title: "nixtlar"
