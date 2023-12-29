@@ -1,0 +1,27 @@
+
+library(httptest2)
+
+df <- read.csv('https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv')
+head(df)
+
+httptest2::start_capturing()
+fcst <- timegpt_forecast(df, h=8, id_col="unique_id", level = c(80,95))
+httptest2::stop_capturing()
+
+httptest2::start_capturing()
+nixtla_validate_token()
+httptest2::stop_capturing()
+
+httptest2::start_capturing()
+fcst <- timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+httptest2::stop_capturing()
+
+httptest2::start_capturing()
+fcst <- timegpt_anomaly_detection(df, id_col = "unique_id")
+httptest2::stop_capturing()
+
+httptest2::start_capturing()
+fcst <- timegpt_historic(test_data, id_col="unique_id")
+httptest2::stop_capturing()
+
+

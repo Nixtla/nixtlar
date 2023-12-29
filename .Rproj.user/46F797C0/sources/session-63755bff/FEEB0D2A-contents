@@ -1,0 +1,24 @@
+url: https://mmenchero.github.io/nixtlar/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  params:
+    github:
+      repo: mmenchero/nixtlar
+
+navbar:
+  title: "nixtlar"
+  left:
+    - text: "Get Started"
+      href: articles/get-started.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Articles"
+      menu:
+        - text: "Anomaly Detection"
+        - href: articles/anomaly-detection.html
+        - text: "Cross validation"
+        - href: articles/cross-validation.html
+        - text: "Historical Forecast"
+        - href: articles/historical-forecast.html

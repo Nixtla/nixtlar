@@ -1,0 +1,51 @@
+---
+title: "Cross Validation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cross Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+library(httptest2)
+start_vignette("mocks")
+
+options("TIMEGPT_TOKEN"="dummy_token")
+options(digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+## 1. Cross Validation
+text 
+
+```{r}
+df <- nixtlar::electricity
+head(df)
+```
+
+```{r}
+#timegpt_cv <- timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+#head(timegpt_cv)
+```
+
+## 2. Plot TimeGPT forecast 
+`nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+
+```{r}
+#timegpt_plot(df, timegpt_cv, id_col = "unique_id", max_insample_length = 200)
+```
+
+```{r, include=FALSE}
+end_vignette()
+```
+

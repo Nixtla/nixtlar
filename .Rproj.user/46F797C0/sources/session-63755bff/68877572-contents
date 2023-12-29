@@ -1,0 +1,13 @@
+pandoc: 3.1.1
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  anomaly-detection: anomaly-detection.html
+  cross-validation: cross-validation.html
+  get-started: get-started.html
+  historical-forecast: historical-forecast.html
+last_built: 2023-12-29T19:55Z
+urls:
+  reference: https://mmenchero.github.io/nixtlar/reference
+  article: https://mmenchero.github.io/nixtlar/articles
+
