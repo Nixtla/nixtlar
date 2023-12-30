@@ -11,6 +11,8 @@ navbar:
       href: articles/get-started.html
     - text: "Reference"
       href: reference/index.html
+    - text: "Nixtla"
+      href: https://docs.nixtla.io/
     - text: "Articles"
       menu:
         - text: "Anomaly Detection"
@@ -19,3 +21,13 @@ navbar:
         - href: articles/cross-validation.html
         - text: "Historical Forecast"
         - href: articles/historical-forecast.html
+
+home:
+  links:
+  - text: "Browse source code"
+    href: https://github.com/Nixtla/nixtlar/
+  - text: "Report a bug"
+    href: https://github.com/Nixtla/nixtlar/issues
+  - text: "Learn more"
+    href: https://arxiv.org/abs/2310.03589
+

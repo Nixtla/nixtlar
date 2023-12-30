@@ -6,6 +6,10 @@
 The `nixtlar` package provides R users with a SDK for [Nixtla’s TimeGPT
 API](https://docs.nixtla.io/).
 
+<!-- logo -->
+
+# nixtlar <a href="https://nixtla.github.io/nixtlar/"><img src="man/figures/logo.png" align="right" height="139" alt="nixtlar website" /></a>
+
 <!-- badges: start -->
 
 [![CRAN
