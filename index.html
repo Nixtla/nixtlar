@@ -71,7 +71,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/Nixtla/nixtlar">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -80,60 +87,78 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="nixtlar">nixtlar<a class="anchor" aria-label="anchor" href="#nixtlar"></a>
-</h1>
-</div>
-<p>The <code>nixtlar</code> package provides R users with a SDK for <a href="https://docs.nixtla.io/" class="external-link">Nixtla’s TimeGPT API</a>.</p>
-<!-- logo -->
-</div>
-<div class="section level1">
-<h1 id="nixtlar-">nixtlar 
+<img src="logo.png" class="logo" alt=""><h1 id="nixtlar-">nixtlar 
 <a class="anchor" aria-label="anchor" href="#nixtlar-"></a>
 </h1>
+</div>
 <!-- badges: start -->
 
+<p>The <code>nixtlar</code> package provides R users with a SDK for <a href="https://docs.nixtla.io/" class="external-link">Nixtla’s TimeGPT</a>.</p>
 <div class="section level2">
-<h2 id="id_-nixtlar-your-gateway-to-timegpt-from-r">🔄 nixtlar: Your Gateway to TimeGPT from R<a class="anchor" aria-label="anchor" href="#id_-nixtlar-your-gateway-to-timegpt-from-r"></a>
+<h2 id="your-gateway-to-timegpt">Your gateway to TimeGPT<a class="anchor" aria-label="anchor" href="#your-gateway-to-timegpt"></a>
 </h2>
-<p>With <code>nixtlar</code> you can easily interact with TimeGPT through simple API calls, making the power of TimeGPT readily accessible in your projects. Learn more about TimeGPT <a href="https://arxiv.org/abs/2310.03589" class="external-link">here</a>.</p>
+<p>TimeGPT is a cutting-edge generative pre-trained transformer model that has been trained on the largest collection of publicly available time series data. Accessible to R users via the <code>nixtlar package</code>, TimeGPT democratizes forecasting, enabling rapid and accurate predictions, even for datasets not seen during training. Learn more about TimeGPT <a href="https://arxiv.org/abs/2310.03589" class="external-link">here</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="id_-installation">💻 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of <code>nixtlar</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="co">#devtools::install_github("MMenchero/nixtlar")</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="quick-start">🎈Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>To use TimeGPT, you first need to request a token from Nixtla. You can do this at <a href="https://dashboard.nixtla.io/" class="external-link uri">https://dashboard.nixtla.io/</a>.</p>
-<p>Once you have the token, you’ll need to set it up in your R session. The <code>nixtlar</code> package provides a function to do this.</p>
+<p>Get started with TimeGPT now.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#library(nixtlar)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Set up token </span></span>
-<span><span class="co">#set_token("YOUR_TOKEN") </span></span></code></pre></div>
-<p>You’ll need to set the token every time you re-start your R session. <code>nixtlar</code> also includes a function to validate the token.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Validate token</span></span>
-<span><span class="co">#validate_token("YOUR_TOKEN") </span></span></code></pre></div>
-<p>You don’t need to validate the token every time you set it up, only when you want to ensure its validity.</p>
-<p><code>nixtlar provides</code> an easy-to-use function to call the TimeGPT API. It works with both <a href="https://tsibble.tidyverts.org/" class="external-link">tsibbles</a> and base R data frames.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Call the TimeGPT API </span></span>
-<span><span class="co">#df &lt;- tssible::as_tsibble(AirPassengers) # df can also be a data frame  </span></span>
+<span><span class="co"># Load sample dataset </span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="reference/electricity.html">electricity</a></span> <span class="co"># can also be a tsibble! </span></span>
 <span></span>
-<span><span class="co">#timegpt_forecast(df, h=8, freq=12, time_col="index", target_col="value")</span></span></code></pre></div>
+<span><span class="co"># Set TIMEGPT Token </span></span>
+<span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_set_token.html">nixtla_set_token</a></span><span class="op">(</span><span class="st">"TIMEGPT TOKEN"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Token has been set for the current session.</span></span>
+<span></span>
+<span><span class="co"># Forecast the next 8 horizons using TimeGPT</span></span>
+<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/timegpt_forecast.html">timegpt_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span></span>
+<span><span class="co"># Plot TimeGPT forecast </span></span>
+<span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/timegpt_plot.html">timegpt_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">fcst</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
+<p>Using TIMEGPT through <code>nixtlar</code> requires a token provided by Nixtla. To see how to get it and different ways to set it up, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a>. Here you can also find a more detailed explanation on how <code>nixtlar</code>’s forecast and plot function work.</p>
 </div>
 <div class="section level2">
-<h2 id="id_-python-sdk">🐍 Python SDK<a class="anchor" aria-label="anchor" href="#id_-python-sdk"></a>
+<h2 id="main-features-of-nixtlar">Main features of <code>nixtlar</code>
+<a class="anchor" aria-label="anchor" href="#main-features-of-nixtlar"></a>
 </h2>
-<p>Are you a Python user? If yes, then check out <a href="https://github.com/Nixtla/nixtla" class="external-link">NixtlaTS</a>, a Python SDK for TimeGPT and check out the <a href="https://docs.nixtla.io/docs" class="external-link">documentation</a>.</p>
+<ul>
+<li><p>Works with both data frames and <a href="https://tsibble.tidyverts.org/" class="external-link">tsibbles</a>.</p></li>
+<li>
+<p>Allows you to use TimeGPT’s main features, including:</p>
+<ul>
+<li>Anomaly detection</li>
+<li>Exogenous variables</li>
+<li>Prediction intervals</li>
+<li>Finetuning</li>
+<li>Multiple time series</li>
+<li>Historical forecast</li>
+<li>Cross-validation</li>
+</ul>
+</li>
+<li><p>Includes its own plot function.</p></li>
+</ul>
+<p>Please read the <strong>Articles</strong> on this website or check out the <strong>Reference</strong> to understand how you can use all these features.</p>
+</div>
+<div class="section level2">
+<h2 id="python-sdk">Python SDK<a class="anchor" aria-label="anchor" href="#python-sdk"></a>
+</h2>
+<p>Are you a Python user? If yes, then check out the <a href="https://github.com/Nixtla/nixtla" class="external-link">Python SDK for TimeGPT</a>.</p>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
