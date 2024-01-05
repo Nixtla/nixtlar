@@ -6,7 +6,8 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(httptest2)
-start_vignette("mocks")
+.mockPaths("/tests/mocks")
+start_vignette(dir = "/tests/mocks")
 
 options("TIMEGPT_TOKEN"="dummy_token")
 options(digits=7)
@@ -47,11 +48,11 @@ devtools::install_github("Nixtla/nixtlar")
 
 Get started with TimeGPT now. 
 
-```{r}
+```{r, eval=FALSE}
 library(nixtlar)
 
 # Load sample dataset 
-df <- nixtlar::electricity # this can also be a tsibble! 
+df <- nixtlar::electricity # this can also be a tsibble!
 
 # Set TIMEGPT Token 
 nixtlar::nixtla_set_token("TIMEGPT TOKEN")
