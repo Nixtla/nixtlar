@@ -1,4 +1,4 @@
-with_mock_dir("mocks", {
+with_mock_dir("../mocks", {
   test_that("timegpt_anomaly_detection", {
     test_data <- nixtlar::electricity
     response <- timegpt_anomaly_detection(test_data, id_col = "unique_id")
