@@ -21,6 +21,9 @@ navbar:
         - href: articles/cross-validation.html
         - text: "Historical Forecast"
         - href: articles/historical-forecast.html
+  right:
+    - icon: "fa-github"
+      href: https://github.com/Nixtla/nixtlar
 
 home:
   links:

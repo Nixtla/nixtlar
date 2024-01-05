@@ -6,6 +6,8 @@
 \alias{nixtlar-package}
 \title{nixtlar: R SDK For Nixtla's TimeGPT}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 An SDK to interface with Nixtla's TimeGPT from R. It provides functions for setting and validating tokens and for generating forecasts with TimeGPT via API calls. Compatible with the tsibble package and base R.
 }
 \seealso{

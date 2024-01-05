@@ -4,7 +4,13 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include=FALSE}
+library(httptest2)
+start_vignette("mocks")
+
+options("TIMEGPT_TOKEN"="dummy_token")
+options(digits=7)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -12,10 +18,6 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-
-# nixtlar
-
-The `nixtlar` package provides R users with a SDK for [Nixtla's TimeGPT API](https://docs.nixtla.io/). 
 
 <!-- logo -->
 # nixtlar <a href="https://nixtla.github.io/nixtlar/"><img src="man/figures/logo.png" align="right" height="139" alt="nixtlar website" /></a>
@@ -26,49 +28,64 @@ The `nixtlar` package provides R users with a SDK for [Nixtla's TimeGPT API](htt
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
+The `nixtlar` package provides R users with a SDK for [Nixtla's TimeGPT](https://docs.nixtla.io/).
 
-## 🔄 nixtlar: Your Gateway to TimeGPT from R
+### Your gateway to TimeGPT
 
-With `nixtlar` you can easily interact with TimeGPT through simple API calls, making the power of TimeGPT readily accessible in your projects. Learn more about TimeGPT [here](https://arxiv.org/abs/2310.03589).  
+TimeGPT is a cutting-edge generative pre-trained transformer model that has been trained on the largest collection of publicly available time series data. Accessible to R users via the `nixtlar package`, TimeGPT democratizes forecasting, enabling rapid and accurate predictions, even for datasets not seen during training. Learn more about TimeGPT [here](https://arxiv.org/abs/2310.03589).  
 
-## 💻 Installation
+### Installation
 
 You can install the development version of `nixtlar` from [GitHub](https://github.com/) with:
 
-``` r
+```{r eval=FALSE}
 # install.packages("devtools")
-#devtools::install_github("MMenchero/nixtlar")
+devtools::install_github("Nixtla/nixtlar")
 ```
 
-## 🎈Quick Start
+### Example 
 
-To use TimeGPT, you first need to request a token from Nixtla. You can do this at  https://dashboard.nixtla.io/. 
-
-Once you have the token, you'll need to set it up in your R session. The `nixtlar` package provides a function to do this.
-```{r}
-#library(nixtlar)
-
-# Set up token 
-#set_token("YOUR_TOKEN") 
-```
-
-You'll need to set the token every time you re-start your R session. `nixtlar` also includes a function to validate the token. 
+Get started with TimeGPT now. 
 
 ```{r}
-# Validate token
-#validate_token("YOUR_TOKEN") 
+library(nixtlar)
+
+# Load sample dataset 
+df <- nixtlar::electricity # this can also be a tsibble! 
+
+# Set TIMEGPT Token 
+nixtlar::nixtla_set_token("TIMEGPT TOKEN")
+
+# Forecast the next 8 steps using TimeGPT
+fcst <- nixtlar::timegpt_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+
+# Plot TimeGPT forecast 
+nixtlar::timegpt_plot(df, fcst, h = 8, id_col = "unique_id", max_insample_length = 100)
 ```
 
-You don't need to validate the token every time you set it up, only when you want to ensure its validity. 
+Using TimeGPT through `nixtlar` requires a token provided by Nixtla. To see how to obtain it and learn about different ways to set it up, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) guide. Here, you can also find a more detailed explanation of how the forecast and plot functions work.
 
-`nixtlar provides` an easy-to-use function to call the TimeGPT API. It works with both [tsibbles](https://tsibble.tidyverts.org/) and base R data frames. 
+### Main features of `nixtlar`
 
-```{r}
-# Call the TimeGPT API 
-#df <- tssible::as_tsibble(AirPassengers) # df can also be a data frame  
+- Works with both data frames and [tsibbles](https://tsibble.tidyverts.org/). 
 
-#timegpt_forecast(df, h=8, freq=12, time_col="index", target_col="value")
+- Allows you to use TimeGPT's main features, including:  
+  - Anomaly detection 
+  - Exogenous variables 
+  - Prediction intervals 
+  - Finetuning 
+  - Multiple time series 
+  - Historical forecast 
+  - Cross-validation 
+
+- Includes its own plot function. 
+
+Please read the **Articles** or check out the **Reference** to understand how you can use all these features. 
+
+### Python SDK 
+
+Are you a Python user? If yes, then check out the [Python SDK for TimeGPT](https://github.com/Nixtla/nixtla). 
+
+```{r, include=FALSE}
+end_vignette()
 ```
-
-## 🐍 Python SDK
-Are you a Python user? If yes, then check out [NixtlaTS](https://github.com/Nixtla/nixtla), a Python SDK for TimeGPT and check out the [documentation](https://docs.nixtla.io/docs). 
