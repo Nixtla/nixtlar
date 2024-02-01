@@ -27,23 +27,38 @@ library(nixtlar)
 ```
 
 ## 1. Anomaly detection
-text 
+Anomaly detection plays a crucial role in time series analysis and forecasting. Anomalies, also known as outliers, are unusual observations that don't follow the expected time series patterns. They can be caused by a variety of factors, including errors in the data collection process, unexpected events, or sudden changes in the patterns of the time series. Anomalies can provide critical information about a system, like a potential problem or malfunction. After identifying them, it is important to understand what caused them, and then decide whether to remove, replace, or keep them.
+
+TimeGPT has a method for detecting anomalies, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your TimeGPT token. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+
+## 2. Load data 
+For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
 
 ```{r}
 df <- nixtlar::electricity
 head(df)
 ```
 
+## 3. Detect anomalies 
+To detect anomalies, use `nixtlar::timegpt_anomaly_detection`. The key parameters of this method are: 
+
+- **df**: The dataframe or tsibble with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
+- **id_col**: If the data contains multiple ids, as in this case, please specify the column that contains them. If working with a single series, leave it as it is by default (NULL).    
+
 ```{r}
-timegpt_anomalies <- timegpt_anomaly_detection(df, id_col = "unique_id") 
+timegpt_anomalies <- nixtlar::timegpt_anomaly_detection(df, id_col = "unique_id") 
 head(timegpt_anomalies)
 ```
 
-## 2. Plot TimeGPT forecast 
-`nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+The `anomaly_detection` method from TimeGPT evaluates each observation and uses a prediction interval to determine if it is an anomaly or not. By default, `nixtlar::timegpt_anomaly_detection` uses a 99% prediction interval. Observations that fall outside this interval will be considered anomalies and will have a value of 1 in the `anomaly` column (zero otherwise). To change the prediction interval, for example to 95%, use the argument `level=c(95)`. Keep in mind that multiple levels are not allowed, so when given several values, `nixtlar::timegpt_anomaly_detection` will use the maximum. 
+
+## 4. Plot anomalies 
+`nixtlar` includes a function to plot the historical data and any output from `nixtlar::timegpt_forecast`, `nixtlar::timegpt_historic`, `nixtlar::timegpt_anomaly_detection` and `nixtlar::timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+
+When using `nixtlar::timegpt_plot` with the output of `nixtlar::timegpt_anomaly_detection`, set `plot_anomalies=TRUE` to plot the anomalies. 
 
 ```{r}
-timegpt_plot(df, timegpt_anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+nixtlar::timegpt_plot(df, timegpt_anomalies, id_col = "unique_id", plot_anomalies = TRUE)
 ```
 
 ```{r, include=FALSE}
