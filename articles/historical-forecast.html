@@ -145,8 +145,8 @@ names.</li>
 this case, please specify the column that contains them. If working with
 a single series, leave it as it is by default (NULL).</li>
 <li>
-<strong>level</strong>: The prediction intervals for the forecast.
-Defaults are 80 and 95%.</li>
+<strong>level</strong>: The prediction intervals for the
+forecast.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">timegpt_fitted_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/timegpt_historic.html">timegpt_historic</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
