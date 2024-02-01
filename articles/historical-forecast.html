@@ -100,6 +100,22 @@
 <div class="section level2">
 <h2 id="timegpt-historical-forecast">1. TimeGPT Historical Forecast<a class="anchor" aria-label="anchor" href="#timegpt-historical-forecast"></a>
 </h2>
+<p>When generating a forecast, sometimes you might be interested in
+forecasting the historical observations. These predictions, known as
+<strong>fitted values</strong>, can help you better understand and
+evaluate a model’s performance over time.</p>
+<p>TimeGPT has a method for generating fitted values, and users can call
+it from <code>nixtlar</code>. This vignette will explain how to do this.
+It assumes you have already set up your TimeGPT token. If you haven’t
+done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+Started</a> vignette first.</p>
+</div>
+<div class="section level2">
+<h2 id="load-data">2. Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h2>
+<p>For this vignette, we’ll use the electricity consumption dataset that
+is included in <code>nixtlar</code>, which contains the hourly prices of
+five different electricity markets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -110,6 +126,28 @@
 <span><span class="co">#&gt; 4        BE 2016-12-01 03:00:00 50.69</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-01 04:00:00 52.58</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-01 05:00:00 65.05</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="forecast-historical-data">3. Forecast historical data<a class="anchor" aria-label="anchor" href="#forecast-historical-data"></a>
+</h2>
+<p>To generate a forecast for the historical data, use
+<code><a href="../reference/timegpt_historic.html">nixtlar::timegpt_historic</a></code>. The key parameters of this
+method are:</p>
+<ul>
+<li>
+<strong>df</strong>: The dataframe or tsibble with the time series
+data. It should include at least a column with the datestamps and a
+column with the observations. Default names for these columns are
+<code>ds</code> and <code>y</code>. If different, please specify their
+names.</li>
+<li>
+<strong>id_col</strong>: If the data contains multiple ids, as in
+this case, please specify the column that contains them. If working with
+a single series, leave it as it is by default (NULL).</li>
+<li>
+<strong>level</strong>: The prediction intervals for the forecast.
+Defaults are 80 and 95%.</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">timegpt_fitted_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/timegpt_historic.html">timegpt_historic</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span>
@@ -128,9 +166,23 @@
 <span><span class="co">#&gt; 4      64.33074      71.57771</span></span>
 <span><span class="co">#&gt; 5      66.11026      73.35723</span></span>
 <span><span class="co">#&gt; 6      69.34579      76.59276</span></span></code></pre></div>
+<p>Notice that there are no fitted values for some of the initial
+observations. This is because TimeGPT requires a minimum number of
+values to generate reliable forecasts.</p>
+<p>All the fitted values are generated using a rolling window, meaning
+that the fitted value for observation <span class="math inline">\(T\)</span> was generated using the first <span class="math inline">\(T-1\)</span> observations.</p>
+<div class="section level3">
+<h3 id="fitted-values-from-nixtlartimegpt_forecast">3.1 Fitted values from <code>nixtlar::timegpt_forecast</code><a class="anchor" aria-label="anchor" href="#fitted-values-from-nixtlartimegpt_forecast"></a>
+</h3>
+<p><code><a href="../reference/timegpt_historic.html">nixtlar::timegpt_historic</a></code> is the dedicated function that
+calls TimeGPT’s method for generating fitted values. However, you can
+also use <code><a href="../reference/timegpt_forecast.html">nixtlar::timegpt_forecast</a></code> with
+<code>add_history=TRUE</code>. This will generate both a forecast for
+the historical data and for the next <span class="math inline">\(h\)</span> future observations.</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="plot-timegpt-forecast">2. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>
+<h2 id="plot-historical-forecast">4. Plot historical forecast<a class="anchor" aria-label="anchor" href="#plot-historical-forecast"></a>
 </h2>
 <p><code>nixtlar</code> includes a function to plot the historical data
 and any output from <code>timegpt_forecast</code>,

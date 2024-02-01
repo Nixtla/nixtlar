@@ -100,7 +100,27 @@
 <div class="section level2">
 <h2 id="anomaly-detection">1. Anomaly detection<a class="anchor" aria-label="anchor" href="#anomaly-detection"></a>
 </h2>
-<p>text</p>
+<p>Anomaly detection plays a crucial role in time series analysis and
+forecasting. Anomalies, also known as outliers, are unusual observations
+that don’t follow the expected time series patterns. They can be caused
+by a variety of factors, including errors in the data collection
+process, unexpected events, or sudden changes in the patterns of the
+time series. Anomalies can provide critical information about a system,
+like a potential problem or malfunction. After identifying them, it is
+important to understand what caused them, and then decide whether to
+remove, replace, or keep them.</p>
+<p>TimeGPT has a method for detecting anomalies, and users can call it
+from <code>nixtlar</code>. This vignette will explain how to do this. It
+assumes you have already set up your TimeGPT token. If you haven’t done
+this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+Started</a> vignette first.</p>
+</div>
+<div class="section level2">
+<h2 id="load-data">2. Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h2>
+<p>For this vignette, we’ll use the electricity consumption dataset that
+is included in <code>nixtlar</code>, which contains the hourly prices of
+five different electricity markets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -111,8 +131,27 @@
 <span><span class="co">#&gt; 4        BE 2016-12-01 03:00:00 50.69</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-01 04:00:00 52.58</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-01 05:00:00 65.05</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="detect-anomalies">3. Detect anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
+</h2>
+<p>To detect anomalies, use
+<code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code>. The key parameters of
+this method are:</p>
+<ul>
+<li>
+<strong>df</strong>: The dataframe or tsibble with the time series
+data. It should include at least a column with the datestamps and a
+column with the observations. Default names for these columns are
+<code>ds</code> and <code>y</code>. If different, please specify their
+names.</li>
+<li>
+<strong>id_col</strong>: If the data contains multiple ids, as in
+this case, please specify the column that contains them. If working with
+a single series, leave it as it is by default (NULL).</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">timegpt_anomalies</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/timegpt_anomaly_detection.html">timegpt_anomaly_detection</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">timegpt_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/timegpt_anomaly_detection.html">timegpt_anomaly_detection</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">timegpt_anomalies</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y anomaly TimeGPT-lo-99  TimeGPT</span></span>
@@ -129,18 +168,33 @@
 <span><span class="co">#&gt; 4      78.15653</span></span>
 <span><span class="co">#&gt; 5      79.93606</span></span>
 <span><span class="co">#&gt; 6      83.17158</span></span></code></pre></div>
+<p>The <code>anomaly_detection</code> method from TimeGPT evaluates each
+observation and uses a prediction interval to determine if it is an
+anomaly or not. By default,
+<code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code> uses a 99% prediction
+interval. Observations that fall outside this interval will be
+considered anomalies and will have a value of 1 in the
+<code>anomaly</code> column (zero otherwise). To change the prediction
+interval, for example to 95%, use the argument <code>level=c(95)</code>.
+Keep in mind that multiple levels are not allowed, so when given several
+values, <code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code> will use the
+maximum.</p>
 </div>
 <div class="section level2">
-<h2 id="plot-timegpt-forecast">2. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>
+<h2 id="plot-anomalies">4. Plot anomalies<a class="anchor" aria-label="anchor" href="#plot-anomalies"></a>
 </h2>
 <p><code>nixtlar</code> includes a function to plot the historical data
-and any output from <code>timegpt_forecast</code>,
-<code>timegpt_historic</code>, <code>timegpt_anomaly_detection</code>
-and <code>timegpt_cross_validation</code>. If you have long series, you
-can use <code>max_insample_length</code> to only plot the last N
+and any output from <code><a href="../reference/timegpt_forecast.html">nixtlar::timegpt_forecast</a></code>,
+<code><a href="../reference/timegpt_historic.html">nixtlar::timegpt_historic</a></code>,
+<code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code> and
+<code><a href="../reference/timegpt_cross_validation.html">nixtlar::timegpt_cross_validation</a></code>. If you have long series,
+you can use <code>max_insample_length</code> to only plot the last N
 historical values (the forecast will always be plotted in full).</p>
+<p>When using <code><a href="../reference/timegpt_plot.html">nixtlar::timegpt_plot</a></code> with the output of
+<code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code>, set
+<code>plot_anomalies=TRUE</code> to plot the anomalies.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/timegpt_plot.html">timegpt_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">timegpt_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/timegpt_plot.html">timegpt_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">timegpt_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
 <p><img src="anomaly-detection_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 </div>

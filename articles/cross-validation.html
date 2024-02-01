@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="nixtlar">
-<title>Cross Validation • nixtlar</title>
+<title>Cross-Validation • nixtlar</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Cross Validation">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Cross-Validation">
 <meta property="og:description" content="nixtlar">
 <meta property="og:image" content="https://nixtla.github.io/nixtlar/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -86,7 +86,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Cross Validation</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Cross-Validation</h1>
             
       
       
@@ -98,9 +98,28 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="cross-validation">1. Cross Validation<a class="anchor" aria-label="anchor" href="#cross-validation"></a>
+<h2 id="time-series-cross-validation">1. Time series cross-validation<a class="anchor" aria-label="anchor" href="#time-series-cross-validation"></a>
 </h2>
-<p>text</p>
+<p>Cross-validation is a method for evaluating the performance of a
+forecasting model. Given a time series, it is carried out by defining a
+sliding window across the historical data and then predicting the period
+following it. The accuracy of the model is computed by averaging the
+accuracy across all the cross-validation windows. This method results in
+a better estimation of the model’s predictive abilities, since it
+considers multiple periods instead of just one, while respecting the
+sequential nature of the data.</p>
+<p>TimeGPT has a method for performing time series cross-validation, and
+users can call it from <code>nixtlar</code>. This vignette will explain
+how to do this. It assumes you have already set up your TimeGPT token.
+If you haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+Started</a> vignette first.</p>
+</div>
+<div class="section level2">
+<h2 id="load-data">2. Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
+</h2>
+<p>For this vignette, we’ll use the electricity consumption dataset that
+is included in <code>nixtlar</code>, which contains the hourly prices of
+five different electricity markets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -111,6 +130,34 @@
 <span><span class="co">#&gt; 4        BE 2016-12-01 03:00:00 50.69</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-01 04:00:00 52.58</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-01 05:00:00 65.05</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="perform-time-series-cross-validation">3. Perform time series cross-validation<a class="anchor" aria-label="anchor" href="#perform-time-series-cross-validation"></a>
+</h2>
+<p>To perform time series cross-validation using TimeGPT, use
+<code><a href="../reference/timegpt_cross_validation.html">nixtlar::timegpt_cross_validation</a></code>. The key parameters of
+this method are:</p>
+<ul>
+<li>
+<strong>df</strong>: The dataframe or tsibble with the time series
+data. It should include at least a column with the datestamps and a
+column with the observations. Default names for these columns are
+<code>ds</code> and <code>y</code>. If different, please specify their
+names.</li>
+<li>
+<strong>h</strong>: The forecast horizon.</li>
+<li>
+<strong>id_col</strong>: If the data contains multiple ids, as in
+this case, please specify the column that contains them. If working with
+a single series, leave it as it is by default (NULL).<br>
+</li>
+<li>
+<strong>n_windows</strong>: The number of windows to evaluate.
+Default value is 1.</li>
+<li>
+<strong>step_size</strong>: The gap between each cross-validation
+window. Default value is NULL.</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">timegpt_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/timegpt_cross_validation.html">timegpt_cross_validation</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, n_windows <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span>
@@ -124,14 +171,21 @@
 <span><span class="co">#&gt; 6        BE 2016-12-29 13:00:00 2016-12-29 07:00:00 46.53 53.56912</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="plot-timegpt-forecast">2. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>
+<h2 id="plot-cross-validation-results">4. Plot cross-validation results<a class="anchor" aria-label="anchor" href="#plot-cross-validation-results"></a>
 </h2>
 <p><code>nixtlar</code> includes a function to plot the historical data
-and any output from <code>timegpt_forecast</code>,
-<code>timegpt_historic</code>, <code>timegpt_anomaly_detection</code>
-and <code>timegpt_cross_validation</code>. If you have long series, you
-can use <code>max_insample_length</code> to only plot the last N
+and any output from <code><a href="../reference/timegpt_forecast.html">nixtlar::timegpt_forecast</a></code>,
+<code><a href="../reference/timegpt_historic.html">nixtlar::timegpt_historic</a></code>,
+<code><a href="../reference/timegpt_anomaly_detection.html">nixtlar::timegpt_anomaly_detection</a></code> and
+<code><a href="../reference/timegpt_cross_validation.html">nixtlar::timegpt_cross_validation</a></code>. If you have long series,
+you can use <code>max_insample_length</code> to only plot the last N
 historical values (the forecast will always be plotted in full).</p>
+<p>When using <code><a href="../reference/timegpt_plot.html">nixtlar::timegpt_plot</a></code> with the output of
+<code><a href="../reference/timegpt_cross_validation.html">nixtlar::timegpt_cross_validation</a></code>, each cross-validation
+window is visually represented with vertical dashed lines. For any given
+pair of these lines, the data before the first line forms the training
+set. This set is then used to forecast the data between the two
+lines.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/timegpt_plot.html">timegpt_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">timegpt_cv</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
