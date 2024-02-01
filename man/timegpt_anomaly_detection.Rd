@@ -38,3 +38,11 @@ A tsibble or a data frame with the anomalies detected in the historical period.
 \description{
 Detect anomalies with TimeGPT
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+  df <- nixtlar::electricity
+  fcst <- nixtlar::timegpt_anomaly_detection(df, id_col="unique_id")
+}
+
+}

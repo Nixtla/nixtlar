@@ -44,7 +44,7 @@ To generate a forecast for the historical data, use `nixtlar::timegpt_historic`.
 
 - **df**: The dataframe or tsibble with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
 - **id_col**: If the data contains multiple ids, as in this case, please specify the column that contains them. If working with a single series, leave it as it is by default (NULL). 
-- **level**: The prediction intervals for the forecast. Defaults are 80 and 95%. 
+- **level**: The prediction intervals for the forecast. 
 
 ```{r}
 timegpt_fitted_values <- timegpt_historic(df, id_col = "unique_id", level = c(80,95))

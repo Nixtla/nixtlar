@@ -15,3 +15,9 @@ A message indicating the token has been set in the global environment.
 \description{
 Set token in global environment
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+}
+
+}

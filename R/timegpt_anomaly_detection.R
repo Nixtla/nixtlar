@@ -12,6 +12,13 @@
 #' @return A tsibble or a data frame with the anomalies detected in the historical period.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   df <- nixtlar::electricity
+#'   fcst <- nixtlar::timegpt_anomaly_detection(df, id_col="unique_id")
+#' }
+#'
 timegpt_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----

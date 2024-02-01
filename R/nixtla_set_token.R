@@ -5,6 +5,11 @@
 #' @return A message indicating the token has been set in the global environment.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#' }
+#'
 nixtla_set_token <- function(token) {
   options("TIMEGPT_TOKEN"=token)
   message("Token has been set for the current session.")

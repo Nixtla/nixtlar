@@ -15,3 +15,10 @@ A list with the inferred frequency and df with the new index.
 \description{
 Infer frequency of a tsibble and convert its index to date or string.
 }
+\examples{
+df <- AirPassengers
+tsbl <- tsibble::as_tsibble(df)
+names(tsbl) <- c("ds", "y")
+date_conversion(tsbl)
+
+}

@@ -13,6 +13,14 @@
 #' @return Plot with the forecast and insample values
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   df <- nixtlar::electricity
+#'   fcst <- nixtlar::timegpt_forecast(df, h=8, id_col="unique_id", level=c(80,95))
+#'   nixtlar::timegpt_plot(df, fcst, h=8, id_col="unique_id")
+#' }
+#'
 timegpt_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds", target_col="y", unique_ids = NULL, max_insample_length=NULL, plot_anomalies=FALSE){
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){

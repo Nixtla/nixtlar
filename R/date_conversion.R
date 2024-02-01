@@ -5,6 +5,12 @@
 #' @return A list with the inferred frequency and df with the new index.
 #' @export
 #'
+#' @examples
+#' df <- AirPassengers
+#' tsbl <- tsibble::as_tsibble(df)
+#' names(tsbl) <- c("ds", "y")
+#' date_conversion(tsbl)
+#'
 date_conversion <- function(df){
   cls <- class(df$ds)[1]
 

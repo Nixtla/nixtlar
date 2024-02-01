@@ -50,3 +50,11 @@ TimeGPT's forecast.
 \description{
 Generate TimeGPT forecast
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+  df <- nixtlar::electricity
+  fcst <- nixtlar::timegpt_forecast(df, h=8, id_col="unique_id", level=c(80,95))
+}
+
+}

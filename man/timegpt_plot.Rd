@@ -41,3 +41,12 @@ Plot with the forecast and insample values
 \description{
 Plot forecast and insample values.
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+  df <- nixtlar::electricity
+  fcst <- nixtlar::timegpt_forecast(df, h=8, id_col="unique_id", level=c(80,95))
+  nixtlar::timegpt_plot(df, fcst, h=8, id_col="unique_id")
+}
+
+}

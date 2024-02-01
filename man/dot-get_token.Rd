@@ -14,4 +14,10 @@ If available, the TIMEGTP_TOKEN
 Get TIMEGPT_TOKEN from options or from .Renviron
 This is a private function of nixtlar
 }
+\examples{
+\dontrun{
+  .get_token() # Assumes token was previously set successfully
+}
+
+}
 \keyword{internal}

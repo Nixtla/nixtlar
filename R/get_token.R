@@ -4,6 +4,10 @@
 #' @return If available, the TIMEGTP_TOKEN
 #' @export
 #' @keywords internal
+#' @examples
+#' \dontrun{
+#'   .get_token() # Assumes token was previously set successfully
+#' }
 #'
 .get_token <- function(){
 

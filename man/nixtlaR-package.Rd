@@ -4,7 +4,7 @@
 \name{nixtlar-package}
 \alias{nixtlar}
 \alias{nixtlar-package}
-\title{nixtlar: R SDK For Nixtla's TimeGPT}
+\title{nixtlar: R SDK for Nixtla's TimeGPT}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
@@ -18,7 +18,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.io}
+\strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.io} (First author and maintainer)
+
+Other contributors:
+\itemize{
+  \item Nixtla (Copyright held by Nixtla) [copyright holder]
+}
 
 }
 \keyword{internal}

@@ -5,6 +5,10 @@
 #' @return The inferred frequency.
 #' @export
 #'
+#' @examples
+#' df <- nixtlar::electricity
+#' infer_frequency(df)
+#'
 infer_frequency <- function(df){
   freq <- NULL
   dates <- sort(unique(df$ds))

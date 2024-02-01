@@ -3,6 +3,12 @@
 #' @return A message indicating whether the token is valid.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   nixtlar::nixtla_validate_token
+#' }
+#'
 nixtla_validate_token <- function(){
 
   token <- .get_token()

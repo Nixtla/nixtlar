@@ -53,3 +53,11 @@ A tsibble or a data frame with TimeGPT's cross validation.
 \description{
 Perform cross validation with TimeGPT.
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+  df <- nixtlar::electricity
+  fcst <- nixtlar::timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+}
+
+}

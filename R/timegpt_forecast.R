@@ -16,6 +16,13 @@
 #' @return TimeGPT's forecast.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   df <- nixtlar::electricity
+#'   fcst <- nixtlar::timegpt_forecast(df, h=8, id_col="unique_id", level=c(80,95))
+#' }
+#'
 timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Prepare data ----

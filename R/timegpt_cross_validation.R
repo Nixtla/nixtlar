@@ -17,6 +17,13 @@
 #' @return A tsibble or a data frame with TimeGPT's cross validation.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   df <- nixtlar::electricity
+#'   fcst <- nixtlar::timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+#' }
+#'
 timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----

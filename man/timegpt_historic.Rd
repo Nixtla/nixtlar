@@ -38,3 +38,11 @@ TimeGPT's forecast for the in-sample period.
 \description{
 Generate TimeGPT forecast for the in-sample period (historical period).
 }
+\examples{
+\dontrun{
+  nixtlar::nixtla_set_token("YOUR_TOKEN")
+  df <- nixtlar::electricity
+  fcst <- nixtlar::timegpt_historic(df, id_col="unique_id", level=c(80,95))
+}
+
+}
