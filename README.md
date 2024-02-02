@@ -8,7 +8,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nixtlar)](https://CRAN.R-project.org/package=nixtlar)
-[![R-CMD-check](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml)](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
