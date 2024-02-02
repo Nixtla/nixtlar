@@ -8,7 +8,7 @@ This is a private function of nixtlar}
 .get_token()
 }
 \value{
-If available, the TIMEGTP_TOKEN
+If available, the TIMEGTP_TOKEN. Otherwise it returns an error and a message asking the user to set the token.
 }
 \description{
 Get TIMEGPT_TOKEN from options or from .Renviron
@@ -16,7 +16,7 @@ This is a private function of nixtlar
 }
 \examples{
 \dontrun{
-  .get_token() # Assumes token was previously set successfully
+  .get_token()
 }
 
 }

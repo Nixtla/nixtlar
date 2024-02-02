@@ -1,6 +1,6 @@
 #' Validate token
 #'
-#' @return A message indicating whether the token is valid.
+#' @return A status code and a message indicating whether the token is valid.
 #' @export
 #'
 #' @examples

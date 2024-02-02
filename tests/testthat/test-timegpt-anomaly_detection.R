@@ -1,5 +1,6 @@
 with_mock_dir("../mocks", {
   test_that("timegpt_anomaly_detection", {
+    skip_if_no_token()
     test_data <- nixtlar::electricity
     response <- timegpt_anomaly_detection(test_data, id_col = "unique_id")
     expect_s3_class(response, "data.frame")

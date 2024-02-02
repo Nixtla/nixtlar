@@ -21,4 +21,11 @@ A list with the result of the validation (TRUE/FALSE) and an error message (if a
 Validate exogenous variables (if applicable)
 This is a private function of nixtlar
 }
+\examples{
+\dontrun{
+Download df and X_df from https://docs.nixtla.io/docs/exogenous_variables and then run
+.validate_exogenous(df, h=24, X_df)
+}
+
+}
 \keyword{internal}

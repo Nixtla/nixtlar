@@ -9,18 +9,24 @@
 #' @export
 #' @keywords internal
 #'
+#' @examples
+#' \dontrun{
+#' Download df and X_df from https://docs.nixtla.io/docs/exogenous_variables and then run
+#' .validate_exogenous(df, h=24, X_df)
+#' }
+#'
 .validate_exogenous <- function(df, h, X_df){
 
   status <- list(validation = TRUE,
-              message = NULL
-              )
+                 message = NULL
+                 )
 
   # Check if df and X_df contain the same exogenous variables
   vals_df <- setdiff(names(df), c("unique_id", "ds", "y"))
   vals_X_df <- setdiff(names(X_df), c("unique_id", "ds"))
 
   if(!setequal(vals_df, vals_X_df)){
-    status$valdiation <- FALSE
+    status$validation <- FALSE
     status$message <- "df and X_df must contain the same exogenous variables."
   }
 

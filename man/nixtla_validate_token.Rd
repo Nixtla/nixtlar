@@ -7,7 +7,7 @@
 nixtla_validate_token()
 }
 \value{
-A message indicating whether the token is valid.
+A status code and a message indicating whether the token is valid.
 }
 \description{
 Validate token
