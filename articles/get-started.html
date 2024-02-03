@@ -138,7 +138,10 @@ and named it <code>TIMEGPT_TOKEN</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Inside the .Renviron file </span></span>
 <span><span class="va">TIMEGPT_TOKEN</span><span class="op">=</span><span class="st">"paste your token here"</span></span></code></pre></div>
-<p>You’ll need to restart R for changes to take effect.</p>
+<p>You’ll need to restart R for changes to take effect. Keep in mind
+that modifying the <code>.Renviron</code> file affects all of your R
+sessions, so if you’re not comfortable with this, set your token using
+the <code>nixtla_set_token</code> function.</p>
 </div>
 <div class="section level3">
 <h3 id="validate-your-token">Validate your token<a class="anchor" aria-label="anchor" href="#validate-your-token"></a>
