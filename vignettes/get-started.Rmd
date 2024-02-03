@@ -45,19 +45,19 @@ Keep in mind that if you close your R session or you re-start it, then you'll ne
 ### b. Using an environment variable 
 For a more persistent method that can be used across different projects, set up your token as environment variable. To do this, you first need to load the `usethis` package. 
 
-```{r, message=FALSE}
+```{r eval=FALSE, message=FALSE}
 library(usethis)
 usethis::edit_r_environ()
 ```
 
 This will open your `.Reviron` file. Place your token here and named it `TIMEGPT_TOKEN`. 
 
-```{r}
+```{r eval=FALSE}
 # Inside the .Renviron file 
 TIMEGPT_TOKEN="paste your token here"
 ```
 
-You'll need to restart R for changes to take effect. 
+You'll need to restart R for changes to take effect. Keep in mind that modifying the `.Renviron` file affects all of your R sessions, so if you're not comfortable with this, set your token using the `nixtla_set_token` function. 
 
 ### Validate your token 
 If you want to validate your token, call `nixtla_validate_token`. 
