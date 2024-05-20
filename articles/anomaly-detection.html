@@ -56,7 +56,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <h6 class="dropdown-header" data-toc-skip>Anomaly Detection</h6>
     <a class="dropdown-item" href="../articles/anomaly-detection.html"></a>
-    <h6 class="dropdown-header" data-toc-skip>Cross validation</h6>
+    <h6 class="dropdown-header" data-toc-skip>Cross-Validation</h6>
     <a class="dropdown-item" href="../articles/cross-validation.html"></a>
     <h6 class="dropdown-header" data-toc-skip>Historical Forecast</h6>
     <a class="dropdown-item" href="../articles/historical-forecast.html"></a>
@@ -125,12 +125,12 @@ five different electricity markets.</p>
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-01 00:00:00 72.00</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-01 01:00:00 65.80</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-01 02:00:00 59.99</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-01 03:00:00 50.69</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-01 04:00:00 52.58</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-01 05:00:00 65.05</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-10-22 00:00:00 70.00</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-22 01:00:00 37.10</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-22 02:00:00 37.10</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-22 03:00:00 44.75</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-22 04:00:00 37.10</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="detect-anomalies">3. Detect anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
@@ -156,19 +156,19 @@ a single series, leave it as it is by default (NULL).</li>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y anomaly TimeGPT-lo-99  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-06 00:00:00 60.63       0      30.97960 55.76263</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-06 01:00:00 50.74       0      27.18393 51.96696</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-06 02:00:00 52.10       0      25.15398 49.93702</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-06 03:00:00 49.73       0      23.99071 48.77374</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-06 04:00:00 48.19       0      23.98860 48.77164</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-06 05:00:00 54.14       0      28.47927 53.26231</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58       0     -28.58336 56.07623</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86       0     -32.23986 52.41973</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31       0     -31.84485 52.81474</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66       0     -32.06933 52.59026</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98660 52.67299</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10658</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
-<span><span class="co">#&gt; 1      80.54567</span></span>
-<span><span class="co">#&gt; 2      76.75000</span></span>
-<span><span class="co">#&gt; 3      74.72006</span></span>
-<span><span class="co">#&gt; 4      73.55678</span></span>
-<span><span class="co">#&gt; 5      73.55467</span></span>
-<span><span class="co">#&gt; 6      78.04534</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      140.7358</span></span>
+<span><span class="co">#&gt; 2      137.0793</span></span>
+<span><span class="co">#&gt; 3      137.4743</span></span>
+<span><span class="co">#&gt; 4      137.2498</span></span>
+<span><span class="co">#&gt; 5      137.3326</span></span>
+<span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
 <p>The <code>anomaly_detection</code> method from TimeGPT evaluates each
 observation and uses a prediction interval to determine if it is an
 anomaly or not. By default,
