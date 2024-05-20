@@ -1,12 +1,12 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   anomaly-detection: anomaly-detection.html
   cross-validation: cross-validation.html
   get-started: get-started.html
   historical-forecast: historical-forecast.html
-last_built: 2024-02-03T19:34Z
+last_built: 2024-05-20T05:58Z
 urls:
   reference: https://nixtla.github.io/nixtlar/reference
   article: https://nixtla.github.io/nixtlar/articles

@@ -34,10 +34,10 @@
     <loc>https://nixtla.github.io/nixtlar/reference/date_conversion.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-get_token.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/dot-get_api_key.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-timegpt_data_prep.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/dot-nixtla_data_prep.html</loc>
   </url>
   <url>
     <loc>https://nixtla.github.io/nixtlar/reference/dot-validate_exogenous.html</loc>
@@ -55,24 +55,24 @@
     <loc>https://nixtla.github.io/nixtlar/reference/nixtlaR-package.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_set_token.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_anomaly_detection.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_validate_token.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/timegpt_anomaly_detection.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_forecast.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/timegpt_cross_validation.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_historic.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/timegpt_forecast.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_plot.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/timegpt_historic.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_set_api_key.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/timegpt_plot.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_validate_api_key.html</loc>
   </url>
 </urlset>
