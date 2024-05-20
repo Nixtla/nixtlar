@@ -23,7 +23,8 @@ This is a private function of nixtlar
 }
 \examples{
 \dontrun{
-Download df and X_df from https://docs.nixtla.io/docs/exogenous_variables and then run
+df <- nixtlar::electricity_exo_vars
+X_df <- nixtlar::electricity_future_exo_vars
 .validate_exogenous(df, h=24, X_df)
 }
 

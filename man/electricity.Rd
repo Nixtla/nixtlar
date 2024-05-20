@@ -3,15 +3,15 @@
 \docType{data}
 \name{electricity}
 \alias{electricity}
-\title{Electricity short dataset}
+\title{Electricity dataset}
 \format{
 \subsection{\code{electricity}}{
 
-A data frame with 3,600 rows and 3 columns:
+A data frame with 8400 rows and 3 columns:
 \describe{
-\item{unique_id}{Unique identifiers of the electricity markets}
-\item{ds}{Date in format YYYY:MM:DD hh:mm:ss}
-\item{y}{Price for the given market and date}
+\item{unique_id}{Unique identifiers of the electricity markets.}
+\item{ds}{Date in format YYYY:MM:DD hh:mm:ss.}
+\item{y}{Price for the given market and date.}
 }
 }
 }
@@ -22,6 +22,6 @@ A data frame with 3,600 rows and 3 columns:
 electricity
 }
 \description{
-Contains prices of different electricity markets
+Contains prices of different electricity markets.
 }
 \keyword{datasets}

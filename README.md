@@ -44,19 +44,19 @@ library(nixtlar)
 # Load sample dataset 
 df <- nixtlar::electricity # this can also be a tsibble!
 
-# Set TIMEGPT Token 
-nixtlar::nixtla_set_token("TIMEGPT TOKEN")
+# Set API key
+nixtlar::nixtla_set_api_key("Your API here")
 
 # Forecast the next 8 steps using TimeGPT
-fcst <- nixtlar::timegpt_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
 
 # Plot TimeGPT forecast 
-nixtlar::timegpt_plot(df, fcst, h = 8, id_col = "unique_id", max_insample_length = 100)
+nixtlar::nixtla_client_plot(df, fcst, h = 8, id_col = "unique_id", max_insample_length = 100)
 ```
 
-Using TimeGPT through `nixtlar` requires a token provided by Nixtla. To
-see how to obtain it and learn about different ways to set it up, please
-read the [Get
+Using TimeGPT through `nixtlar` requires an API key provided by Nixtla.
+To see how to obtain it and learn about different ways to set it up,
+please read the [Get
 Started](https://nixtla.github.io/nixtlar/articles/get-started.html)
 guide. Here, you can also find a more detailed explanation of how the
 forecast and plot functions work.

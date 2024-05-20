@@ -2,7 +2,7 @@
 title: "Cross-Validation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Cross Validation}
+  %\VignetteIndexEntry{Cross-Validation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
