@@ -11,7 +11,7 @@ library(httptest2)
 .mockPaths("../tests/mocks")
 start_vignette(dir = "../tests/mocks")
 
-options("TIMEGPT_TOKEN"="dummy_token")
+options("NIXTLA_API_KEY"="dummy_api_key")
 options(digits=7)
 
 knitr::opts_chunk$set(
@@ -40,29 +40,29 @@ head(df)
 ```
 
 ## 3. Forecast historical data 
-To generate a forecast for the historical data, use `nixtlar::timegpt_historic`. The key parameters of this method are: 
+To generate a forecast for the historical data, use `nixtlar::nixtla_client_historic`. The key parameters of this method are: 
 
 - **df**: The dataframe or tsibble with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
 - **id_col**: If the data contains multiple ids, as in this case, please specify the column that contains them. If working with a single series, leave it as it is by default (NULL). 
 - **level**: The prediction intervals for the forecast. 
 
 ```{r}
-timegpt_fitted_values <- timegpt_historic(df, id_col = "unique_id", level = c(80,95))
-head(timegpt_fitted_values)
+nixtla_client_fitted_values <- nixtla_client_historic(df, id_col = "unique_id", level = c(80,95))
+head(nixtla_client_fitted_values)
 ```
 
 Notice that there are no fitted values for some of the initial observations. This is because TimeGPT requires a minimum number of values to generate reliable forecasts. 
 
 All the fitted values are generated using a rolling window, meaning that the fitted value for observation $T$ was generated using the first $T-1$ observations. 
 
-### 3.1 Fitted values from `nixtlar::timegpt_forecast`
-`nixtlar::timegpt_historic` is the dedicated function that calls TimeGPT's method for generating fitted values. However, you can also use `nixtlar::timegpt_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
+### 3.1 Fitted values from `nixtlar::nixtla_client_forecast`
+`nixtlar::nixtla_client_historic` is the dedicated function that calls TimeGPT's method for generating fitted values. However, you can also use `nixtlar::nixtla_client_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
 
 ## 4. Plot historical forecast 
-`nixtlar` includes a function to plot the historical data and any output from `timegpt_forecast`, `timegpt_historic`, `timegpt_anomaly_detection` and `timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+`nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-timegpt_plot(df, timegpt_fitted_values, id_col = "unique_id", max_insample_length = 200)
+nixtla_client_plot(df, nixtla_client_fitted_values, id_col = "unique_id", max_insample_length = 200)
 ```
 
 ```{r, include=FALSE}

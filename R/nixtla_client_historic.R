@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
 #'   df <- nixtlar::electricity
-#'   fcst <- nixtlar::timegpt_historic(df, id_col="unique_id", level=c(80,95))
+#'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
+nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -35,7 +35,7 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
-  data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
+  data <- .nixtla_data_prep(df, freq, id_col, time_col, target_col)
   freq <- data$freq
   y <- data$y
 
@@ -65,12 +65,12 @@ timegpt_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_c
   }
 
   # Make request ----
-  url_historic <- "https://dashboard.nixtla.io/api/timegpt_multi_series_historic"
+  url_historic <- "https://dashboard.nixtla.io/api/historic_forecast_multi_series"
   resp_hist <- httr2::request(url_historic) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_token())
+      "authorization" = paste("Bearer", .get_api_key())
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>

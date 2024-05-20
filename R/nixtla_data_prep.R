@@ -13,9 +13,9 @@
 #'
 #' @examples
 #' df <- nixtlar::electricity
-#' data <- .timegpt_data_prep(df, freq="H")
+#' data <- .nixtla_data_prep(df, freq="H")
 #'
-.timegpt_data_prep <- function(df, freq, id_col, time_col, target_col){
+.nixtla_data_prep <- function(df, freq, id_col, time_col, target_col){
 
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")

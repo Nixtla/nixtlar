@@ -11,7 +11,7 @@ library(httptest2)
 .mockPaths("../tests/mocks")
 start_vignette(dir = "../tests/mocks")
 
-options("TIMEGPT_TOKEN"="dummy_token")
+options("NIXTLA_API_KEY"="dummy_api_key")
 options(digits=7)
 
 knitr::opts_chunk$set(
@@ -40,7 +40,7 @@ head(df)
 ```
 
 ## 3. Perform time series cross-validation
-To perform time series cross-validation using TimeGPT, use `nixtlar::timegpt_cross_validation`. The key parameters of this method are: 
+To perform time series cross-validation using TimeGPT, use `nixtlar::nixtla_client_cross_validation`. The key parameters of this method are: 
 
 - **df**: The dataframe or tsibble with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
 - **h**: The forecast horizon. 
@@ -49,17 +49,17 @@ To perform time series cross-validation using TimeGPT, use `nixtlar::timegpt_cro
 - **step_size**: The gap between each cross-validation window. Default value is NULL. 
 
 ```{r}
-timegpt_cv <- timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
-head(timegpt_cv)
+nixtla_client_cv <- nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+head(nixtla_client_cv)
 ```
 
 ## 4. Plot cross-validation results 
-`nixtlar` includes a function to plot the historical data and any output from `nixtlar::timegpt_forecast`, `nixtlar::timegpt_historic`, `nixtlar::timegpt_anomaly_detection` and `nixtlar::timegpt_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+`nixtlar` includes a function to plot the historical data and any output from `nixtlar::nixtla_client_forecast`, `nixtlar::nixtla_client_historic`, `nixtlar::nixtla_client_anomaly_detection` and `nixtlar::nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
-When using `nixtlar::timegpt_plot` with the output of `nixtlar::timegpt_cross_validation`, each cross-validation window is visually represented with vertical dashed lines. For any given pair of these lines, the data before the first line forms the training set. This set is then used to forecast the data between the two lines. 
+When using `nixtlar::nixtla_client_plot` with the output of `nixtlar::nixtla_client_cross_validation`, each cross-validation window is visually represented with vertical dashed lines. For any given pair of these lines, the data before the first line forms the training set. This set is then used to forecast the data between the two lines. 
 
 ```{r}
-timegpt_plot(df, timegpt_cv, id_col = "unique_id", max_insample_length = 200)
+nixtla_client_plot(df, nixtla_client_cv, id_col = "unique_id", max_insample_length = 200)
 ```
 
 ```{r, include=FALSE}

@@ -18,12 +18,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
 #'   df <- nixtlar::electricity
-#'   fcst <- nixtlar::timegpt_forecast(df, h=8, id_col="unique_id", level=c(80,95))
+#'   fcst <- nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", level=c(80,95))
 #' }
 #'
-timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
+nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -39,7 +39,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
-  data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
+  data <- .nixtla_data_prep(df, freq, id_col, time_col, target_col)
   freq <- data$freq
   y <- data$y
 
@@ -87,12 +87,12 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
   }
 
   # Make request ----
-  url <- "https://dashboard.nixtla.io/api/timegpt_multi_series"
+  url <- "https://dashboard.nixtla.io/api/forecast_multi_series"
   resp <- httr2::request(url) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_token())
+      "authorization" = paste("Bearer", .get_api_key())
       ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
@@ -145,7 +145,7 @@ timegpt_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", tar
 
   # Generate fitted values ----
   if(add_history){
-    fitted <- timegpt_historic(df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, level=level, finetune_steps=finetune_steps, clean_ex_first=clean_ex_first)
+    fitted <- nixtla_client_historic(df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, level=level, finetune_steps=finetune_steps, clean_ex_first=clean_ex_first)
     if(tsibble::is_tsibble(df)){
       fcst <- dplyr::bind_rows(fitted, fcst)
     }else{

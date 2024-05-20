@@ -19,12 +19,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   nixtlar::nixtla_set_token("YOUR_TOKEN")
+#'   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
 #'   df <- nixtlar::electricity
-#'   fcst <- nixtlar::timegpt_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
+#'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -39,7 +39,7 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
-  data <- .timegpt_data_prep(df, freq, id_col, time_col, target_col)
+  data <- .nixtla_data_prep(df, freq, id_col, time_col, target_col)
   freq <- data$freq
   y <- data$y
 
@@ -93,12 +93,12 @@ timegpt_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="
   }
 
   # Make request ----
-  url_cv <- "https://dashboard.nixtla.io/api/timegpt_multi_series_cross_validation"
+  url_cv <- "https://dashboard.nixtla.io/api/cross_validation_multi_series"
   resp_cv <- httr2::request(url_cv) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_token())
+      "authorization" = paste("Bearer", .get_api_key())
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
