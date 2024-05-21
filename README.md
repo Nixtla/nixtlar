@@ -17,12 +17,12 @@ TimeGPT](https://docs.nixtla.io/).
 
 ### Your gateway to TimeGPT
 
-TimeGPT is a cutting-edge generative pre-trained transformer model that
-has been trained on the largest collection of publicly available time
-series data. Accessible to R users via the `nixtlar package`, TimeGPT
-democratizes forecasting, enabling rapid and accurate predictions, even
-for datasets not seen during training. Learn more about TimeGPT
-[here](https://arxiv.org/abs/2310.03589).
+`TimeGPT` is a cutting-edge generative pre-trained transformer model
+that has been trained on the largest collection of publicly available
+time series data. Accessible to R users via the `nixtlar package`,
+`TimeGPT` democratizes forecasting, enabling rapid and accurate
+predictions, even for datasets not seen during training. Learn more
+about `TimeGPT` [here](https://arxiv.org/abs/2310.03589).
 
 ### Installation
 
@@ -36,7 +36,7 @@ devtools::install_github("Nixtla/nixtlar")
 
 ### Example
 
-Get started with TimeGPT now.
+Get started with `TimeGPT` now.
 
 ``` r
 library(nixtlar)
@@ -54,9 +54,9 @@ fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level =
 nixtlar::nixtla_client_plot(df, fcst, h = 8, id_col = "unique_id", max_insample_length = 100)
 ```
 
-Using TimeGPT through `nixtlar` requires an API key provided by Nixtla.
-To see how to obtain it and learn about different ways to set it up,
-please read the [Get
+Using `TimeGPT` through `nixtlar` requires an API key provided by
+Nixtla. To see how to obtain it and learn about different ways to set it
+up, please read the [Get
 Started](https://nixtla.github.io/nixtlar/articles/get-started.html)
 guide. Here, you can also find a more detailed explanation of how the
 forecast and plot functions work.
@@ -66,7 +66,7 @@ forecast and plot functions work.
 - Works with both data frames and
   [tsibbles](https://tsibble.tidyverts.org/).
 
-- Allows you to use TimeGPT’s main features, including:
+- Allows you to use `TimeGPT`’s main features, including:
 
   - Anomaly detection
   - Exogenous variables

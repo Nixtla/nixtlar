@@ -65,7 +65,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     # Validation checks for exogenous variables
     status <- .validate_exogenous(df, h, X_df)
     if(!status$validation){
-      stop(print(status$message))
+      stop(status$message)
     }
 
     exogenous <-  df |>

@@ -26,10 +26,10 @@ knitr::opts_chunk$set(
 library(nixtlar)
 ```
 
-`nixtlar` provides an R interface to [Nixtla's TimeGPT](https://docs.nixtla.io/), a generative pre-trained forecasting model for time series data. TimeGPT is the first foundation model capable of producing accurate forecasts for new time series not seen during training, using only its historical values as inputs. TimeGPT can also be used for other time series related tasks, such as anomaly detection and cross validation. Here we explain how to get started with TimeGPT in R and gives a quick overview of the main features of `nixtlar`. 
+`nixtlar` provides an R interface to [Nixtla's TimeGPT](https://docs.nixtla.io/), a generative pre-trained forecasting model for time series data. `TimeGPT` is the first foundation model capable of producing accurate forecasts for new time series not seen during training, using only its historical values as inputs. `TimeGPT` can also be used for other time series related tasks, such as anomaly detection and cross-validation. Here we explain how to get started with `TimeGPT` in R and give a quick overview of the main features of `nixtlar`. 
 
 ## 1. Setting up your API key
-First, you need to set up your API key. An API key is a string of characters that allows you to authenticate your requests when using TimeGPT via `nixtlar`. This API key needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/). 
+First, you need to set up your API key. An API key is a string of characters that allows you to authenticate your requests when using `TimeGPT` via `nixtlar`. This API key needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/). 
 
 When using `nixtlar`, there are two ways of setting up your API key: 
 
@@ -69,7 +69,7 @@ nixtla_validate_api_key()
 You don't need to validate your API key every time you set it up, only when you want to check if it's valid. 
 
 ## 2. Generate TimeGPT forecast 
-Once your API key has been set up, you're ready to use TimeGPT. Here we'll show you how this is done using a dataset that contains prices of different electricity markets. 
+Once your API key has been set up, you're ready to use `TimeGPT`. Here we'll show you how this is done using a dataset that contains prices of different electricity markets. 
 
 ```{r}
 df <- nixtlar::electricity

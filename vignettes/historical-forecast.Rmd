@@ -29,7 +29,7 @@ library(nixtlar)
 ## 1. TimeGPT Historical Forecast
 When generating a forecast, sometimes you might be interested in forecasting the historical observations. These predictions, known as **fitted values**, can help you better understand and evaluate a model's performance over time. 
 
-TimeGPT has a method for generating fitted values, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your TimeGPT token. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first.  
+`TimeGPT` has a method for generating fitted values, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first.  
 
 ## 2. Load data 
 For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
@@ -42,7 +42,7 @@ head(df)
 ## 3. Forecast historical data 
 To generate a forecast for the historical data, use `nixtlar::nixtla_client_historic`. The key parameters of this method are: 
 
-- **df**: The dataframe or tsibble with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
+- **df**: The dataframe or `tsibble` with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
 - **id_col**: If the data contains multiple ids, as in this case, please specify the column that contains them. If working with a single series, leave it as it is by default (NULL). 
 - **level**: The prediction intervals for the forecast. 
 
@@ -51,12 +51,12 @@ nixtla_client_fitted_values <- nixtla_client_historic(df, id_col = "unique_id", 
 head(nixtla_client_fitted_values)
 ```
 
-Notice that there are no fitted values for some of the initial observations. This is because TimeGPT requires a minimum number of values to generate reliable forecasts. 
+Notice that there are no fitted values for some of the initial observations. This is because `TimeGPT` requires a minimum number of values to generate reliable forecasts. 
 
-All the fitted values are generated using a rolling window, meaning that the fitted value for observation $T$ was generated using the first $T-1$ observations. 
+All the fitted values are generated using a rolling window, meaning that the fitted value for observation $T$ is generated using the first $T-1$ observations. 
 
 ### 3.1 Fitted values from `nixtlar::nixtla_client_forecast`
-`nixtlar::nixtla_client_historic` is the dedicated function that calls TimeGPT's method for generating fitted values. However, you can also use `nixtlar::nixtla_client_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
+`nixtlar::nixtla_client_historic` is the dedicated function that calls `TimeGPT`'s method for generating fitted values. However, you can also use `nixtlar::nixtla_client_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
 
 ## 4. Plot historical forecast 
 `nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 

@@ -4,16 +4,17 @@
 \name{nixtlar-package}
 \alias{nixtlar}
 \alias{nixtlar-package}
-\title{nixtlar: R SDK for Nixtla's TimeGPT}
+\title{nixtlar: An R SDK for 'Nixtla''s 'TimeGPT'}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-An SDK to interface with Nixtla's TimeGPT from R. It provides functions for setting and validating tokens and for generating forecasts with TimeGPT via API calls. Compatible with the tsibble package and base R.
+An R SDK for 'TimeGPT', a foundation model for time series forecasting developed by 'Nixtla'. Includes features for setting and validating 'API' keys and generating forecasts via 'API' calls. Compatible with 'tsibble' and base R. For more details, visit \url{https://docs.nixtla.io/}.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://nixtla.github.io/nixtlar/}
+  \item \url{https://docs.nixtla.io/}
 }
 
 }

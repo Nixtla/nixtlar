@@ -71,7 +71,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     # Validation checks for exogenous variables
     status <- .validate_exogenous(df, h, X_df)
     if(!status$validation){
-      stop(print(status$message))
+      stop(status$message)
     }
 
     exogenous <-  df |>
