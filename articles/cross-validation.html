@@ -108,10 +108,10 @@ accuracy across all the cross-validation windows. This method results in
 a better estimation of the model’s predictive abilities, since it
 considers multiple periods instead of just one, while respecting the
 sequential nature of the data.</p>
-<p>TimeGPT has a method for performing time series cross-validation, and
-users can call it from <code>nixtlar</code>. This vignette will explain
-how to do this. It assumes you have already set up your TimeGPT token.
-If you haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+<p><code>TimeGPT</code> has a method for performing time series
+cross-validation, and users can call it from <code>nixtlar</code>. This
+vignette will explain how to do this. It assumes you have already set up
+your API key. If you haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
@@ -134,16 +134,16 @@ five different electricity markets.</p>
 <div class="section level2">
 <h2 id="perform-time-series-cross-validation">3. Perform time series cross-validation<a class="anchor" aria-label="anchor" href="#perform-time-series-cross-validation"></a>
 </h2>
-<p>To perform time series cross-validation using TimeGPT, use
-<code><a href="../reference/nixtla_client_cross_validation.html">nixtlar::nixtla_client_cross_validation</a></code>. The key parameters
-of this method are:</p>
+<p>To perform time series cross-validation using <code>TimeGPT</code>,
+use <code><a href="../reference/nixtla_client_cross_validation.html">nixtlar::nixtla_client_cross_validation</a></code>. The key
+parameters of this method are:</p>
 <ul>
 <li>
-<strong>df</strong>: The dataframe or tsibble with the time series
-data. It should include at least a column with the datestamps and a
-column with the observations. Default names for these columns are
-<code>ds</code> and <code>y</code>. If different, please specify their
-names.</li>
+<strong>df</strong>: The dataframe or <code>tsibble</code> with the
+time series data. It should include at least a column with the
+datestamps and a column with the observations. Default names for these
+columns are <code>ds</code> and <code>y</code>. If different, please
+specify their names.</li>
 <li>
 <strong>h</strong>: The forecast horizon.</li>
 <li>

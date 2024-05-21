@@ -109,10 +109,10 @@ time series. Anomalies can provide critical information about a system,
 like a potential problem or malfunction. After identifying them, it is
 important to understand what caused them, and then decide whether to
 remove, replace, or keep them.</p>
-<p>TimeGPT has a method for detecting anomalies, and users can call it
-from <code>nixtlar</code>. This vignette will explain how to do this. It
-assumes you have already set up your TimeGPT token. If you haven’t done
-this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+<p><code>TimeGPT</code> has a method for detecting anomalies, and users
+can call it from <code>nixtlar</code>. This vignette will explain how to
+do this. It assumes you have already set up your API key. If you haven’t
+done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
@@ -140,11 +140,11 @@ five different electricity markets.</p>
 parameters of this method are:</p>
 <ul>
 <li>
-<strong>df</strong>: The dataframe or tsibble with the time series
-data. It should include at least a column with the datestamps and a
-column with the observations. Default names for these columns are
-<code>ds</code> and <code>y</code>. If different, please specify their
-names.</li>
+<strong>df</strong>: The data frame or <code>tsibble</code> with the
+time series data. It should include at least a column with the
+datestamps and a column with the observations. Default names for these
+columns are <code>ds</code> and <code>y</code>. If different, please
+specify their names.</li>
 <li>
 <strong>id_col</strong>: If the data contains multiple ids, as in
 this case, please specify the column that contains them. If working with
@@ -169,9 +169,9 @@ a single series, leave it as it is by default (NULL).</li>
 <span><span class="co">#&gt; 4      137.2498</span></span>
 <span><span class="co">#&gt; 5      137.3326</span></span>
 <span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
-<p>The <code>anomaly_detection</code> method from TimeGPT evaluates each
-observation and uses a prediction interval to determine if it is an
-anomaly or not. By default,
+<p>The <code>anomaly_detection</code> method from <code>TimeGPT</code>
+evaluates each observation and uses a prediction interval to determine
+if it is an anomaly or not. By default,
 <code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code> uses a 99%
 prediction interval. Observations that fall outside this interval will
 be considered anomalies and will have a value of 1 in the

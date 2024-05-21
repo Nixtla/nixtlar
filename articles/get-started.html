@@ -98,20 +98,20 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <p><code>nixtlar</code> provides an R interface to <a href="https://docs.nixtla.io/" class="external-link">Nixtla’s TimeGPT</a>, a generative
-pre-trained forecasting model for time series data. TimeGPT is the first
-foundation model capable of producing accurate forecasts for new time
-series not seen during training, using only its historical values as
-inputs. TimeGPT can also be used for other time series related tasks,
-such as anomaly detection and cross validation. Here we explain how to
-get started with TimeGPT in R and gives a quick overview of the main
-features of <code>nixtlar</code>.</p>
+pre-trained forecasting model for time series data. <code>TimeGPT</code>
+is the first foundation model capable of producing accurate forecasts
+for new time series not seen during training, using only its historical
+values as inputs. <code>TimeGPT</code> can also be used for other time
+series related tasks, such as anomaly detection and cross-validation.
+Here we explain how to get started with <code>TimeGPT</code> in R and
+give a quick overview of the main features of <code>nixtlar</code>.</p>
 <div class="section level2">
 <h2 id="setting-up-your-api-key">1. Setting up your API key<a class="anchor" aria-label="anchor" href="#setting-up-your-api-key"></a>
 </h2>
 <p>First, you need to set up your API key. An API key is a string of
 characters that allows you to authenticate your requests when using
-TimeGPT via <code>nixtlar</code>. This API key needs to be provided by
-Nixtla, so if you don’t have one, please request one <a href="https://dashboard.nixtla.io/" class="external-link">here</a>.</p>
+<code>TimeGPT</code> via <code>nixtlar</code>. This API key needs to be
+provided by Nixtla, so if you don’t have one, please request one <a href="https://dashboard.nixtla.io/" class="external-link">here</a>.</p>
 <p>When using <code>nixtlar</code>, there are two ways of setting up
 your API key:</p>
 <div class="section level3">
@@ -159,9 +159,9 @@ only when you want to check if it’s valid.</p>
 <div class="section level2">
 <h2 id="generate-timegpt-forecast">2. Generate TimeGPT forecast<a class="anchor" aria-label="anchor" href="#generate-timegpt-forecast"></a>
 </h2>
-<p>Once your API key has been set up, you’re ready to use TimeGPT. Here
-we’ll show you how this is done using a dataset that contains prices of
-different electricity markets.</p>
+<p>Once your API key has been set up, you’re ready to use
+<code>TimeGPT</code>. Here we’ll show you how this is done using a
+dataset that contains prices of different electricity markets.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
