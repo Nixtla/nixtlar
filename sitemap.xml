@@ -61,10 +61,10 @@
     <loc>https://nixtla.github.io/nixtlar/reference/nixtlaR-package.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_anomaly_detection.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.html</loc>
   </url>
   <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.html</loc>
+    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_detect_anomalies.html</loc>
   </url>
   <url>
     <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_forecast.html</loc>

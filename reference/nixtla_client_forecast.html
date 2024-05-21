@@ -75,6 +75,7 @@
 <span>  X_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  level <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  finetune_steps <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  finetune_loss <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  clean_ex_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  add_history <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"timegpt-1"</span></span>
@@ -117,6 +118,10 @@
 
 <dt>finetune_steps</dt>
 <dd><p>Number of steps used to finetune TimeGPT in the new data.</p></dd>
+
+
+<dt>finetune_loss</dt>
+<dd><p>Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".</p></dd>
 
 
 <dt>clean_ex_first</dt>

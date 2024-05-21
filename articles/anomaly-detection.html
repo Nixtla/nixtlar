@@ -136,8 +136,8 @@ five different electricity markets.</p>
 <h2 id="detect-anomalies">3. Detect anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
 </h2>
 <p>To detect anomalies, use
-<code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code>. The key
-parameters of this method are:</p>
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>. The key parameters
+of this method are:</p>
 <ul>
 <li>
 <strong>df</strong>: The data frame or <code>tsibble</code> with the
@@ -151,7 +151,7 @@ this case, please specify the column that contains them. If working with
 a single series, leave it as it is by default (NULL).</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_anomaly_detection.html">nixtla_client_anomaly_detection</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
@@ -160,8 +160,8 @@ a single series, leave it as it is by default (NULL).</li>
 <span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86       0     -32.23986 52.41973</span></span>
 <span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31       0     -31.84485 52.81474</span></span>
 <span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66       0     -32.06933 52.59026</span></span>
-<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98660 52.67299</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10658</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98661 52.67297</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10659</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
 <span><span class="co">#&gt; 1      140.7358</span></span>
 <span><span class="co">#&gt; 2      137.0793</span></span>
@@ -172,13 +172,13 @@ a single series, leave it as it is by default (NULL).</li>
 <p>The <code>anomaly_detection</code> method from <code>TimeGPT</code>
 evaluates each observation and uses a prediction interval to determine
 if it is an anomaly or not. By default,
-<code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code> uses a 99%
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> uses a 99%
 prediction interval. Observations that fall outside this interval will
 be considered anomalies and will have a value of 1 in the
 <code>anomaly</code> column (zero otherwise). To change the prediction
 interval, for example to 95%, use the argument <code>level=c(95)</code>.
 Keep in mind that multiple levels are not allowed, so when given several
-values, <code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code> will use
+values, <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> will use
 the maximum.</p>
 </div>
 <div class="section level2">
@@ -187,13 +187,13 @@ the maximum.</p>
 <p><code>nixtlar</code> includes a function to plot the historical data
 and any output from <code><a href="../reference/nixtla_client_forecast.html">nixtlar::nixtla_client_forecast</a></code>,
 <code><a href="../reference/nixtla_client_historic.html">nixtlar::nixtla_client_historic</a></code>,
-<code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code> and
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> and
 <code><a href="../reference/nixtla_client_cross_validation.html">nixtlar::nixtla_client_cross_validation</a></code>. If you have long
 series, you can use <code>max_insample_length</code> to only plot the
 last N historical values (the forecast will always be plotted in
 full).</p>
 <p>When using <code><a href="../reference/nixtla_client_plot.html">nixtlar::nixtla_client_plot</a></code> with the output
-of <code><a href="../reference/nixtla_client_anomaly_detection.html">nixtlar::nixtla_client_anomaly_detection</a></code>, set
+of <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, set
 <code>plot_anomalies=TRUE</code> to plot the anomalies.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
