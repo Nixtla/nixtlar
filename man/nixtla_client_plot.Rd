@@ -2,7 +2,7 @@
 % Please edit documentation in R/nixtla_client_plot.R
 \name{nixtla_client_plot}
 \alias{nixtla_client_plot}
-\title{Plot forecast and insample values.}
+\title{Plot the output of the following nixtla_client functions: forecast, historic, anomaly_detection, and cross_validation.}
 \usage{
 nixtla_client_plot(
   df,
@@ -36,10 +36,10 @@ nixtla_client_plot(
 \item{plot_anomalies}{Whether or not to plot anomalies.}
 }
 \value{
-Plot with the forecast and insample values
+Corresponding plot.
 }
 \description{
-Plot forecast and insample values.
+Plot the output of the following nixtla_client functions: forecast, historic, anomaly_detection, and cross_validation.
 }
 \examples{
 \dontrun{

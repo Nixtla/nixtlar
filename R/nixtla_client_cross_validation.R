@@ -11,6 +11,7 @@
 #' @param n_windows Number of windows to evaluate.
 #' @param step_size Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
@@ -24,7 +25,7 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -55,6 +56,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     n_windows = n_windows,
     step_size = step_size,
     finetune_steps = finetune_steps,
+    finetune_loss = finetune_loss,
     clean_ex_first = clean_ex_first
   )
 

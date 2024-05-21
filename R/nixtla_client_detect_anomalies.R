@@ -19,7 +19,7 @@
 #'   fcst <- nixtlar::nixtla_client_anomaly_detection(df, id_col="unique_id")
 #' }
 #'
-nixtla_client_anomaly_detection <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"

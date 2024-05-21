@@ -7,6 +7,7 @@
 #' @param target_col Column that contains the target variable.
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #'
 #' @return TimeGPT's forecast for the in-sample period.
@@ -19,7 +20,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, clean_ex_first=TRUE){
+nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -43,6 +44,7 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     y = y,
     freq = freq,
     finetune_steps = finetune_steps,
+    finetune_loss = finetune_loss,
     clean_ex_first = clean_ex_first
   )
 

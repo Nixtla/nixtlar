@@ -1,4 +1,4 @@
-#' Plot forecast and insample values.
+#' Plot the output of the following nixtla_client functions: forecast, historic, anomaly_detection, and cross_validation.
 #'
 #' @param df A tsibble or a data frame with time series data (insample values).
 #' @param fcst A tsibble or a data frame with the TimeGPT point forecast and the prediction intervals (if available).
@@ -10,7 +10,7 @@
 #' @param max_insample_length Max number of insample observations to be plotted.
 #' @param plot_anomalies Whether or not to plot anomalies.
 #'
-#' @return Plot with the forecast and insample values
+#' @return Corresponding plot.
 #' @export
 #'
 #' @examples

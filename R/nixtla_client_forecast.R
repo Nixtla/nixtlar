@@ -9,6 +9,7 @@
 #' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
 #' @param add_history Return fitted values of the model.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
@@ -23,7 +24,7 @@
 #'   fcst <- nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
+nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -49,6 +50,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     y = y,
     freq = freq,
     finetune_steps = finetune_steps,
+    finetune_loss = finetune_loss,
     clean_ex_first = clean_ex_first
     )
 

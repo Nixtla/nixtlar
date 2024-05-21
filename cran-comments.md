@@ -1,18 +1,13 @@
-## Resubmission 9 Feb 2024  
-This is a resubmission. In this version I have: 
 
+## Resumbmission
 
-## Resubmission 3 Feb 2024
-This is a resubmission. In this version I have:
+This is a resumbmission. In this version, I have: 
 
-* Fixed issue with .Renviron file in vignette to comply with CRAN's policies. 
-
-## Resubmission 1 Feb 2024
-This is a resubmission. In this version I have:
-
-* Fixed issue with tests that require a secret token to make an API call
+- Updated names of functions. 
+- Fixed issues to comply with CRAN's policies. 
 
 ## R CMD check results
+
 0 errors | 0 warnings | 1 note
 
 * This is a new release.

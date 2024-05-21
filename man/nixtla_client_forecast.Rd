@@ -14,6 +14,7 @@ nixtla_client_forecast(
   X_df = NULL,
   level = NULL,
   finetune_steps = 0,
+  finetune_loss = "default",
   clean_ex_first = TRUE,
   add_history = FALSE,
   model = "timegpt-1"
@@ -37,6 +38,8 @@ nixtla_client_forecast(
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
 
 \item{finetune_steps}{Number of steps used to finetune TimeGPT in the new data.}
+
+\item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
 

@@ -16,6 +16,7 @@ nixtla_client_cross_validation(
   n_windows = 1,
   step_size = NULL,
   finetune_steps = 0,
+  finetune_loss = "default",
   clean_ex_first = TRUE,
   model = "timegpt-1"
 )
@@ -42,6 +43,8 @@ nixtla_client_cross_validation(
 \item{step_size}{Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).}
 
 \item{finetune_steps}{Number of steps used to finetune TimeGPT in the new data.}
+
+\item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
 
