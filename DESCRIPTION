@@ -1,6 +1,6 @@
 Package: nixtlar
 Title: An R SDK for 'Nixtla''s 'TimeGPT' 
-Version: 1.0.0
+Version: 0.5.0
 Authors@R: c(
     person("Mariana", "Menchero", email = "mariana@nixtla.io", role = c("aut", "cre"), comment = "First author and maintainer"),
     person("Nixtla", role = "cph", comment = "Copyright held by Nixtla")
