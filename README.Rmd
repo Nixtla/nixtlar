@@ -48,6 +48,9 @@ knitr::opts_chunk$set(
 - [License](#license)
 - [Get in Touch](#get-in-touch)
 
+# Quickstart 
+https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c982724
+
 # Installation
 
 You can install the development version of `nixtlar` from [GitHub](https://github.com/) with:

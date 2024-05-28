@@ -28,7 +28,6 @@ users through the `nixtlar` package.
 
 # Table of Contents
 
-- [Quickstart](#quickstart)
 - [Installation](#installation)
 - [Forecast Using TimeGPT in 3 Easy
   Steps](#forecast-using-timegpt-in-3-easy-steps)
@@ -42,6 +41,8 @@ users through the `nixtlar` package.
 - [Get in Touch](#get-in-touch)
 
 # Quickstart
+
+<https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c982724>
 
 # Installation
 
