@@ -6,17 +6,17 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(httptest2)
-.mockPaths("/tests/mocks")
-start_vignette(dir = "/tests/mocks")
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
 
 options("NIXTLA_API_KEY"="dummy_api_key")
 options(digits=7)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
 )
 ```
 
@@ -29,13 +29,26 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-The `nixtlar` package provides R users with a SDK for [Nixtla's TimeGPT](https://docs.nixtla.io/).
+# TimeGPT-1 
 
-### Your gateway to TimeGPT
+**The first foundation model for time series forecasting and anomaly detection**
 
-`TimeGPT` is a cutting-edge generative pre-trained transformer model that has been trained on the largest collection of publicly available time series data. Accessible to R users via the `nixtlar package`, `TimeGPT` democratizes forecasting, enabling rapid and accurate predictions, even for datasets not seen during training. Learn more about `TimeGPT` [here](https://arxiv.org/abs/2310.03589).  
+`TimeGPT` is a production-ready, generative pretrained transformer for time series forecasting, developed by Nixtla. It is capable of accurately predicting various domains such as retail, electricity, finance, and IoT, with just a few lines of code. Additionally, it can detect anomalies in time series data.
 
-### Installation
+`TimeGPT` was initially developed in Python but is now available to R users through the `nixtlar` package.
+
+# Table of Contents
+- [Installation](#installation)
+- [Forecast Using TimeGPT in 3 Easy Steps](#forecast-using-timegpt-in-3-easy-steps)
+- [Anomaly Detection Using TimeGPT in 3 Easy Steps](#anomaly-detection-using-timegpt-in-3-easy-steps)
+- [Features and Capabilities](#features-and-capabilities)
+- [Documentation](#documentation)
+- [API Support](#api-support)
+- [How to Cite](#how-to-cite)
+- [License](#license)
+- [Get in Touch](#get-in-touch)
+
+# Installation
 
 You can install the development version of `nixtlar` from [GitHub](https://github.com/) with:
 
@@ -44,48 +57,104 @@ You can install the development version of `nixtlar` from [GitHub](https://githu
 devtools::install_github("Nixtla/nixtlar")
 ```
 
-### Example 
+# Forecast Using TimeGPT in 3 Easy Steps 
 
-Get started with `TimeGPT` now. 
-
-```{r, eval=FALSE}
+```{r}
 library(nixtlar)
-
-# Load sample dataset 
-df <- nixtlar::electricity # this can also be a tsibble!
-
-# Set API key
-nixtlar::nixtla_set_api_key("Your API here")
-
-# Forecast the next 8 steps using TimeGPT
-fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
-
-# Plot TimeGPT forecast 
-nixtlar::nixtla_client_plot(df, fcst, h = 8, id_col = "unique_id", max_insample_length = 100)
 ```
 
-Using `TimeGPT` through `nixtlar` requires an API key provided by Nixtla. To see how to obtain it and learn about different ways to set it up, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) guide. Here, you can also find a more detailed explanation of how the forecast and plot functions work.
+1. Set your API key. Get yours at [dashboard.nixtla.io](https://dashboard.nixtla.io/)
+```{r eval=FALSE}
+nixtla_set_api_key(api_key = "Your API key here")
+```
 
-### Main features of `nixtlar`
+2. Load sample data 
+```{r}
+df <- nixtlar::electricity
+head(df)
+```
 
-- Works with both data frames and [tsibbles](https://tsibble.tidyverts.org/). 
+3. Forecast the next 8 steps ahead
+```{r}
+nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+head(nixtla_client_fcst)
+```
 
-- Allows you to use `TimeGPT`'s main features, including:  
-  - Anomaly detection 
-  - Exogenous variables 
-  - Prediction intervals 
-  - Finetuning 
-  - Multiple time series 
-  - Historical forecast 
-  - Cross-validation 
+Optionally, plot the results
 
-- Includes its own plot function. 
+```{r, eval=FALSE}
+nixtla_client_plot(df, nixtla_client_fcst, id_col = "unique_id", max_insample_length = 200)
+```
 
-Please read the **Articles** or check out the **Reference** to understand how you can use all these features. 
+![](man/figures/fcst.png) 
 
-### Python SDK 
+# Anomaly Detection Using TimeGPT in 3 Easy Steps
 
-Are you a Python user? If yes, then check out the [Python SDK for TimeGPT](https://github.com/Nixtla/nixtla). 
+Do anomaly detection with `TimeGPT`, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the `nixtla_client_detect_anomalies` and the `nixtla_client_plot` functions. 
+
+```{r}
+nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, id_col = "unique_id") 
+head(nixtla_client_anomalies)
+```
+
+```{r, eval=FALSE}
+nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+```
+
+![](man/figures/anomalies.png)
+
+# Features and Capabilities
+
+`nixtlar` provides access to all of TimeGPT's features and capabilities, such as: 
+
+- **Zero-shot Inference**: TimeGPT can generate forecasts and detect anomalies straight out of the box, requiring no prior training data. This allows for immediate deployment and quick insights from any time series data.
+
+- **Fine-tuning**: Enhance TimeGPT's capabilities by fine-tuning the model on your specific datasets, enabling the model to adapt to the nuances of your unique time series data and improving performance on tailored tasks.
+
+- **Add Exogenous Variables**: Incorporate additional variables that might influence your predictions to enhance forecast accuracy. (E.g. Special Dates, events or prices)
+
+- **Multiple Series Forecasting**: Simultaneously forecast multiple time series data, optimizing workflows and resources.
+
+- **Custom Loss Function**: Tailor the fine-tuning process with a custom loss function to meet specific performance metrics.
+
+- **Cross Validation**: Implement out of the box cross-validation techniques to ensure model robustness and generalizability.
+
+- **Prediction Intervals**: Provide intervals in your predictions to quantify uncertainty effectively.
+
+- **Irregular Timestamps**: Handle data with irregular timestamps, accommodating non-uniform interval series without preprocessing.
+
+# Documentation 
+
+For comprehensive documentation, please refer to our vignettes, which cover a wide range of topics to help you effectively use `nixtlar`. The current documentation includes guides on how to:
+
+- [Get started and set up your API key](https://nixtla.github.io/nixtlar/articles/get-started.html)
+- [Do anomaly detection](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html)
+- [Generate historical forecasts](https://nixtla.github.io/nixtlar/articles/historical-forecast.html)
+- [Perform time series cross-validation](https://nixtla.github.io/nixtlar/articles/cross-validation.html)
+
+The documentation is an ongoing effort, and we are working on expanding its coverage.
+
+# API Support 
+
+Are you a Python user? If yes, then check out the [Python SDK](https://github.com/Nixtla/nixtla) for `TimeGPT`. You can also refer to our [API reference](https://docs.nixtla.io/reference/forecast_forecast_post) for support in other programming languages. 
+
+# How to Cite
+
+If you find TimeGPT useful for your research, please consider citing the `TimeGPT-1` [paper](https://arxiv.org/abs/2310.03589). The associated reference is shown below.  
+
+Garza, A., Challu, C., & Mergenthaler-Canseco, M. (2024). TimeGPT-1. arXiv preprint arXiv:2310.03589. Available at https://arxiv.org/abs/2310.03589
+
+# License 
+
+TimeGPT is closed source. However, this SDK is open source and available under the Apache 2.0 License, so feel free to contribute! 
+
+# Get in Touch
+
+We welcome your input and contributions to the `nixtlar` package! 
+
+- **Report Issues**: If you encounter a bug or have a suggestion to improve the package, please open an [issue](https://github.com/Nixtla/nixtlar/issues) in GitHub. 
+
+- **Contribute**: You can contribute by opening a [pull request](https://github.com/Nixtla/nixtlar/pulls) in our repository. Whether it is fixing a bug, adding a new feature, or improving the documentation, we appreciate your help in making `nixtlar` better.
 
 ```{r, include=FALSE}
 end_vignette()
