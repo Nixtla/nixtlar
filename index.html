@@ -89,68 +89,171 @@
 </div>
 <!-- badges: start -->
 
-<p>The <code>nixtlar</code> package provides R users with a SDK for <a href="https://docs.nixtla.io/" class="external-link">Nixtla’s TimeGPT</a>.</p>
-<div class="section level3">
-<h3 id="your-gateway-to-timegpt">Your gateway to TimeGPT<a class="anchor" aria-label="anchor" href="#your-gateway-to-timegpt"></a>
-</h3>
-<p><code>TimeGPT</code> is a cutting-edge generative pre-trained transformer model that has been trained on the largest collection of publicly available time series data. Accessible to R users via the <code>nixtlar package</code>, <code>TimeGPT</code> democratizes forecasting, enabling rapid and accurate predictions, even for datasets not seen during training. Learn more about <code>TimeGPT</code> <a href="https://arxiv.org/abs/2310.03589" class="external-link">here</a>.</p>
 </div>
-<div class="section level3">
-<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h3>
+<div class="section level1">
+<h1 id="timegpt-1">TimeGPT-1<a class="anchor" aria-label="anchor" href="#timegpt-1"></a>
+</h1>
+<p><strong>The first foundation model for time series forecasting and anomaly detection</strong></p>
+<p><code>TimeGPT</code> is a production-ready, generative pretrained transformer for time series forecasting, developed by Nixtla. It is capable of accurately predicting various domains such as retail, electricity, finance, and IoT, with just a few lines of code. Additionally, it can detect anomalies in time series data.</p>
+<p><code>TimeGPT</code> was initially developed in Python but is now available to R users through the <code>nixtlar</code> package.</p>
+</div>
+<div class="section level1">
+<h1 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+</h1>
+<ul>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#forecast-using-timegpt-in-3-easy-steps">Forecast Using TimeGPT in 3 Easy Steps</a></li>
+<li><a href="#anomaly-detection-using-timegpt-in-3-easy-steps">Anomaly Detection Using TimeGPT in 3 Easy Steps</a></li>
+<li><a href="#features-and-capabilities">Features and Capabilities</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#api-support">API Support</a></li>
+<li><a href="#how-to-cite">How to Cite</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#get-in-touch">Get in Touch</a></li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
+</h1>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
 <p>You can install the development version of <code>nixtlar</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
-<p>Get started with <code>TimeGPT</code> now.</p>
+<div class="section level1">
+<h1 id="forecast-using-timegpt-in-3-easy-steps">Forecast Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#forecast-using-timegpt-in-3-easy-steps"></a>
+</h1>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load sample dataset </span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="reference/electricity.html">electricity</a></span> <span class="co"># this can also be a tsibble!</span></span>
-<span></span>
-<span><span class="co"># Set API key</span></span>
-<span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span><span class="st">"Your API here"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Forecast the next 8 steps using TimeGPT</span></span>
-<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Plot TimeGPT forecast </span></span>
-<span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">fcst</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
-<p>Using <code>TimeGPT</code> through <code>nixtlar</code> requires an API key provided by Nixtla. To see how to obtain it and learn about different ways to set it up, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a> guide. Here, you can also find a more detailed explanation of how the forecast and plot functions work.</p>
-</div>
-<div class="section level3">
-<h3 id="main-features-of-nixtlar">Main features of <code>nixtlar</code>
-<a class="anchor" aria-label="anchor" href="#main-features-of-nixtlar"></a>
-</h3>
-<ul>
-<li><p>Works with both data frames and <a href="https://tsibble.tidyverts.org/" class="external-link">tsibbles</a>.</p></li>
-<li>
-<p>Allows you to use <code>TimeGPT</code>’s main features, including:</p>
-<ul>
-<li>Anomaly detection</li>
-<li>Exogenous variables</li>
-<li>Prediction intervals</li>
-<li>Finetuning</li>
-<li>Multiple time series</li>
-<li>Historical forecast</li>
-<li>Cross-validation</li>
-</ul>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Set your API key. Get yours at <a href="https://dashboard.nixtla.io/" class="external-link">dashboard.nixtla.io</a>
 </li>
-<li><p>Includes its own plot function.</p></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Load sample data</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="reference/electricity.html">electricity</a></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   unique_id                  ds     y</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-22 00:00:00 70.00</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-22 01:00:00 37.10</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-22 02:00:00 37.10</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-22 03:00:00 44.75</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-22 04:00:00 37.10</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Forecast the next 8 steps ahead</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nixtla_client_fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fcst</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-95 TimeGPT-lo-80</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045      32.60115      40.42074</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445      29.30454      36.91513</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839      28.17721      35.55863</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649      25.42790      33.45859</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454      23.53869      30.35095</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878      26.90472      31.60236</span></span>
+<span><span class="co">#&gt;   TimeGPT-hi-80 TimeGPT-hi-95</span></span>
+<span><span class="co">#&gt; 1      49.96017      57.77975</span></span>
+<span><span class="co">#&gt; 2      49.57376      57.18435</span></span>
+<span><span class="co">#&gt; 3      48.35815      55.73957</span></span>
+<span><span class="co">#&gt; 4      46.13438      54.16507</span></span>
+<span><span class="co">#&gt; 5      48.05812      54.87038</span></span>
+<span><span class="co">#&gt; 6      48.61520      53.31284</span></span></code></pre></div>
+<p>Optionally, plot the results</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/fcst.png"></p>
+</div>
+<div class="section level1">
+<h1 id="anomaly-detection-using-timegpt-in-3-easy-steps">Anomaly Detection Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#anomaly-detection-using-timegpt-in-3-easy-steps"></a>
+</h1>
+<p>Do anomaly detection with <code>TimeGPT</code>, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the <code>nixtla_client_detect_anomalies</code> and the <code>nixtla_client_plot</code> functions.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   unique_id                  ds     y anomaly TimeGPT-lo-99  TimeGPT</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58       0     -28.58336 56.07623</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86       0     -32.23986 52.41973</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31       0     -31.84485 52.81474</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66       0     -32.06933 52.59026</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98661 52.67297</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10659</span></span>
+<span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
+<span><span class="co">#&gt; 1      140.7358</span></span>
+<span><span class="co">#&gt; 2      137.0793</span></span>
+<span><span class="co">#&gt; 3      137.4743</span></span>
+<span><span class="co">#&gt; 4      137.2498</span></span>
+<span><span class="co">#&gt; 5      137.3326</span></span>
+<span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/anomalies.png"></p>
+</div>
+<div class="section level1">
+<h1 id="features-and-capabilities">Features and Capabilities<a class="anchor" aria-label="anchor" href="#features-and-capabilities"></a>
+</h1>
+<p><code>nixtlar</code> provides access to all of TimeGPT’s features and capabilities, such as:</p>
+<ul>
+<li><p><strong>Zero-shot Inference</strong>: TimeGPT can generate forecasts and detect anomalies straight out of the box, requiring no prior training data. This allows for immediate deployment and quick insights from any time series data.</p></li>
+<li><p><strong>Fine-tuning</strong>: Enhance TimeGPT’s capabilities by fine-tuning the model on your specific datasets, enabling the model to adapt to the nuances of your unique time series data and improving performance on tailored tasks.</p></li>
+<li><p><strong>Add Exogenous Variables</strong>: Incorporate additional variables that might influence your predictions to enhance forecast accuracy. (E.g. Special Dates, events or prices)</p></li>
+<li><p><strong>Multiple Series Forecasting</strong>: Simultaneously forecast multiple time series data, optimizing workflows and resources.</p></li>
+<li><p><strong>Custom Loss Function</strong>: Tailor the fine-tuning process with a custom loss function to meet specific performance metrics.</p></li>
+<li><p><strong>Cross Validation</strong>: Implement out of the box cross-validation techniques to ensure model robustness and generalizability.</p></li>
+<li><p><strong>Prediction Intervals</strong>: Provide intervals in your predictions to quantify uncertainty effectively.</p></li>
+<li><p><strong>Irregular Timestamps</strong>: Handle data with irregular timestamps, accommodating non-uniform interval series without preprocessing.</p></li>
 </ul>
-<p>Please read the <strong>Articles</strong> or check out the <strong>Reference</strong> to understand how you can use all these features.</p>
 </div>
-<div class="section level3">
-<h3 id="python-sdk">Python SDK<a class="anchor" aria-label="anchor" href="#python-sdk"></a>
-</h3>
-<p>Are you a Python user? If yes, then check out the <a href="https://github.com/Nixtla/nixtla" class="external-link">Python SDK for TimeGPT</a>.</p>
+<div class="section level1">
+<h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h1>
+<p>For comprehensive documentation, please refer to our vignettes, which cover a wide range of topics to help you effectively use <code>nixtlar</code>. The current documentation includes guides on how to:</p>
+<ul>
+<li><a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get started and set up your API key</a></li>
+<li><a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Do anomaly detection</a></li>
+<li><a href="https://nixtla.github.io/nixtlar/articles/historical-forecast.html">Generate historical forecasts</a></li>
+<li><a href="https://nixtla.github.io/nixtlar/articles/cross-validation.html">Perform time series cross-validation</a></li>
+</ul>
+<p>The documentation is an ongoing effort, and we are working on expanding its coverage.</p>
 </div>
+<div class="section level1">
+<h1 id="api-support">API Support<a class="anchor" aria-label="anchor" href="#api-support"></a>
+</h1>
+<p>Are you a Python user? If yes, then check out the <a href="https://github.com/Nixtla/nixtla" class="external-link">Python SDK</a> for <code>TimeGPT</code>. You can also refer to our <a href="https://docs.nixtla.io/reference/forecast_forecast_post" class="external-link">API reference</a> for support in other programming languages.</p>
 </div>
+<div class="section level1">
+<h1 id="how-to-cite">How to Cite<a class="anchor" aria-label="anchor" href="#how-to-cite"></a>
+</h1>
+<p>If you find TimeGPT useful for your research, please consider citing the <code>TimeGPT-1</code> <a href="https://arxiv.org/abs/2310.03589" class="external-link">paper</a>. The associated reference is shown below.</p>
+<p>Garza, A., Challu, C., &amp; Mergenthaler-Canseco, M. (2024). TimeGPT-1. arXiv preprint arXiv:2310.03589. Available at <a href="https://arxiv.org/abs/2310.03589" class="external-link uri">https://arxiv.org/abs/2310.03589</a></p>
+</div>
+<div class="section level1">
+<h1 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h1>
+<p>TimeGPT is closed source. However, this SDK is open source and available under the Apache 2.0 License, so feel free to contribute!</p>
+</div>
+<div class="section level1">
+<h1 id="get-in-touch">Get in Touch<a class="anchor" aria-label="anchor" href="#get-in-touch"></a>
+</h1>
+<p>We welcome your input and contributions to the <code>nixtlar</code> package!</p>
+<ul>
+<li><p><strong>Report Issues</strong>: If you encounter a bug or have a suggestion to improve the package, please open an <a href="https://github.com/Nixtla/nixtlar/issues" class="external-link">issue</a> in GitHub.</p></li>
+<li><p><strong>Contribute</strong>: You can contribute by opening a <a href="https://github.com/Nixtla/nixtlar/pulls" class="external-link">pull request</a> in our repository. Whether it is fixing a bug, adding a new feature, or improving the documentation, we appreciate your help in making <code>nixtlar</code> better.</p></li>
+</ul>
+</div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
