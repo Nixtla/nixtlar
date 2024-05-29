@@ -5,6 +5,7 @@ This is a resumbmission. In this version, I have:
 
 - Updated names of functions. 
 - Fixed issues to comply with CRAN's policies. 
+- Updated documentation.
 
 ## R CMD check results
 
