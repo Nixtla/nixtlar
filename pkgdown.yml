@@ -4,9 +4,10 @@ pkgdown_sha: ~
 articles:
   anomaly-detection: anomaly-detection.html
   cross-validation: cross-validation.html
+  exogenous-variables: exogenous-variables.html
   get-started: get-started.html
   historical-forecast: historical-forecast.html
-last_built: 2024-05-28T05:59Z
+last_built: 2024-05-29T02:41Z
 urls:
   reference: https://nixtla.github.io/nixtlar/reference
   article: https://nixtla.github.io/nixtlar/articles
