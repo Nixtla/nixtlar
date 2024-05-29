@@ -108,7 +108,7 @@ nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, id_col = "unique_id", p
 
 # Features and Capabilities
 
-`nixtlar` provides access to all of TimeGPT's features and capabilities, such as: 
+`nixtlar` provides access to TimeGPT's features and capabilities, such as: 
 
 - **Zero-shot Inference**: TimeGPT can generate forecasts and detect anomalies straight out of the box, requiring no prior training data. This allows for immediate deployment and quick insights from any time series data.
 
@@ -132,8 +132,9 @@ For comprehensive documentation, please refer to our vignettes, which cover a wi
 
 - [Get started and set up your API key](https://nixtla.github.io/nixtlar/articles/get-started.html)
 - [Do anomaly detection](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html)
-- [Generate historical forecasts](https://nixtla.github.io/nixtlar/articles/historical-forecast.html)
 - [Perform time series cross-validation](https://nixtla.github.io/nixtlar/articles/cross-validation.html)
+- [Use exogenous variables](https://nixtla.github.io/nixtlar/articles/exogenous-variables.html)
+- [Generate historical forecasts](https://nixtla.github.io/nixtlar/articles/historical-forecast.html)
 
 The documentation is an ongoing effort, and we are working on expanding its coverage.
 
