@@ -2,18 +2,18 @@
 % Please edit documentation in R/nixtla_set_api_key.R
 \name{nixtla_set_api_key}
 \alias{nixtla_set_api_key}
-\title{Set API key in global environment}
+\title{Set 'API' key in global environment}
 \usage{
 nixtla_set_api_key(api_key)
 }
 \arguments{
-\item{api_key}{The user's API key. Get yours here: https://dashboard.nixtla.io/}
+\item{api_key}{The user's 'API' key. Get yours here: https://dashboard.nixtla.io/}
 }
 \value{
-A message indicating the API key has been set in the global environment.
+A message indicating the 'API' key has been set in the global environment.
 }
 \description{
-Set API key in global environment
+Set 'API' key in global environment
 }
 \examples{
 \dontrun{

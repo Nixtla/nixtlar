@@ -3,7 +3,7 @@
 \name{.validate_exogenous}
 \alias{.validate_exogenous}
 \title{Validate exogenous variables (if applicable)
-This is a private function of nixtlar}
+This is a private function of 'nixtlar'}
 \usage{
 .validate_exogenous(df, h, X_df)
 }
@@ -19,7 +19,7 @@ A list with the result of the validation (TRUE/FALSE) and an error message (if a
 }
 \description{
 Validate exogenous variables (if applicable)
-This is a private function of nixtlar
+This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{

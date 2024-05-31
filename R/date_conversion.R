@@ -2,7 +2,7 @@
 #'
 #' @param df A tsibble.
 #'
-#' @return A list with the inferred frequency and df with the new index.
+#' @return A list with the inferred frequency and data frame with dates in format yyyy-mm-dd.
 #' @export
 #'
 #' @examples

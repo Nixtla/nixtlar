@@ -11,8 +11,7 @@ library(httptest2)
 .mockPaths("../tests/mocks")
 start_vignette(dir = "../tests/mocks")
 
-options("NIXTLA_API_KEY"="dummy_api_key")
-options(digits=7)
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -91,6 +90,7 @@ nixtla_client_plot(df, nixtla_client_fcst, id_col = "unique_id", max_insample_le
 ```
 
 ```{r, include=FALSE}
+options(original_options)
 end_vignette()
 ```
 

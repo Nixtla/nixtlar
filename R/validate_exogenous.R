@@ -1,5 +1,5 @@
 #' Validate exogenous variables (if applicable)
-#' This is a private function of nixtlar
+#' This is a private function of 'nixtlar'
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param h Forecast horizon.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/nixtla_client_forecast.R
 \name{nixtla_client_forecast}
 \alias{nixtla_client_forecast}
-\title{Generate TimeGPT forecast}
+\title{Generate 'TimeGPT' forecast}
 \usage{
 nixtla_client_forecast(
   df,
@@ -37,21 +37,21 @@ nixtla_client_forecast(
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
 
-\item{finetune_steps}{Number of steps used to finetune TimeGPT in the new data.}
+\item{finetune_steps}{Number of steps used to finetune 'TimeGPT' in the new data.}
 
 \item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
-\item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
+\item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
 \item{add_history}{Return fitted values of the model.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
 \value{
-TimeGPT's forecast.
+'TimeGPT''s forecast.
 }
 \description{
-Generate TimeGPT forecast
+Generate 'TimeGPT' forecast
 }
 \examples{
 \dontrun{

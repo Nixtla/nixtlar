@@ -3,16 +3,16 @@
 \name{.get_api_key}
 \alias{.get_api_key}
 \title{Get NIXTLA_API_KEY from options or from .Renviron
-This is a private function of nixtlar}
+This is a private function of 'nixtlar'}
 \usage{
 .get_api_key()
 }
 \value{
-If available, the NIXTLA_API_KEY. Otherwise it returns an error and a message asking the user to set the API key.
+If available, the NIXTLA_API_KEY. Otherwise it returns an error and a message asking the user to set the 'API' key.
 }
 \description{
 Get NIXTLA_API_KEY from options or from .Renviron
-This is a private function of nixtlar
+This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{

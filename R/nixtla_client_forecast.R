@@ -1,4 +1,4 @@
-#' Generate TimeGPT forecast
+#' Generate 'TimeGPT' forecast
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param h Forecast horizon.
@@ -8,13 +8,13 @@
 #' @param target_col Column that contains the target variable.
 #' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence levels (0-100) for the prediction intervals.
-#' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
-#' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param add_history Return fitted values of the model.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
-#' @return TimeGPT's forecast.
+#' @return 'TimeGPT''s forecast.
 #' @export
 #'
 #' @examples

@@ -2,8 +2,8 @@
 % Please edit documentation in R/nixtla_data_prep.R
 \name{.nixtla_data_prep}
 \alias{.nixtla_data_prep}
-\title{Prepares data for TimeGPT's API
-This is a private function of nixtlar}
+\title{Prepares data for 'TimeGPT''s 'API'
+This is a private function of 'nixtlar'}
 \usage{
 .nixtla_data_prep(df, freq, id_col, time_col, target_col)
 }
@@ -22,8 +22,8 @@ This is a private function of nixtlar}
 A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
 }
 \description{
-Prepares data for TimeGPT's API
-This is a private function of nixtlar
+Prepares data for 'TimeGPT''s 'API'
+This is a private function of 'nixtlar'
 }
 \examples{
 df <- nixtlar::electricity

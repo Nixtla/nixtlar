@@ -1,8 +1,8 @@
-#' Set API key in global environment
+#' Set 'API' key in global environment
 #'
-#' @param api_key The user's API key. Get yours here: https://dashboard.nixtla.io/
+#' @param api_key The user's 'API' key. Get yours here: https://dashboard.nixtla.io/
 #'
-#' @return A message indicating the API key has been set in the global environment.
+#' @return A message indicating the 'API' key has been set in the global environment.
 #' @export
 #'
 #' @examples

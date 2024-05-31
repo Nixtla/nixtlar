@@ -2,7 +2,7 @@
 % Please edit documentation in R/nixtla_client_cross_validation.R
 \name{nixtla_client_cross_validation}
 \alias{nixtla_client_cross_validation}
-\title{Perform cross validation with TimeGPT.}
+\title{Perform cross validation with 'TimeGPT'.}
 \usage{
 nixtla_client_cross_validation(
   df,
@@ -42,19 +42,19 @@ nixtla_client_cross_validation(
 
 \item{step_size}{Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).}
 
-\item{finetune_steps}{Number of steps used to finetune TimeGPT in the new data.}
+\item{finetune_steps}{Number of steps used to finetune 'TimeGPT' in the new data.}
 
 \item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
-\item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
+\item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
 \value{
-A tsibble or a data frame with TimeGPT's cross validation.
+A tsibble or a data frame with 'TimeGPT''s cross validation result.
 }
 \description{
-Perform cross validation with TimeGPT.
+Perform cross validation with 'TimeGPT'.
 }
 \examples{
 \dontrun{

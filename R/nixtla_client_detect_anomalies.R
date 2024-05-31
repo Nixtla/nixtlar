@@ -1,4 +1,4 @@
-#' Detect anomalies with TimeGPT
+#' Detect anomalies with 'TimeGPT'
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.
@@ -6,7 +6,7 @@
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
 #' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.
-#' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
 #' @return A tsibble or a data frame with the anomalies detected in the historical period.

@@ -19,7 +19,7 @@ nixtla_client_plot(
 \arguments{
 \item{df}{A tsibble or a data frame with time series data (insample values).}
 
-\item{fcst}{A tsibble or a data frame with the TimeGPT point forecast and the prediction intervals (if available).}
+\item{fcst}{A tsibble or a data frame with the 'TimeGPT' point forecast and the prediction intervals (if available).}
 
 \item{h}{Forecast horizon.}
 
@@ -36,7 +36,7 @@ nixtla_client_plot(
 \item{plot_anomalies}{Whether or not to plot anomalies.}
 }
 \value{
-Corresponding plot.
+Plot with historical data and 'TimeGPT''s output (if available).
 }
 \description{
 Plot the output of the following nixtla_client functions: forecast, historic, anomaly_detection, and cross_validation.

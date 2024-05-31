@@ -10,7 +10,7 @@ date_conversion(df)
 \item{df}{A tsibble.}
 }
 \value{
-A list with the inferred frequency and df with the new index.
+A list with the inferred frequency and data frame with dates in format yyyy-mm-dd.
 }
 \description{
 Infer frequency of a tsibble and convert its index to date or string.

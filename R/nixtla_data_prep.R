@@ -1,5 +1,5 @@
-#' Prepares data for TimeGPT's API
-#' This is a private function of nixtlar
+#' Prepares data for 'TimeGPT''s 'API'
+#' This is a private function of 'nixtlar'
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.

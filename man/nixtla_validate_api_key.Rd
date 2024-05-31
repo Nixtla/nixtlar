@@ -2,15 +2,15 @@
 % Please edit documentation in R/nixtla_validate_api_key.R
 \name{nixtla_validate_api_key}
 \alias{nixtla_validate_api_key}
-\title{Validate API key}
+\title{Validate 'API' key}
 \usage{
 nixtla_validate_api_key()
 }
 \value{
-A status code and a message indicating whether the API key is valid.
+A status code and a message indicating whether the 'API' key is valid.
 }
 \description{
-Validate API key
+Validate 'API' key
 }
 \examples{
 \dontrun{

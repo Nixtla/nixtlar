@@ -2,7 +2,7 @@
 % Please edit documentation in R/nixtla_client_detect_anomalies.R
 \name{nixtla_client_detect_anomalies}
 \alias{nixtla_client_detect_anomalies}
-\title{Detect anomalies with TimeGPT}
+\title{Detect anomalies with 'TimeGPT'}
 \usage{
 nixtla_client_detect_anomalies(
   df,
@@ -28,7 +28,7 @@ nixtla_client_detect_anomalies(
 
 \item{level}{The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.}
 
-\item{clean_ex_first}{Clean exogenous signal before making the forecasts using TimeGPT.}
+\item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
@@ -36,7 +36,7 @@ nixtla_client_detect_anomalies(
 A tsibble or a data frame with the anomalies detected in the historical period.
 }
 \description{
-Detect anomalies with TimeGPT
+Detect anomalies with 'TimeGPT'
 }
 \examples{
 \dontrun{

@@ -1,4 +1,4 @@
-#' Generate TimeGPT forecast for the in-sample period (historical period).
+#' Generate 'TimeGPT' forecast for the in-sample period (historical period).
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.
@@ -6,11 +6,11 @@
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
 #' @param level The confidence levels (0-100) for the prediction intervals.
-#' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
-#' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #'
-#' @return TimeGPT's forecast for the in-sample period.
+#' @return 'TimeGPT''s forecast for the in-sample period.
 #' @export
 #'
 #' @examples

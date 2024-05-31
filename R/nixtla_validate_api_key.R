@@ -1,6 +1,6 @@
-#' Validate API key
+#' Validate 'API' key
 #'
-#' @return A status code and a message indicating whether the API key is valid.
+#' @return A status code and a message indicating whether the 'API' key is valid.
 #' @export
 #'
 #' @examples

@@ -1,4 +1,4 @@
-#' Perform cross validation with TimeGPT.
+#' Perform cross validation with 'TimeGPT'.
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param h Forecast horizon.
@@ -10,12 +10,12 @@
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param n_windows Number of windows to evaluate.
 #' @param step_size Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).
-#' @param finetune_steps Number of steps used to finetune TimeGPT in the new data.
+#' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
-#' @param clean_ex_first Clean exogenous signal before making the forecasts using TimeGPT.
+#' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
-#' @return A tsibble or a data frame with TimeGPT's cross validation.
+#' @return A tsibble or a data frame with 'TimeGPT''s cross validation result.
 #' @export
 #'
 #' @examples
