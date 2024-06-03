@@ -53,7 +53,17 @@ https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c
 
 # Installation
 
-You can install the development version of `nixtlar` from [GitHub](https://github.com/) with:
+`nixtlar` is available on CRAN, so you can install the latest stable version using `install.packages`. 
+
+```{r eval=FALSE}
+# Install nixtlar from CRAN
+install.packages("nixtlar")
+
+# Then load it 
+library(nixtlar)
+```
+
+Alternatively, you can install the development version of `nixtlar` from [GitHub](https://github.com/) with `devtools::install_github`.
 
 ```{r eval=FALSE}
 # install.packages("devtools")
