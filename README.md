@@ -9,6 +9,8 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nixtlar)](https://CRAN.R-project.org/package=nixtlar)
 [![R-CMD-check](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Nixtla/nixtlar/actions/workflows/R-CMD-check.yaml)
+[![Downloads](https://cranlogs.r-pkg.org/badges/nixtlar)](https://cran.r-project.org/package=nixtlar)
+[![Downloads](https://cranlogs.r-pkg.org/badges/last-week/nixtlar)](https://cran.r-project.org/package=nixtlar)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
@@ -46,8 +48,19 @@ users through the `nixtlar` package.
 
 # Installation
 
-You can install the development version of `nixtlar` from
-[GitHub](https://github.com/) with:
+`nixtlar` is available on CRAN, so you can install the latest stable
+version using `install.packages`.
+
+``` r
+# Install nixtlar from CRAN
+install.packages("nixtlar")
+
+# Then load it 
+library(nixtlar)
+```
+
+Alternatively, you can install the development version of `nixtlar` from
+[GitHub](https://github.com/) with `devtools::install_github`.
 
 ``` r
 # install.packages("devtools")
@@ -145,8 +158,8 @@ nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, id_col = "unique_id", p
 
 # Features and Capabilities
 
-`nixtlar` provides access to all of TimeGPT’s features and capabilities,
-such as:
+`nixtlar` provides access to TimeGPT’s features and capabilities, such
+as:
 
 - **Zero-shot Inference**: TimeGPT can generate forecasts and detect
   anomalies straight out of the box, requiring no prior training data.
@@ -187,10 +200,12 @@ current documentation includes guides on how to:
   key](https://nixtla.github.io/nixtlar/articles/get-started.html)
 - [Do anomaly
   detection](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html)
-- [Generate historical
-  forecasts](https://nixtla.github.io/nixtlar/articles/historical-forecast.html)
 - [Perform time series
   cross-validation](https://nixtla.github.io/nixtlar/articles/cross-validation.html)
+- [Use exogenous
+  variables](https://nixtla.github.io/nixtlar/articles/exogenous-variables.html)
+- [Generate historical
+  forecasts](https://nixtla.github.io/nixtlar/articles/historical-forecast.html)
 
 The documentation is an ongoing effort, and we are working on expanding
 its coverage.
