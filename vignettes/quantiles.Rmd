@@ -18,8 +18,8 @@ original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
-  fig.width = 7, 
-  fig.height = 4
+  fig.width = 12, 
+  fig.height = 8
 )
 ```
 
@@ -43,7 +43,6 @@ head(df)
 ```
 
 ## 3. Forecast with quantiles
-
 `TimeGPT` can generate quantiles when using the following function: 
 
 ```{r, eval=FALSE}
@@ -58,6 +57,16 @@ For any of these functions, simply set the `quantiles` argument to the desired v
 fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", quantiles = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
 head(fcst)
 ```
+
+## 4. Plot quantiles 
+`nixtlar` includes a function to plot the historical data and any output from `nixtlar::nixtla_client_forecast`, `nixtlar::nixtla_client_historic`, `nixtlar::nixtla_client_detect_anomalies` and `nixtlar::nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+
+When available, `nixtlar::nixtla_client_plot` will automatically plot the quantiles. 
+
+```{r}
+nixtla_client_plot(df, fcst, id_col = "unique_id", max_insample_length = 100)
+```
+
 
 ```{r, include=FALSE}
 options(original_options)
