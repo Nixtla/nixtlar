@@ -194,6 +194,21 @@ nixtla_client_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds"
         ggplot2::geom_ribbon(ggplot2::aes(x=.data$ds, ymin=.data$lower, ymax=.data$upper, group=.data$level, fill=.data$level), alpha=0.5, data=intervals)
     }
 
+    # Add quantiles
+    quantiles <- grepl("-q-", names(fcst))
+    if(any(quantiles)){
+      # Build data frame with quantiles
+      quant <- fcst[,c(which(names(fcst) %in% c("unique_id", "ds")), grep("-q-", names(fcst)))]
+
+      quant_long <- tidyr::pivot_longer(quant, cols=grep("-q-", names(quant)), values_to="value", names_to="variable") |>
+        dplyr::mutate(quantiles =  gsub("^[^-]*-[^-]*-", "", .data$variable))
+
+      quant_long$quantiles <- paste0("q-", quant_long$quantiles)
+
+      plot <- plot+
+        ggplot2::geom_line(ggplot2::aes(x=.data$ds, y=.data$value, group=.data$quantiles, color=.data$quantiles), alpha=0.5, data=quant_long)
+    }
+
     # Add anomalies ----
     if(plot_anomalies){
       if(!"anomaly" %in% names(fcst)){
@@ -205,9 +220,21 @@ nixtla_client_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds"
       }
     }
 
+    if(any(quantiles)){
+      num_quantiles <- length(unique(quant_long$quantiles))
+      if(num_quantiles > 10){
+        stop("Can't plot more than 10 quantiles")
+      }else{
+        qcolors <- c("#755faa", "#3da564", "#dabb35", "#29e2ff","#b5d56d",
+                     "#9ca5e2", "#d954a0", "#cb4545", "#e45d17","#18392b")
+        color_vals <- c(qcolors[1:num_quantiles], color_vals)
+      }
+    }
+
     plot <- plot+
       ggplot2::geom_line(ggplot2::aes(x=.data$ds, y=.data$value, group=.data$variable, color=.data$variable), data=data_long)+
-      ggplot2::scale_color_manual(values = color_vals)
+      ggplot2::scale_color_manual(values = color_vals)+
+      ggplot2::labs(color="variable")
 
     # Add start of forecast ----
     if(!is.null(h) & cross_validation == FALSE){
