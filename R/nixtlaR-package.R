@@ -29,8 +29,11 @@
 #' @importFrom lubridate ymd
 #' @importFrom lubridate ymd_hms
 #' @importFrom rlang .data
+#' @importFrom stats setNames
 #' @importFrom tidyr pivot_longer
 #' @importFrom tidyselect everything
+#' @importFrom tidyselect peek_vars
+#' @importFrom tidyselect starts_with
 #' @importFrom tsibble is_tsibble
 ## usethis namespace: end
 NULL

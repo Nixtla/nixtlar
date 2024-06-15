@@ -13,6 +13,7 @@ nixtla_client_forecast(
   target_col = "y",
   X_df = NULL,
   level = NULL,
+  quantiles = NULL,
   finetune_steps = 0,
   finetune_loss = "default",
   clean_ex_first = TRUE,
@@ -36,6 +37,8 @@ nixtla_client_forecast(
 \item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
+
+\item{quantiles}{Quantiles to forecast. Should be between 0 and 1.}
 
 \item{finetune_steps}{Number of steps used to finetune 'TimeGPT' in the new data.}
 
