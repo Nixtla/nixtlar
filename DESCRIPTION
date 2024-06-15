@@ -24,7 +24,6 @@ Imports:
     httr2,
     lubridate,
     rlang,
-    stats,
     tidyr,
     tidyselect,
     tsibble

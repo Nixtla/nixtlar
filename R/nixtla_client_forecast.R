@@ -126,7 +126,8 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
 
   # Rename quantile columns if necessary
   if(!is.null(quantiles)){
-    cols_table <- setNames(lvl$ql_df$quantiles_col, lvl$ql_df$level_col)
+    cols_table <- lvl$ql_df$quantiles_col
+    names(cols_table) <- lvl$ql_df$level_col
     names(fcst) <- ifelse(names(fcst) %in% names(cols_table), cols_table[names(fcst)], names(fcst))
 
     fcst <- fcst[, !grepl("hi|lo", names(fcst))]

@@ -129,7 +129,8 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
 
   # Rename quantile columns if necessary
   if(!is.null(quantiles)){
-    cols_table <- setNames(lvl$ql_df$quantiles_col, lvl$ql_df$level_col)
+    cols_table <- lvl$ql_df$quantiles_col
+    names(cols_table) <- lvl$ql_df$level_col
     names(res) <- ifelse(names(res) %in% names(cols_table), cols_table[names(res)], names(res))
 
     res <- res[, !grepl("hi|lo", names(res))]

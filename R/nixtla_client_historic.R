@@ -101,7 +101,8 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
 
   # Rename quantile columns if necessary
   if(!is.null(quantiles)){
-    cols_table <- setNames(lvl$ql_df$quantiles_col, lvl$ql_df$level_col)
+    cols_table <- lvl$ql_df$quantiles_col
+    names(cols_table) <- lvl$ql_df$level_col
     names(fitted) <- ifelse(names(fitted) %in% names(cols_table), cols_table[names(fitted)], names(fitted))
 
     fitted <- fitted[, !grepl("hi|lo", names(fitted))]
