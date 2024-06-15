@@ -1,0 +1,68 @@
+---
+title: "Quantile Forecasts"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quantiles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+---
+```{r setup, include=FALSE}
+library(httptest2)
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
+
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+## 1. Uncertainty quantification via quantiles 
+For uncertainty quantification, `TimeGPT` can generate both prediction intervals and quantiles, offering a measure of the range of potential outcomes rather than just a single point forecast. In real-life scenarios, forecasting often requires considering multiple alternatives, not just one prediction. This vignette will explain how to use quantiles with `TimeGPT` via the `nixtlar` package.
+
+Quantiles represent the cumulative proportion of the forecast distribution. For instance, the 90th quantile is the value below which 90% of the data points are expected to fall. Notably, the 50th quantile corresponds to the median forecast value provided by `TimeGPT`. The quantiles are produced using [conformal prediction](https://en.wikipedia.org/wiki/Conformal_prediction), a framework for creating distribution-free uncertainty intervals for predictive models. 
+
+This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+
+## 2. Load data 
+For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
+
+```{r}
+df <- nixtlar::electricity
+head(df)
+```
+
+## 3. Forecast with quantiles
+
+`TimeGPT` can generate quantiles when using the following function: 
+
+```{r, eval=FALSE}
+- nixtlar::nixtla_client_forecast()
+- nixtlar::nixtla_client_historic() 
+- nixtlar::nixtla_client_cross_validation()
+```
+
+For any of these functions, simply set the `quantiles` argument to the desired values. Keep in mind that quantiles should all be numbers between 0 and 1. 
+
+```{r}
+fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", quantiles = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
+head(fcst)
+```
+
+```{r, include=FALSE}
+options(original_options)
+end_vignette()
+```
+
+
+
