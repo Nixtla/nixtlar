@@ -11,6 +11,7 @@ nixtla_client_historic(
   time_col = "ds",
   target_col = "y",
   level = NULL,
+  quantiles = NULL,
   finetune_steps = 0,
   finetune_loss = "default",
   clean_ex_first = TRUE
@@ -28,6 +29,8 @@ nixtla_client_historic(
 \item{target_col}{Column that contains the target variable.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
+
+\item{quantiles}{Quantiles to forecast. Should be between 0 and 1.}
 
 \item{finetune_steps}{Number of steps used to finetune 'TimeGPT' in the new data.}
 

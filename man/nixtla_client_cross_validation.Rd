@@ -13,6 +13,7 @@ nixtla_client_cross_validation(
   target_col = "y",
   X_df = NULL,
   level = NULL,
+  quantiles = NULL,
   n_windows = 1,
   step_size = NULL,
   finetune_steps = 0,
@@ -37,6 +38,8 @@ nixtla_client_cross_validation(
 \item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
+
+\item{quantiles}{Quantiles to forecast. Should be between 0 and 1.}
 
 \item{n_windows}{Number of windows to evaluate.}
 

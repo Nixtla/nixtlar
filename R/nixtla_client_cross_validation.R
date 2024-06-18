@@ -8,6 +8,7 @@
 #' @param target_col Column that contains the target variable.
 #' @param X_df A tsibble or a data frame with future exogenous variables.
 #' @param level The confidence levels (0-100) for the prediction intervals.
+#' @param quantiles Quantiles to forecast. Should be between 0 and 1.
 #' @param n_windows Number of windows to evaluate.
 #' @param step_size Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).
 #' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
@@ -25,7 +26,7 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -89,8 +90,20 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     timegpt_data[['x']] <- x
   }
 
-  if(!is.null(level)){
+  if(!is.null(level) & !is.null(quantiles)){
+    stop("You should include 'level' or 'quantiles' but not both.")
+  }else if(!is.null(level)){
+    if(any(level < 0 | level > 100)){
+      stop("Level should be between 0 and 100")
+    }
     level <- as.list(level)
+    timegpt_data[["level"]] <- level
+  }else if(!is.null(quantiles)){
+    if(any(quantiles < 0 | quantiles > 1)){
+      stop("Quantiles should be between 0 and 1.")
+    }
+    lvl <- .level_from_quantiles(quantiles)
+    level <- as.list(lvl$level)
     timegpt_data[["level"]] <- level
   }
 
@@ -113,6 +126,32 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
   colnames(res) <- cv$data$forecast$columns
   res[,4:ncol(res)] <- lapply(res[,4:ncol(res)], as.numeric)
   res$cutoff <- lubridate::ymd_hms(res$cutoff)
+
+  # Rename quantile columns if necessary
+  if(!is.null(quantiles)){
+    cols_table <- lvl$ql_df$quantiles_col
+    names(cols_table) <- lvl$ql_df$level_col
+    names(res) <- ifelse(names(res) %in% names(cols_table), cols_table[names(res)], names(res))
+
+    res <- res[, !grepl("hi|lo", names(res))]
+
+    # Add 0.5 quantile if present
+    if(0.5 %in% quantiles){
+      res <- res |>
+        mutate(quantile50 = .data$TimeGPT)
+      names(res)[which(names(res) == "quantile50")] <- "TimeGPT-q-50"
+    }
+
+    if(is.null(id_col)){
+      res <- res |>
+        dplyr::select(.data$ds, .data$cutoff, .data$y, .data$TimeGPT, tidyselect::starts_with("TimeGPT-q")) |>
+        dplyr::select(.data$ds, .data$cutoff, .data$y, .data$TimeGPT, sort(tidyselect::peek_vars()))
+    }else{
+      res <- res |>
+        dplyr::select(.data$unique_id, .data$ds, .data$cutoff, .data$y, .data$TimeGPT, tidyselect::starts_with("TimeGPT-q")) |>
+        dplyr::select(.data$unique_id, .data$ds, .data$cutoff, .data$y, .data$TimeGPT, sort(tidyselect::peek_vars()))
+    }
+  }
 
   # Data transformation ----
   if(tsibble::is_tsibble(df)){

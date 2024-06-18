@@ -6,6 +6,7 @@
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
 #' @param level The confidence levels (0-100) for the prediction intervals.
+#' @param quantiles Quantiles to forecast. Should be between 0 and 1.
 #' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
@@ -20,7 +21,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE){
+nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -61,8 +62,20 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     timegpt_data[['x']] <- x
   }
 
-  if(!is.null(level)){
+  if(!is.null(level) & !is.null(quantiles)){
+    stop("You should include 'level' or 'quantiles' but not both.")
+  }else if(!is.null(level)){
+    if(any(level < 0 | level > 100)){
+      stop("Level should be between 0 and 100")
+    }
     level <- as.list(level)
+    timegpt_data[["level"]] <- level
+  }else if(!is.null(quantiles)){
+    if(any(quantiles < 0 | quantiles > 1)){
+      stop("Quantiles should be between 0 and 1.")
+    }
+    lvl <- .level_from_quantiles(quantiles)
+    level <- as.list(lvl$level)
     timegpt_data[["level"]] <- level
   }
 
@@ -85,6 +98,32 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
   names(fitted) <- hist$data$forecast$columns
   fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
   fitted <- fitted[,-which(names(fitted) == "y")]
+
+  # Rename quantile columns if necessary
+  if(!is.null(quantiles)){
+    cols_table <- lvl$ql_df$quantiles_col
+    names(cols_table) <- lvl$ql_df$level_col
+    names(fitted) <- ifelse(names(fitted) %in% names(cols_table), cols_table[names(fitted)], names(fitted))
+
+    fitted <- fitted[, !grepl("hi|lo", names(fitted))]
+
+    # Add 0.5 quantile if present
+    if(0.5 %in% quantiles){
+      fitted <- fitted |>
+        mutate(quantile50 = .data$TimeGPT)
+      names(fitted)[which(names(fitted) == "quantile50")] <- "TimeGPT-q-50"
+    }
+
+    if(is.null(id_col)){
+      fitted <- fitted |>
+        dplyr::select(.data$ds, .data$TimeGPT, tidyselect::starts_with("TimeGPT-q")) |>
+        dplyr::select(.data$ds, .data$TimeGPT, sort(tidyselect::peek_vars()))
+    }else{
+      fitted <- fitted |>
+        dplyr::select(.data$unique_id, .data$ds, .data$TimeGPT, tidyselect::starts_with("TimeGPT-q")) |>
+        dplyr::select(.data$unique_id, .data$ds, .data$TimeGPT, sort(tidyselect::peek_vars()))
+    }
+  }
 
   # Data transformation ----
   if(tsibble::is_tsibble(df)){
