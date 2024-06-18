@@ -38,6 +38,8 @@
     <a class="dropdown-item" href="../articles/exogenous-variables.html"></a>
     <h6 class="dropdown-header" data-toc-skip>Historical Forecast</h6>
     <a class="dropdown-item" href="../articles/historical-forecast.html"></a>
+    <h6 class="dropdown-header" data-toc-skip>Quantile Forecasts</h6>
+    <a class="dropdown-item" href="../articles/quantiles.html"></a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -76,6 +78,7 @@
 <span>  target_col <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  X_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  level <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quantiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_windows <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  step_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  finetune_steps <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -117,6 +120,10 @@
 
 <dt>level</dt>
 <dd><p>The confidence levels (0-100) for the prediction intervals.</p></dd>
+
+
+<dt>quantiles</dt>
+<dd><p>Quantiles to forecast. Should be between 0 and 1.</p></dd>
 
 
 <dt>n_windows</dt>

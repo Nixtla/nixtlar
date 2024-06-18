@@ -25,6 +25,9 @@
     <loc>https://nixtla.github.io/nixtlar/articles/index.html</loc>
   </url>
   <url>
+    <loc>https://nixtla.github.io/nixtlar/articles/quantiles.html</loc>
+  </url>
+  <url>
     <loc>https://nixtla.github.io/nixtlar/authors.html</loc>
   </url>
   <url>
@@ -38,6 +41,9 @@
   </url>
   <url>
     <loc>https://nixtla.github.io/nixtlar/reference/dot-get_api_key.html</loc>
+  </url>
+  <url>
+    <loc>https://nixtla.github.io/nixtlar/reference/dot-level_from_quantiles.html</loc>
   </url>
   <url>
     <loc>https://nixtla.github.io/nixtlar/reference/dot-nixtla_data_prep.html</loc>
