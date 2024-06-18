@@ -43,7 +43,7 @@ head(df)
 ```
 
 ## 3. Forecast with quantiles
-`TimeGPT` can generate quantiles when using the following function: 
+`TimeGPT` can generate quantiles when using the following functions: 
 
 ```{r, eval=FALSE}
 - nixtlar::nixtla_client_forecast()
@@ -51,7 +51,7 @@ head(df)
 - nixtlar::nixtla_client_cross_validation()
 ```
 
-For any of these functions, simply set the `quantiles` argument to the desired values. Keep in mind that quantiles should all be numbers between 0 and 1. You can use either `quantiles` or `level` for prediction intervals but not both. 
+For any of these functions, simply set the `quantiles` argument to the desired values as a vector. Keep in mind that quantiles should all be numbers between 0 and 1. You can use either `quantiles` or `level` for uncertainty quantification, but not both. 
 
 ```{r}
 fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", quantiles = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
