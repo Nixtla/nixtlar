@@ -27,6 +27,9 @@ navbar:
         - href: articles/prediction-intervals.html
         - text: "Quantile Forecasts"
         - href: articles/quantiles.html
+        - text: "Long Horizon Forecast"
+        - href: articles/long-horizon.html
+
   right:
     - icon: "fa-github"
       href: https://github.com/Nixtla/nixtlar
