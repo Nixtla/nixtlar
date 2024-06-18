@@ -2,7 +2,7 @@
 title: "Long-Horizon Forecasting"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{long-horizon}
+  %\VignetteIndexEntry{Long-Horizon Forecasting}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

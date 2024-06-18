@@ -2,7 +2,7 @@
 title: "Quantile Forecasts"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{quantiles}
+  %\VignetteIndexEntry{Quantile Forecasts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

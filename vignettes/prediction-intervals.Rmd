@@ -2,7 +2,7 @@
 title: "Prediction Intervals"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{prediction-intervals}
+  %\VignetteIndexEntry{Prediction Intervals}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
