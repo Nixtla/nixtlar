@@ -23,6 +23,8 @@ navbar:
         - href: articles/exogenous-variables.html
         - text: "Historical Forecast"
         - href: articles/historical-forecast.html
+        - text: "Prediction Intervals"
+        - href: articles/prediction-intervals.html
         - text: "Quantile Forecasts"
         - href: articles/quantiles.html
   right:
