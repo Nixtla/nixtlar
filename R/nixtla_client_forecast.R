@@ -101,21 +101,23 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     timegpt_data[["level"]] <- level
   }
 
-  # Make request ----
+  # Create request ----
   url <- "https://dashboard.nixtla.io/api/forecast_multi_series"
-  resp <- httr2::request(url) |>
+  req <- httr2::request(url) |>
     httr2::req_headers(
-      "accept" = "application/json",
-      "content-type" = "application/json",
       "authorization" = paste("Bearer", .get_api_key())
       ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_perform()
+    httr2::req_retry(max_tries = 6)
+
+  # Send request and fetch response ----
+  resp <- req |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
   # Extract forecast ----
-  fc <- httr2::resp_body_json(resp)
-  fc_list <- lapply(fc$data$forecast$data, unlist)
+  fc_list <- lapply(resp$data$forecast$data, unlist)
   fcst <- data.frame(do.call(rbind, fc_list))
   names(fcst) <- fc$data$forecast$columns
   if(!is.null(level)){
