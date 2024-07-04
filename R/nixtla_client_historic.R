@@ -89,7 +89,10 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_retry(max_tries = 6)
+    httr2::req_retry(
+      max_tries = 6,
+      is_transient = .transient_errors
+      )
 
   # Send request and fetch response
   resp_hist <- req_hist |>
