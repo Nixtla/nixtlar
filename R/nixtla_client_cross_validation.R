@@ -107,9 +107,9 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     timegpt_data[["level"]] <- level
   }
 
-  # Make request ----
+  # Create request ----
   url_cv <- "https://dashboard.nixtla.io/api/cross_validation_multi_series"
-  resp_cv <- httr2::request(url_cv) |>
+  req_cv <- httr2::request(url_cv) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
@@ -117,13 +117,17 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_perform()
+    httr2::req_retry(max_tries = 6)
+
+  # Send request and fetch response ----
+  resp_cv <- req_cv |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
   # Extract cross-validation ----
-  cv <- httr2::resp_body_json(resp_cv)
-  cv_list <- lapply(cv$data$forecast$data, unlist)
+  cv_list <- lapply(resp_cv$data$forecast$data, unlist)
   res <- data.frame(do.call(rbind, cv_list))
-  colnames(res) <- cv$data$forecast$columns
+  colnames(res) <- resp_cv$data$forecast$columns
   res[,4:ncol(res)] <- lapply(res[,4:ncol(res)], as.numeric)
   res$cutoff <- lubridate::ymd_hms(res$cutoff)
 

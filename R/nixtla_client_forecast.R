@@ -53,7 +53,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     finetune_steps = finetune_steps,
     finetune_loss = finetune_loss,
     clean_ex_first = clean_ex_first
-    )
+  )
 
   if(!is.null(X_df)){
     names(X_df)[which(names(X_df) == time_col)] <- "ds"
@@ -105,8 +105,10 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   url <- "https://dashboard.nixtla.io/api/forecast_multi_series"
   req <- httr2::request(url) |>
     httr2::req_headers(
+      "accept" = "application/json",
+      "content-type" = "application/json",
       "authorization" = paste("Bearer", .get_api_key())
-      ) |>
+    ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
     httr2::req_retry(max_tries = 6)
@@ -119,7 +121,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   # Extract forecast ----
   fc_list <- lapply(resp$data$forecast$data, unlist)
   fcst <- data.frame(do.call(rbind, fc_list))
-  names(fcst) <- fc$data$forecast$columns
+  names(fcst) <- resp$data$forecast$columns
   if(!is.null(level)){
     fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
   }else{
@@ -162,7 +164,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
                       "W" = tsibble::yearweek(fcst$ds),
                       "H" = lubridate::ymd_hms(fcst$ds),
                       lubridate::ymd(fcst$ds) # default (daily or other)
-                      )
+    )
     if(is.null(id_col)){
       fcst <- tsibble::as_tsibble(fcst, index="ds")
     }else{
