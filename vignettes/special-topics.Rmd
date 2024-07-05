@@ -82,7 +82,6 @@ fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level =
 # infer the frequency when `freq` is not specified 
 ```
 
-
 When the frequency is not apparent, `nixtlar` will default to a daily frequency. Currently, `nixtlar` cannot automatically detect subhourly frequencies. In such cases, you must explicitly specify these frequencies. For example, for subhourly data, you should set `freq="15T"` for fifteen-minute data intervals.
 
 Moreover, if you are dealing with irregular frequencies, such as business days or custom holiday calendars, you must specify them directly. For instance, for business days, you should set `freq="B"`, which corresponds to the pandas alias for business day frequency.

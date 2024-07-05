@@ -19,16 +19,20 @@ navbar:
         - href: articles/anomaly-detection.html
         - text: "Cross-Validation"
         - href: articles/cross-validation.html
+        - text: "Data requirements"
+        - href: articles/data-requirements.html
         - text: "Exogenous Variables"
         - href: articles/exogenous-variables.html
         - text: "Historical Forecast"
         - href: articles/historical-forecast.html
+        - text: "Long Horizon Forecast"
+        - href: articles/long-horizon.html
         - text: "Prediction Intervals"
         - href: articles/prediction-intervals.html
         - text: "Quantile Forecasts"
         - href: articles/quantiles.html
-        - text: "Long Horizon Forecast"
-        - href: articles/long-horizon.html
+        - text: "Special Topics"
+        - href: articles/special-topics.html
 
   right:
     - icon: "fa-github"
