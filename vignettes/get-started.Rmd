@@ -1,6 +1,9 @@
 ---
 title: "Get Started"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Get Started}
   %\VignetteEngine{knitr::rmarkdown}

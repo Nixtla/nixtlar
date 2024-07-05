@@ -5,7 +5,7 @@ output:
     toc: true 
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{data-requirements}
+  %\VignetteIndexEntry{Data Requirements}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
