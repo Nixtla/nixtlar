@@ -16,25 +16,25 @@ navbar:
     - text: "Articles"
       menu:
         - text: "Anomaly Detection"
-        - href: articles/anomaly-detection.html
+          href: articles/anomaly-detection.html
         - text: "Cross-Validation"
-        - href: articles/cross-validation.html
+          href: articles/cross-validation.html
         - text: "Data requirements"
-        - href: articles/data-requirements.html
+          href: articles/data-requirements.html
         - text: "Exogenous Variables"
-        - href: articles/exogenous-variables.html
+          href: articles/exogenous-variables.html
         - text: "Historical Forecast"
-        - href: articles/historical-forecast.html
+          href: articles/historical-forecast.html
         - text: "Long Horizon Forecast"
-        - href: articles/long-horizon.html
+          href: articles/long-horizon.html
         - text: "Prediction Intervals"
-        - href: articles/prediction-intervals.html
+          href: articles/prediction-intervals.html
         - text: "Quantile Forecasts"
-        - href: articles/quantiles.html
+          href: articles/quantiles.html
         - text: "Setting Up Your API Key"
-        - href: articles/setting-up-your-api-key.html
+          href: articles/setting-up-your-api-key.html
         - text: "Special Topics"
-        - href: articles/special-topics.html
+          href: articles/special-topics.html
 
   right:
     - icon: "fa-github"
