@@ -1,93 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/404.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/anomaly-detection.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/cross-validation.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/exogenous-variables.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/get-started.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/historical-forecast.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/articles/quantiles.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/date_conversion.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-get_api_key.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-level_from_quantiles.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-nixtla_data_prep.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/dot-validate_exogenous.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/electricity.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/electricity_exo_vars.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/electricity_future_exo_vars.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/infer_frequency.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtlaR-package.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_detect_anomalies.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_forecast.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_historic.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_set_api_key.html</loc>
-  </url>
-  <url>
-    <loc>https://nixtla.github.io/nixtlar/reference/nixtla_validate_api_key.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://nixtla.github.io/nixtlar/404.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/LICENSE.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/anomaly-detection.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/cross-validation.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/data-requirements.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/exogenous-variables.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/get-started.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/historical-forecast.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/index.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/long-horizon.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/prediction-intervals.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/quantiles.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/setting-up-your-api-key.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/articles/special-topics.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/authors.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/index.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/news/index.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/date_conversion.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/dot-get_api_key.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/dot-level_from_quantiles.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/dot-nixtla_data_prep.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/dot-validate_exogenous.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/electricity.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/electricity_exo_vars.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/electricity_future_exo_vars.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/index.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/infer_frequency.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtlaR-package.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_detect_anomalies.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_forecast.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_historic.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_client_plot.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_set_api_key.html</loc></url>
+<url><loc>https://nixtla.github.io/nixtlar/reference/nixtla_validate_api_key.html</loc></url>
 </urlset>
+

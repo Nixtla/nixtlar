@@ -1,15 +1,19 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   anomaly-detection: anomaly-detection.html
   cross-validation: cross-validation.html
+  data-requirements: data-requirements.html
   exogenous-variables: exogenous-variables.html
   get-started: get-started.html
   historical-forecast: historical-forecast.html
+  long-horizon: long-horizon.html
+  prediction-intervals: prediction-intervals.html
   quantiles: quantiles.html
-last_built: 2024-06-18T04:31Z
+  setting-up-your-api-key: setting-up-your-api-key.html
+  special-topics: special-topics.html
+last_built: 2024-07-07T22:38Z
 urls:
   reference: https://nixtla.github.io/nixtlar/reference
   article: https://nixtla.github.io/nixtlar/articles
-
