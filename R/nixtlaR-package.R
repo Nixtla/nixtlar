@@ -24,6 +24,7 @@
 #' @importFrom ggplot2 theme_minimal
 #' @importFrom httr2 req_headers
 #' @importFrom httr2 req_perform
+#' @importFrom httr2 req_retry
 #' @importFrom httr2 request
 #' @importFrom httr2 resp_status
 #' @importFrom lubridate ymd

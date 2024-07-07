@@ -65,9 +65,9 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
   level <- as.list(level)
   timegpt_data[["level"]] <- level
 
-  # Make request ----
+  # Create request ----
   url_anomaly <- "https://dashboard.nixtla.io/api/anomaly_detection_multi_series"
-  resp_anomaly <- httr2::request(url_anomaly) |>
+  req_anomaly <- httr2::request(url_anomaly) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
@@ -75,13 +75,20 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_perform()
+    httr2::req_retry(
+      max_tries = 6,
+      is_transient = .transient_errors
+      )
+
+  # Send request and fetch response
+  resp_anomaly <- req_anomaly |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
   # Extract anomalies ----
-  anomaly <- httr2::resp_body_json(resp_anomaly)
-  anomaly_list <- lapply(anomaly$data$forecast$data, unlist)
+  anomaly_list <- lapply(resp_anomaly$data$forecast$data, unlist)
   res <- data.frame(do.call(rbind, anomaly_list))
-  colnames(res) <- anomaly$data$forecast$columns
+  colnames(res) <- resp_anomaly$data$forecast$columns
   res[,3:ncol(res)] <- lapply(res[,3:ncol(res)], as.numeric)
 
   # Data transformation ----

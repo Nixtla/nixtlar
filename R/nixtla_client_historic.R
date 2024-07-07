@@ -79,9 +79,9 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     timegpt_data[["level"]] <- level
   }
 
-  # Make request ----
+  # Create request ----
   url_historic <- "https://dashboard.nixtla.io/api/historic_forecast_multi_series"
-  resp_hist <- httr2::request(url_historic) |>
+  req_hist <- httr2::request(url_historic) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
@@ -89,13 +89,20 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_perform()
+    httr2::req_retry(
+      max_tries = 6,
+      is_transient = .transient_errors
+      )
+
+  # Send request and fetch response
+  resp_hist <- req_hist |>
+    httr2::req_perform() |>
+    httr2::resp_body_json()
 
   # Extract fitted values ----
-  hist <- httr2::resp_body_json(resp_hist)
-  fit_list <- lapply(hist$data$forecast$data, unlist)
+  fit_list <- lapply(resp_hist$data$forecast$data, unlist)
   fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
-  names(fitted) <- hist$data$forecast$columns
+  names(fitted) <- resp_hist$data$forecast$columns
   fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
   fitted <- fitted[,-which(names(fitted) == "y")]
 
