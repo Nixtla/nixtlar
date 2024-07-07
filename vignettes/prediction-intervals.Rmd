@@ -1,0 +1,90 @@
+---
+title: "Prediction Intervals"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Prediction Intervals}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+---
+```{r setup, include=FALSE}
+library(httptest2)
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
+
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 12, 
+  fig.height = 8
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+## 1. Uncertainty quantification via prediction intervals  
+For uncertainty quantification, `TimeGPT` can generate both prediction intervals and quantiles, offering a measure of the range of potential outcomes rather than just a single point forecast. In real-life scenarios, forecasting often requires considering multiple alternatives, not just one prediction. This vignette will explain how to use prediction intervals with `TimeGPT` via the `nixtlar` package.
+
+A prediction interval is a range of values that the forecast can take with a given probability, often referred to as the confidence level. Hence, a 95% prediction interval should contain a range of values that includes the actual future value with a probability of 95%. Prediction intervals are part of probabilistic forecasting, which, unlike point forecasting, aims to generate the full forecast distribution instead of just the mean or the median of that distribution.
+
+This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+
+## 2. Load data 
+For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
+
+```{r}
+df <- nixtlar::electricity
+head(df)
+```
+
+## 3. Forecast with prediction intervals
+`TimeGPT` can generate prediction intervals when using the following functions: 
+
+```{r, eval=FALSE}
+- nixtlar::nixtla_client_forecast()
+- nixtlar::nixtla_client_historic() 
+- nixtlar::nixtla_client_detect_anomalies()
+- nixtlar::nixtla_client_cross_validation()
+```
+
+For any of these functions, simply set the `level` argument to the desired confidence level for the prediction intervals. Keep in mind that `level` should be a vector with numbers between 0 and 100. You can use either `quantiles` or `level` for uncertainty quantification, but not both. 
+
+```{r}
+fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", level=c(80,95))
+head(fcst)
+```
+
+Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function uses only the maximum value when there are multiple values. Hence, setting `level=c(90,95,99)`, for example, is equivalent to setting `level=c(99)`, which is the default value.  
+
+```{r}
+anomalies <- nixtla_client_detect_anomalies(df, id_col = "unique_id") # level=c(90,95,99)
+head(anomalies) # only the 99% confidence level is used 
+```
+
+## 4. Plot prediction intervals 
+`nixtlar` includes a function to plot the historical data and any output from `nixtlar::nixtla_client_forecast`, `nixtlar::nixtla_client_historic`, `nixtlar::nixtla_client_detect_anomalies` and `nixtlar::nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
+
+When available, `nixtlar::nixtla_client_plot` will automatically plot the prediction intervals. 
+
+```{r}
+nixtla_client_plot(df, fcst, id_col = "unique_id", max_insample_length = 100)
+```
+
+```{r}
+nixtlar::nixtla_client_plot(df, anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+```
+
+```{r, include=FALSE}
+options(original_options)
+end_vignette()
+```
+
+

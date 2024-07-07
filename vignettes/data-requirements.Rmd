@@ -1,0 +1,119 @@
+---
+title: "Data Requirements"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Data Requirements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+library(httptest2)
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
+
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+This vignette explains the data requirements for using any of the core functions of `nixtlar`:  
+
+```{r, eval=FALSE}
+# Core functions of `nixtlar` 
+- nixtlar::nixtla_client_forecast()
+- nixtlar::nixtla_client_historic()
+- nixtlar::nixtla_client_detect_anomalies()
+- nixtlar::nixtla_client_cross_validation()
+- nixtlar::nixtla_client_plot()
+```
+
+## 1. Input requirements 
+
+`nixtlar` supports input data in the form of data frames and `tsibbles`. When working with the latter, `nixtlar` will do some transformations in the background to comply with `TimeGPT`'s data requirements, but the output will always be a `tsibble` with no additional action required on your part. 
+
+Whether you use a data frame or a `tsibble`, when using any of the core functions of `nixtlar`, you must include the following two columns: 
+
+- **Date column**: This column should contain timestamps, which may be formatted as character strings ( `yyyy-mm-dd` or `yyyy-mm-dd HH:MM:SS`), integers, or date-time objects. The character string format is preferred, although `nixtlar` is compatible with the latter two types. The default name for this column is `ds`. If your dataset uses a different name, please specify it by setting the parameter `time_col="your_time_column_name"`.
+
+- **Target column**: This column should contain the target variable to forecast, and it must be numeric. The default name for this column is `y`. If your data uses a different name, please specify it by setting the parameter `target_col="your target column"`. 
+
+## 2. Multiple series 
+
+If you are working with multiple series, you must include a column with a unique identifier for each of them. This column should contain character strings or integers. Unlike the [Python SDK](https://github.com/Nixtla/nixtla), which defaults to `unique_id`, `nixtlar` does not have a default name for this identifier column. **This is one of the few differences between nixtlar and the Python SDK**. You **must** specify the name of this identifier column if it exists in your dataset. Set this by using `id_col="your_unique_id_column"`.
+
+
+```{r}
+# sample valid input 
+df <- nixtlar::electricity
+head(df)
+str(df)
+```
+
+## 3. Exogenous variables 
+
+When using exogenous variables, you need to 
+
+1. Add the historical exogenous variables to your input data, and 
+2. Create a dataset with the future values of said exogenous variables, ensuring it spans the entire forecast horizon. This dataset should include a column with the appropriate timestamps and, if available, the unique identifiers, in the formats explained in the previous sections.  
+
+Please note that all columns after the target column will be considered exogenous variables. Hence, if you have additional columns in your dataset that are not exogenous variables, you must remove them before using any of the core functions of `nixtlar`. 
+
+```{r}
+# sample valid input with exogenous variables 
+df <- nixtlar::electricity_exo_vars
+head(df)
+
+future_exo_vars <- nixtlar::electricity_future_exo_vars
+head(future_exo_vars)
+```
+
+To learn more about how to use exogenous variables, please refer to the [Exogenous variables vignette](https://nixtla.github.io/nixtlar/articles/exogenous-variables.html). 
+
+## 4. Missing values 
+
+When using `TimeGPT` via `nixtlar`, you need to ensure that:
+
+1. **No Missing Values in Target Column**: The target column must not contain any missing values (NA).
+
+2. **Continuous Date Sequence**: The dates must be continuous and without any gaps, from the start date to the end date, matching the frequency of the data.
+
+Currently, **nixtlar** does not provide any functionality to fill missing values or dates. To learn more about this, please refer to the vignette on [Special Topics](https://nixtla.github.io/nixtlar/articles/special-topics.html). 
+
+## 5. Minimum data requirements 
+
+The minimum size **per series** to obtain results from `nixtlar::nixtla_client_forecast` is one, regardless of the frequency of the data. Keep in mind, however, that this will produce results with limited accuracy. 
+
+For certain scenarios, more than one observation may be necessary:
+
+- When using the parameters `level`, `quantiles`, or `finetune_steps`. 
+- When incorporating exogenous variables. 
+- When including historical forecasts by setting `add_history=TRUE`. 
+
+The minimum data requirement varies with the frequency of the data, detailed in the official [TimeGPT documentation](https://docs.nixtla.io/docs/getting-started-data_requirements). 
+
+When using `nixtlar::nixtla_client_cross_validation`, you also need to consider the forecast horizon (`h`), the number of windows (`n_windows`) and the step size (`step_size`). The formula for the minimum data points required per series is:
+
+\begin{equation}
+\text{Min per series} = \text{Min per frequency}+h+\text{step_size}*(\text{n_windows}-1)
+\end{equation}
+
+Here, $\text{Min per frequency}$ refers to the values specified in the table from the official documentation.
+
+```{r, include=FALSE}
+options(original_options)
+end_vignette()
+```
+
+

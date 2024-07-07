@@ -1,0 +1,99 @@
+---
+title: "Special Topics"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Special Topics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+library(httptest2)
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
+
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+## Special topics 
+
+This vignette explains some special topics regarding the use of `TimeGPT` via `nixtlar`. 
+
+## 1. Handling missing values  
+
+Before using `TimeGPT`, you need to ensure that: 
+
+1. The target column contains no missing values (`NA`).  
+2. Given the frequency of the data, the dates are continuous, with no missing dates between the start and the end dates.  
+
+Regarding the second point, it is worth mentioning that it is possible to have multiple time series that start and end on different dates, but each series must contain uninterrupted data for its given time frame.
+
+There are several ways to check for missing values in R. One method is with the `any` and `is.na` functions from base R. 
+
+```{r}
+
+df <- nixtlar::electricity # load data 
+
+# create some missing values at random 
+index <- sample(nrow(df), 10)
+df$y[index] <- NA
+
+# check for missing values 
+any(is.na(df)) # will return TRUE if there are missing values 
+```
+
+If you find missing values in your data, you need to decide how to fill them, which is very context-dependent. For example, if you are dealing with daily retail data, a missing value most likely indicates that there were no sales on that day, and you can probably fill it with zero. However, if you are working with hourly temperature data, a missing value likely means that the sensor was not functioning correctly, and you might prefer to use interpolation to fill the missing values. Whatever you decide to do, always keep in mind the nature of your data.
+
+Checking if there are missing dates is more complicated since it depends on the frequency of the data. Sometimes plotting can help spot large gaps. `nixtlar` has a plotting function called `nixtla_client_plot` that can be used for this. 
+
+However, this method is ineffective when the missing dates are not continuous. One possible solution is to compare the dates for every unique id with a vector of dates generated using the start date, the end date, and the frequency of your data. This requires knowing such information, which can become tricky when working with hundreds or thousands of time series.
+
+## 2. Specifying the frequency of your data 
+
+The frequency parameter is crucial when working with time series data because it informs the model about the expected intervals between data points. The core functions of `nixtlar` that interface with `TimeGPT`, such as `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_detect_anomalies`, and `nixtla_client_cross_validation`, require you to specify the `freq` parameter, although in some cases `nixtlar` can deduce it from your data. 
+
+`TimeGPT` supports any of [pandas's offset aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases). Some common aliases are presented in the table below. 
+
+| Frequency                 | Alias   | 
+|---------------------------|---------|
+| Yearly                    | Y or A  | 
+| Quarterly                 | Q       |
+| Monthly                   | M       | 
+| Weekly (starting Sundays) | W       | 
+| Daily                     | D       |
+| Hourly                    | H       | 
+
+The default value of the frequency parameter is `NULL`. When this parameter is not specified, `nixtlar` will attempt to determine the frequency of your data. For most common frequencies, such as yearly, quarterly, monthly, weekly, daily, and hourly, `nixtlar` can identify the frequency from the `time_col` column, regardless of whether you are working with data frames or tsibbles. 
+
+```{r}
+
+df <- nixtlar::electricity
+fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95)) # freq = "H"
+# infer the frequency when `freq` is not specified 
+```
+
+When the frequency is not apparent, `nixtlar` will default to a daily frequency. Currently, `nixtlar` cannot automatically detect subhourly frequencies. In such cases, you must explicitly specify these frequencies. For example, for subhourly data, you should set `freq="15T"` for fifteen-minute data intervals.
+
+Moreover, if you are dealing with irregular frequencies, such as business days or custom holiday calendars, you must specify them directly. For instance, for business days, you should set `freq="B"`, which corresponds to the pandas alias for business day frequency.
+
+When dealing with weekly frequency (`W`), `nixtlar` assumes that the weeks start on Sunday. Consequently, `TimeGPT` will return dates corresponding to weeks that begin on Sundays. If your weeks start on a different day, for example, Mondays, you should specify the frequency as `W-MON`. You can select any day of the week with the aliases `W-MON`, `W-TUE`, `W-WED`, `W-THU`, `W-FRI`, and `W-SAT`.
+
+
+```{r, include=FALSE}
+options(original_options)
+end_vignette()
+```
+
