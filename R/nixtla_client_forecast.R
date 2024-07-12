@@ -75,6 +75,9 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
       dplyr::select(-y)
 
     exogenous <- rbind(exogenous, X_df)
+    if(freq == "H" & class(exogenous$ds)[1] %in% c("POSIXt", "POSIXct", "POSIXlt")){
+      exogenous$ds <- format(exogenous$ds, "%Y-%m-%d %H:%M:%S")
+    }
 
     x <- list(
       columns = names(exogenous),

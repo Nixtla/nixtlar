@@ -81,6 +81,9 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
       dplyr::select(-y)
 
     exogenous <- rbind(exogenous, X_df)
+    if(freq == "H" & class(exogenous$ds)[1] %in% c("POSIXt", "POSIXct", "POSIXlt")){
+      exogenous$ds <- format(exogenous$ds, "%Y-%m-%d %H:%M:%S")
+    }
 
     x <- list(
       columns = names(exogenous),

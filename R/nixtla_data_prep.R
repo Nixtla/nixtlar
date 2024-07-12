@@ -36,6 +36,10 @@
   # Prepare data
   filtered_df <- df[,c("unique_id", "ds", "y")]
 
+  if(freq == "H" & class(filtered_df$ds)[1] %in% c("POSIXt", "POSIXct", "POSIXlt")){
+    filtered_df$ds <- format(filtered_df$ds, "%Y-%m-%d %H:%M:%S")
+  }
+
   y <- list(
     columns = names(filtered_df),
     data = lapply(1:nrow(filtered_df), function(i) as.list(filtered_df[i,]))
