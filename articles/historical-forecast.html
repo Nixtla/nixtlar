@@ -135,9 +135,8 @@ forecast.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nixtla_client_fitted_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_historic.html">nixtla_client_historic</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fitted_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fitted_values</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-80 TimeGPT-lo-95</span></span>
 <span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 56.07623      13.95557     -8.341764</span></span>
 <span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 52.41973      10.29907    -11.998258</span></span>
@@ -185,7 +184,7 @@ and any output from <code>nixtla_client_forecast</code>,
 <code>nixtla_client_cross_validation</code>. If you have long series,
 you can use <code>max_insample_length</code> to only plot the last N
 historical values (the forecast will always be plotted in full).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fitted_values</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
 <p><img src="historical-forecast_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>

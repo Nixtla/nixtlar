@@ -195,9 +195,8 @@ data frames or tsibbles.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "H"</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
 <p>When the frequency is not apparent, <code>nixtlar</code> will default
 to a daily frequency. Currently, <code>nixtlar</code> cannot
 automatically detect subhourly frequencies. In such cases, you must

@@ -137,9 +137,8 @@ should all be numbers between 0 and 1. You can use either
 quantification, but not both.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-q-10 TimeGPT-q-20 TimeGPT-q-30</span></span>
 <span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045     40.42074     42.34211     43.54112</span></span>
 <span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445     36.91513     40.05255     41.62179</span></span>
@@ -168,7 +167,7 @@ last N historical values (the forecast will always be plotted in
 full).</p>
 <p>When available, <code><a href="../reference/nixtla_client_plot.html">nixtlar::nixtla_client_plot</a></code> will
 automatically plot the quantiles.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
 <p><img src="quantiles_files/figure-html/unnamed-chunk-5-1.png" width="1152"></p>

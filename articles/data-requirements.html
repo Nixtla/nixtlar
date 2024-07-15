@@ -141,9 +141,8 @@ exists in your dataset. Set this by using
 <span><span class="co">#&gt; 3        BE 2016-10-22 02:00:00 37.10</span></span>
 <span><span class="co">#&gt; 4        BE 2016-10-22 03:00:00 44.75</span></span>
 <span><span class="co">#&gt; 5        BE 2016-10-22 04:00:00 37.10</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    8400 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;  $ unique_id: chr  "BE" "BE" "BE" "BE" ...</span></span>
 <span><span class="co">#&gt;  $ ds       : chr  "2016-10-22 00:00:00" "2016-10-22 01:00:00" "2016-10-22 02:00:00" "2016-10-22 03:00:00" ...</span></span>
@@ -165,7 +164,7 @@ sections.</li>
 considered exogenous variables. Hence, if you have additional columns in
 your dataset that are not exogenous variables, you must remove them
 before using any of the core functions of <code>nixtlar</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sample valid input with exogenous variables </span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity_exo_vars.html">electricity_exo_vars</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -182,9 +181,8 @@ before using any of the core functions of <code>nixtlar</code>.</p>
 <span><span class="co">#&gt; 3     0     0     1     0</span></span>
 <span><span class="co">#&gt; 4     0     0     1     0</span></span>
 <span><span class="co">#&gt; 5     0     0     1     0</span></span>
-<span><span class="co">#&gt; 6     0     0     1     0</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; 6     0     0     1     0</span></span>
+<span></span>
 <span><span class="va">future_exo_vars</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity_future_exo_vars.html">electricity_future_exo_vars</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">future_exo_vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds Exogenous1 Exogenous2 day_0 day_1 day_2 day_3</span></span>
