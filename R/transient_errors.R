@@ -5,7 +5,7 @@
 #'
 #' @return TRUE if the response status is 500 or 502, FALSE otherwise.
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' \dontrun{
 #' .transient_errors(resp)

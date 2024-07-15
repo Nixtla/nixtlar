@@ -80,7 +80,7 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
   }
 
   # Create request ----
-  url_historic <- "https://dashboard.nixtla.io/api/historic_forecast_multi_series"
+  url_historic <- "https://api.nixtla.io/historic_forecast_multi_series"
   req_hist <- httr2::request(url_historic) |>
     httr2::req_headers(
       "accept" = "application/json",
