@@ -66,7 +66,7 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
   timegpt_data[["level"]] <- level
 
   # Create request ----
-  url_anomaly <- "https://dashboard.nixtla.io/api/anomaly_detection_multi_series"
+  url_anomaly <- "https://api.nixtla.io/anomaly_detection_multi_series"
   req_anomaly <- httr2::request(url_anomaly) |>
     httr2::req_headers(
       "accept" = "application/json",

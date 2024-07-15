@@ -102,7 +102,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   }
 
   # Create request ----
-  url <- "https://dashboard.nixtla.io/api/forecast_multi_series"
+  url <- "https://api.nixtla.io/forecast_multi_series"
   req <- httr2::request(url) |>
     httr2::req_headers(
       "accept" = "application/json",

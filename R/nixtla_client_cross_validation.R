@@ -108,7 +108,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
   }
 
   # Create request ----
-  url_cv <- "https://dashboard.nixtla.io/api/cross_validation_multi_series"
+  url_cv <- "https://api.nixtla.io/cross_validation_multi_series"
   req_cv <- httr2::request(url_cv) |>
     httr2::req_headers(
       "accept" = "application/json",
