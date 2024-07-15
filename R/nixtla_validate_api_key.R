@@ -13,7 +13,7 @@ nixtla_validate_api_key <- function(){
 
   api_key <- .get_api_key()
 
-  url <- "https://dashboard.nixtla.io/api/forecast"
+  url <- "https://api.nixtla.io/forecast"
   resp <- httr2::request(url) |>
     httr2::req_headers(
       Authorization = paste("Bearer", api_key)
