@@ -67,6 +67,12 @@ Alternatively, you can install the development version of `nixtlar` from
 devtools::install_github("Nixtla/nixtlar")
 ```
 
+#### CRAN vs development version
+
+Currently, the development version contains some features not yet
+available in CRAN. To learn more, please read the release notes
+[here](https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3).
+
 # Forecast Using TimeGPT in 3 Easy Steps
 
 ``` r

@@ -13,6 +13,8 @@ navbar:
       href: reference/index.html
     - text: "Nixtla"
       href: https://docs.nixtla.io/
+    - text: "News"
+      href: news/index.html
     - text: "Articles"
       menu:
         - text: "Anomaly Detection"
@@ -48,4 +50,5 @@ home:
     href: https://github.com/Nixtla/nixtlar/issues
   - text: "Learn more"
     href: https://arxiv.org/abs/2310.03589
+
 
