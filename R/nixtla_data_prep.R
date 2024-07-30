@@ -17,33 +17,54 @@
 #'
 .nixtla_data_prep <- function(df, freq, id_col, time_col, target_col){
 
-  if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
-    stop("Only tsibbles or data frames are allowed.")
+  # Rename columns and add unique identifier if necessary
+  # Transform time column if applicable (for example, if it is in yearmonth format)
+  # Infer frequency if not supplied by the user
+  # Extract timezone if available
+
+  names(df)[which(names(df) == time_col)] <- "ds"
+  names(df)[which(names(df) == target_col)] <- "y"
+
+  if(is.null(id_col)){
+    # add series id
+    if(tsibble::is_tsibble(df)){
+      df <- df |>
+        dplyr::mutate(unique_id = "ts_0") |>
+        dplyr::select(c("unique_id", tidyselect::everything())) |>
+        tsibble::as_tsibble(index = ds, key = unique_id)
+    }else{
+      df <- df |>
+        dplyr::mutate(unique_id = "ts_0") |>
+        dplyr::select(c("unique_id", tidyselect::everything()))
+    }
+  }else{
+    names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
-  # If df is a tsibble, convert dates to strings and infer frequency if necessary
-  if(tsibble::is_tsibble(df)){
-    res <- date_conversion(df)
+  cls <- class(df$ds)[1]
+  if(cls != "character"){
+    res <- .date_conversion(df, freq, cls)
     df <- res$df
     freq <- res$freq
+    tzone <- res$tzone
   }
 
-  # Infer frequency if not available
+  # Infer frequency if still not available
   if(is.null(freq)){
     freq <- infer_frequency(df)
   }
 
   # Prepare data
-  filtered_df <- df[,c("unique_id", "ds", "y")]
-
-  y <- list(
-    columns = names(filtered_df),
-    data = lapply(1:nrow(filtered_df), function(i) as.list(filtered_df[i,]))
-    )
-
-  res <- list(freq = freq,
-              y = y
-              )
+  # filtered_df <- df[,c("unique_id", "ds", "y")]
+  #
+  # y <- list(
+  #   columns = names(filtered_df),
+  #   data = lapply(1:nrow(filtered_df), function(i) as.list(filtered_df[i,]))
+  #   )
+  #
+  # res <- list(freq = freq,
+  #             y = y
+  #             )
 
   return(res)
 }

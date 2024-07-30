@@ -27,20 +27,12 @@
 #'
 nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
-  # Prepare data ----
-  names(df)[which(names(df) == time_col)] <- "ds"
-  names(df)[which(names(df) == target_col)] <- "y"
-
-  if(is.null(id_col)){
-    # create unique_id for single series
-    df <- df |>
-      dplyr::mutate(unique_id = "ts_0") |>
-      dplyr::select(c("unique_id", tidyselect::everything()))
-  }else{
-    # id_col is not NULL
-    names(df)[which(names(df) == id_col)] <- "unique_id"
+  if(!is.data.frame(df) & !tibble::is_tibble(df) & !tsibble::is_tsibble(df)){
+    stop("Input must be a data frame, a tibble, or a tsibble.")
   }
+  data_type <- class(df)[1]
 
+  # Data preparation ----
   data <- .nixtla_data_prep(df, freq, id_col, time_col, target_col)
   freq <- data$freq
   y <- data$y
