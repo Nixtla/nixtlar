@@ -50,6 +50,9 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
     # input includes exogenous variables
     exogenous <-  df |>
       dplyr::select(-c(.data$y))
+    if(freq == "H" & class(exogenous$ds)[1] %in% c("POSIXt", "POSIXct", "POSIXlt")){
+      exogenous$ds <- format(exogenous$ds, "%Y-%m-%d %H:%M:%S")
+    }
 
     x <- list(
       columns = names(exogenous),
