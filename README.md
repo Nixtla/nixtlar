@@ -239,6 +239,10 @@ arXiv preprint arXiv:2310.03589. Available at
 TimeGPT is closed source. However, this SDK is open source and available
 under the Apache 2.0 License, so feel free to contribute!
 
+# Code of Conduct
+
+Please note that the nixtlar project is released with a [Contributor Code of Conduct](https://nixtla.github.io/nixtlar/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
 # Get in Touch
 
 We welcome your input and contributions to the `nixtlar` package!
@@ -251,3 +255,5 @@ We welcome your input and contributions to the `nixtlar` package!
   request](https://github.com/Nixtla/nixtlar/pulls) in our repository.
   Whether it is fixing a bug, adding a new feature, or improving the
   documentation, we appreciate your help in making `nixtlar` better.
+  
+
