@@ -103,6 +103,52 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
 
   # Create request ----
   url <- "https://api.nixtla.io/forecast_multi_series"
+
+  unique_ids <- unique(sapply(timegpt_data$y$data, function(x) x$unique_id))
+
+  filter_by_unique_id <- function(original_list, unique_id) {
+    new_list <- original_list
+    new_list$y$data <- Filter(function(x) x$unique_id == unique_id, original_list$y$data)
+    return(new_list)
+  }
+
+  filtered_lists <- lapply(unique_ids, function(id) filter_by_unique_id(timegpt_data, id))
+
+  future::plan(multisession)
+
+  make_request <- function(filtered_lists_element) {
+    req <- httr2::request(url) |>
+      httr2::req_headers(
+        "accept" = "application/json",
+        "content-type" = "application/json",
+        "authorization" = paste("Bearer", .get_api_key())
+      ) |>
+      httr2::req_user_agent("nixtlar") |>
+      httr2::req_body_json(data = filtered_lists_element) |>
+      httr2::req_retry(
+        max_tries = 6,
+        is_transient = .transient_errors
+      )
+
+    resp <- req |>
+      httr2::req_perform() |>
+      httr2::resp_body_json()
+
+    return(resp)
+  }
+
+  responses <- future.apply::future_lapply(filtered_lists, make_request)
+
+  fcst_list <- lapply(responses, function(resp) {
+    fc_list <- lapply(resp$data$forecast$data, unlist)
+    fc <- data.frame(do.call(rbind, fc_list))
+    names(fc) <- resp$data$forecast$columns
+    return(fc)
+  })
+
+  fcst <- do.call(rbind, fcsts)
+
+  # Original code -------------------------------------------------------------*
   req <- httr2::request(url) |>
     httr2::req_headers(
       "accept" = "application/json",
@@ -125,6 +171,9 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   fc_list <- lapply(resp$data$forecast$data, unlist)
   fcst <- data.frame(do.call(rbind, fc_list))
   names(fcst) <- resp$data$forecast$columns
+
+  #----------------------------------------------------------------------------*
+
   if(!is.null(level)){
     fcst[,3:ncol(fcst)] <- lapply(fcst[,3:ncol(fcst)], as.numeric)
   }else{
