@@ -14,6 +14,7 @@
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param add_history Return fitted values of the model.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
+#' @param num_partitions Number of partitions to use.
 #'
 #' @return 'TimeGPT''s forecast.
 #' @export
@@ -25,9 +26,7 @@
 #'   fcst <- nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
-
-  starttime <- Sys.time()
+nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1", num_partitions=NULL){
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -107,14 +106,22 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   url <- "https://api.nixtla.io/forecast_multi_series"
 
   unique_ids <- unique(sapply(timegpt_data$y$data, function(x) x$unique_id))
-  num_partitions <- as.numeric(future::availableCores())
-  ids_per_set <- ceiling(length(unique_ids)/num_partitions)
-  split_unique_ids <- split(unique_ids, rep(1:num_partitions, each = ids_per_set, length.out = length(unique_ids)))
+
+  num_parts <- as.numeric(future::availableCores())
+  if(is.null(num_partitions)){
+    num_parts <- 1
+  }else if(num_partitions == "auto" | num_partitions >= as.numeric(future::availableCores())){
+    num_parts <- as.numeric(future::availableCores())
+  } # else use the number of partitions given by the user
+
+  ids_per_set <- ceiling(length(unique_ids)/num_parts)
+  split_unique_ids <- split(unique_ids, rep(1:num_parts, each = ids_per_set, length.out = length(unique_ids)))
   unique_ids_sets <- lapply(split_unique_ids, function(x) as.character(x))
 
   filter_by_unique_id <- function(original_list, unique_ids) {
     new_list <- original_list
     new_list$y$data <- Filter(function(x) x$unique_id %in% unique_ids, original_list$y$data)
+    new_list$x$data <- Filter(function(x) x$unique_id %in% unique_ids, original_list$x$data)
     return(new_list)
   }
 
@@ -143,9 +150,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     return(resp)
   }
 
-  start_time <- Sys.time()
   responses <- future.apply::future_lapply(filtered_lists, make_request)
-  end_time <- Sys.time()
 
   fcst_list <- lapply(responses, function(resp) {
     fc_list <- lapply(resp$data$forecast$data, unlist)
@@ -159,7 +164,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   if(!is.null(level)){
     fcst[, 3:ncol(fcst)] <- future.apply::future_lapply(fcst[, 3:ncol(fcst)], as.numeric)
   }else{
-    fcst$TimeGPT <- future.apply::future_lapply(fcst$TimeGPT, as.numeric)
+    fcst$TimeGPT <- do.call(c, future.apply::future_lapply(fcst$TimeGPT, as.numeric))
   }
 
   # Rename quantile columns if necessary
@@ -241,8 +246,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
     }
   }
 
-  endtime <- Sys.time()
-  print(paste0("Total execution time: ", endtime-starttime))
+  row.names(fcst) <- NULL
 
   return(fcst)
 }
