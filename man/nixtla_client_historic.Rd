@@ -14,7 +14,9 @@ nixtla_client_historic(
   quantiles = NULL,
   finetune_steps = 0,
   finetune_loss = "default",
-  clean_ex_first = TRUE
+  clean_ex_first = TRUE,
+  model = "timegpt-1",
+  num_partitions = NULL
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ nixtla_client_historic(
 \item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
+
+\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+
+\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
 'TimeGPT''s forecast for the in-sample period.

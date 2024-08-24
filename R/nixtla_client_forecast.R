@@ -28,7 +28,7 @@
 #'
 nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1", num_partitions=NULL){
 
-  start_time <- Sys.time()
+  start <- Sys.time()
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
   names(df)[which(names(df) == target_col)] <- "y"
@@ -120,7 +120,6 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   })
 
   fcst <- do.call(rbind, fcst_list)
-
   if(!is.null(level)){
     fcst[, 3:ncol(fcst)] <- future.apply::future_lapply(fcst[, 3:ncol(fcst)], as.numeric)
   }else{
@@ -154,7 +153,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   }
 
   # Date transformation ----
-  fcst <- .transform_output_dates(fcst, freq, data$flag)
+  fcst <- .transform_output_dates(fcst, "ds", freq, data$flag)
 
   # Rename columns ----
   names(fcst)[which(names(fcst) == "ds")] <- time_col
@@ -180,8 +179,9 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   }
 
   row.names(fcst) <- NULL
-  end_time <- Sys.time()
-  print(paste0("Total execution time: ", end_time-start_time))
+
+  end <- Sys.time()
+  print(paste0("Total execution time: ", end-start))
 
   return(fcst)
 }

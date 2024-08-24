@@ -15,6 +15,7 @@
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
+#' @param num_partitions A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.
 #'
 #' @return A tsibble or a data frame with 'TimeGPT''s cross validation result.
 #' @export
@@ -26,7 +27,9 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
+
+  start <- Sys.time()
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -109,30 +112,24 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
 
   # Create request ----
   url_cv <- "https://api.nixtla.io/cross_validation_multi_series"
-  req_cv <- httr2::request(url_cv) |>
-    httr2::req_headers(
-      "accept" = "application/json",
-      "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_api_key())
-    ) |>
-    httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_retry(
-      max_tries = 6,
-      is_transient = .transient_errors
-      )
 
-  # Send request and fetch response ----
-  resp_cv <- req_cv |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
+  payload_list <- .partition_payload(timegpt_data, num_partitions)
+
+  future::plan(future::multisession)
+
+  responses <- .make_request(url_cv, payload_list)
 
   # Extract cross-validation ----
-  cv_list <- lapply(resp_cv$data$forecast$data, unlist)
-  res <- data.frame(do.call(rbind, cv_list))
-  colnames(res) <- resp_cv$data$forecast$columns
-  res[,4:ncol(res)] <- lapply(res[,4:ncol(res)], as.numeric)
-  res$cutoff <- lubridate::ymd_hms(res$cutoff)
+  cross_val_list <- lapply(responses, function(resp) {
+    cv_list <- lapply(resp$data$forecast$data, unlist)
+    cv <- data.frame(do.call(rbind, cv_list))
+    names(cv) <- resp$data$forecast$columns
+    return(cv)
+  })
+
+  res <- do.call(rbind, cross_val_list)
+
+  res[, 4:ncol(res)] <- future.apply::future_lapply(res[, 4:ncol(res)], as.numeric)
 
   # Rename quantile columns if necessary
   if(!is.null(quantiles)){
@@ -160,41 +157,10 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     }
   }
 
-  # Data transformation ----
-  if(tsibble::is_tsibble(df)){
-    res$ds <- switch(freq,
-                     "Y" = as.numeric(substr(res$ds, 1, 4)),
-                     "A" = as.numeric(substr(res$ds, 1, 4)),
-                     "Q" = tsibble::yearquarter(res$ds),
-                     "MS" = tsibble::yearmonth(res$ds),
-                     "W" = tsibble::yearweek(res$ds),
-                     "H" = lubridate::ymd_hms(res$ds),
-                     lubridate::ymd(res$ds) # default (daily or other)
-                     )
-    res$cutoff <- switch(freq,
-                         "Y" = as.numeric(substr(res$cutoff, 1, 4)),
-                         "A" = as.numeric(substr(res$cutoff, 1, 4)),
-                         "Q" = tsibble::yearquarter(res$cutoff),
-                         "MS" = tsibble::yearmonth(res$cutoff),
-                         "W" = tsibble::yearweek(res$cutoff),
-                         "H" = lubridate::ymd_hms(res$cutoff),
-                         lubridate::ymd(res$cutoff) # default (daily or other)
-                         )
-    if(is.null(id_col)){
-      res <- tsibble::as_tsibble(res, index="ds")
-    }else{
-      res <- tsibble::as_tsibble(res, key="unique_id", index="ds")
-    }
-  }else{
-    # If df is a data frame, convert ds to dates
-    if(freq == "H"){
-      res$ds <- lubridate::ymd_hms(res$ds)
-      res$cutoff <- lubridate::ymd_hms(res$cutoff)
-    }else{
-      res$ds <- lubridate::ymd(res$ds)
-      res$cutoff <- lubridate::ymd(res$cutoff)
-    }
-  }
+  # Date transformation ----
+  res <- .transform_output_dates(res, "ds", freq, data$flag)
+  new_cutoff <- future.apply::future_lapply(res$cutoff, lubridate::ymd_hms)
+  res$cutoff <- do.call(c, new_cutoff)
 
   # Rename columns ----
   colnames(res)[which(colnames(res) == "ds")] <- time_col
@@ -205,6 +171,11 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
     res <- res |>
       dplyr::select(-c(.data$unique_id))
   }
+
+  row.names(res) <- NULL
+
+  end <- Sys.time()
+  print(paste0("Total execution time: ", end-start))
 
   return(res)
 }

@@ -51,7 +51,7 @@ nixtla_client_forecast(
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 
-\item{num_partitions}{Number of partitions to use.}
+\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
 'TimeGPT''s forecast.

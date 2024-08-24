@@ -1,7 +1,8 @@
 #' Transform and format dates in 'TimeGPT' output
 ##' This is a private function of 'nixtlar'
 #'
-#' @param fcst Dataframe with the 'TimeGPT' output, where column 'ds' contains date strings.
+#' @param df Dataframe with the 'TimeGPT' output, where column 'col' contains date strings.
+#' @param col Name of the column with the dates to transform.
 #' @param freq Frequency of the data.
 #' @param flag Indicator where 1 denotes 'tsibble' and 0 denotes 'dataframe'.
 #'
@@ -11,10 +12,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   fcst <- .transform_output_dates(fcst, freq, flag)
+#'   fcst <- .transform_output_dates(fcst, col, freq, flag)
 #' }
 #'
-.transform_output_dates <- function(fcst, freq, flag){
+.transform_output_dates <- function(df, col, freq, flag){
+
+  index_col <- which(names(df) == col)
 
   transform_ds <- function(date) {
     switch(freq,
@@ -29,22 +32,24 @@
   }
 
   if(flag == 1){
-    new_ds <- future.apply::future_lapply(fcst$ds, transform_ds)
-    fcst$ds <- do.call(c, new_ds)
-    if(is.null(id_col)){
-      fcst <- tsibble::as_tsibble(fcst, index="ds")
-    }else{
-      fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
-    }
+    new_ds <- future.apply::future_lapply(df[,index_col], transform_ds)
+    df[,index_col] <- do.call(c, new_ds)
   }else{
-    # flag == 0
     if(freq == "H") {
-      new_ds <- future.apply::future_lapply(fcst$ds, lubridate::ymd_hms)
+      new_ds <- future.apply::future_lapply(df[,index_col], lubridate::ymd_hms)
     }else{
-      new_ds <- future.apply::future_lapply(fcst$ds, lubridate::ymd)
+      new_ds <- future.apply::future_lapply(df[,index_col], lubridate::ymd)
     }
-    fcst$ds <- do.call(c, new_ds)
+    df[,index_col] <- do.call(c, new_ds)
   }
 
-  return(fcst)
+  if(flag == 1 && !(tsibble::is_tsibble(df))){
+    if(is.null(id_col)){
+      df <- tsibble::as_tsibble(df, index="ds")
+    }else{
+      df <- tsibble::as_tsibble(df, key="unique_id", index="ds")
+    }
+  }
+
+  return(df)
 }

@@ -5,10 +5,12 @@
 \title{Transform and format dates in 'TimeGPT' output
 This is a private function of 'nixtlar'}
 \usage{
-.transform_output_dates(fcst, freq, flag)
+.transform_output_dates(df, col, freq, flag)
 }
 \arguments{
-\item{fcst}{Dataframe with the 'TimeGPT' output, where column 'ds' contains date strings.}
+\item{df}{Dataframe with the 'TimeGPT' output, where column 'col' contains date strings.}
+
+\item{col}{Name of the column with the dates to transform.}
 
 \item{freq}{Frequency of the data.}
 
@@ -23,7 +25,7 @@ This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{
-  fcst <- .transform_output_dates(fcst, freq, flag)
+  fcst <- .transform_output_dates(fcst, col, freq, flag)
 }
 
 }

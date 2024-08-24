@@ -10,6 +10,8 @@
 #' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
+#' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
+#' @param num_partitions A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.
 #'
 #' @return 'TimeGPT''s forecast for the in-sample period.
 #' @export
@@ -21,7 +23,9 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE){
+nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
+
+  start <- Sys.time()
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -81,30 +85,24 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
 
   # Create request ----
   url_historic <- "https://api.nixtla.io/historic_forecast_multi_series"
-  req_hist <- httr2::request(url_historic) |>
-    httr2::req_headers(
-      "accept" = "application/json",
-      "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_api_key())
-    ) |>
-    httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_retry(
-      max_tries = 6,
-      is_transient = .transient_errors
-      )
 
-  # Send request and fetch response
-  resp_hist <- req_hist |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
+  payload_list <- .partition_payload(timegpt_data, num_partitions)
+
+  future::plan(future::multisession)
+
+  responses <- .make_request(url_historic, payload_list)
 
   # Extract fitted values ----
-  fit_list <- lapply(resp_hist$data$forecast$data, unlist)
-  fitted <- data.frame(do.call(rbind, fit_list), stringsAsFactors=FALSE)
-  names(fitted) <- resp_hist$data$forecast$columns
-  fitted[,3:ncol(fitted)] <- lapply(fitted[,3:ncol(fitted)], as.numeric)
+  fitted_list <- lapply(responses, function(resp) {
+    fit_list <- lapply(resp$data$forecast$data, unlist)
+    fit <- data.frame(do.call(rbind, fit_list))
+    names(fit) <- resp$data$forecast$columns
+    return(fit)
+  })
+
+  fitted <- do.call(rbind, fitted_list)
   fitted <- fitted[,-which(names(fitted) == "y")]
+  fitted[, 3:ncol(fitted)] <- future.apply::future_lapply(fitted[, 3:ncol(fitted)], as.numeric)
 
   # Rename quantile columns if necessary
   if(!is.null(quantiles)){
@@ -132,29 +130,8 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     }
   }
 
-  # Data transformation ----
-  if(tsibble::is_tsibble(df)){
-    fitted$ds <- switch(freq,
-                        "Y" = as.numeric(substr(fitted$ds, 1, 4)),
-                        "A" = as.numeric(substr(fitted$ds, 1, 4)),
-                        "Q" = tsibble::yearquarter(fitted$ds),
-                        "MS" = tsibble::yearmonth(fitted$ds),
-                        "W" = tsibble::yearweek(fitted$ds),
-                        "H" = lubridate::ymd_hms(fitted$ds),
-                        lubridate::ymd(fitted$ds)) # default (daily "D" or other)
-    if(is.null(id_col)){
-      fitted <- tsibble::as_tsibble(fitted, index="ds")
-    }else{
-      fitted <- tsibble::as_tsibble(fitted, key="unique_id", index="ds")
-    }
-  }else{
-    # If df is a data frame, convert ds to dates
-    if(freq == "H"){
-      fitted$ds <- lubridate::ymd_hms(fitted$ds)
-    }else{
-      fitted$ds <- lubridate::ymd(fitted$ds)
-    }
-  }
+  # Date transformation ----
+  fitted <- .transform_output_dates(fitted, "ds", freq, data$flag)
 
   # Rename columns ----
   names(fitted)[which(names(fitted) == "ds")] <- time_col
@@ -165,6 +142,11 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     fitted <- fitted |>
       dplyr::select(-c(.data$unique_id))
   }
+
+  row.names(fitted) <- NULL
+
+  end <- Sys.time()
+  print(paste0("Total execution time: ", end-start))
 
   return(fitted)
 }

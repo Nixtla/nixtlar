@@ -8,6 +8,7 @@
 #' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
+#' @param num_partitions A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.
 #'
 #' @return A tsibble or a data frame with the anomalies detected in the historical period.
 #' @export
@@ -19,7 +20,9 @@
 #'   fcst <- nixtlar::nixtla_client_anomaly_detection(df, id_col="unique_id")
 #' }
 #'
-nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
+
+  start <- Sys.time()
 
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
@@ -67,54 +70,26 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
 
   # Create request ----
   url_anomaly <- "https://api.nixtla.io/anomaly_detection_multi_series"
-  req_anomaly <- httr2::request(url_anomaly) |>
-    httr2::req_headers(
-      "accept" = "application/json",
-      "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_api_key())
-    ) |>
-    httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = timegpt_data) |>
-    httr2::req_retry(
-      max_tries = 6,
-      is_transient = .transient_errors
-      )
 
-  # Send request and fetch response
-  resp_anomaly <- req_anomaly |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
+  payload_list <- .partition_payload(timegpt_data, num_partitions)
+
+  future::plan(future::multisession)
+
+  responses <- .make_request(url_anomaly, payload_list)
 
   # Extract anomalies ----
-  anomaly_list <- lapply(resp_anomaly$data$forecast$data, unlist)
-  res <- data.frame(do.call(rbind, anomaly_list))
-  colnames(res) <- resp_anomaly$data$forecast$columns
-  res[,3:ncol(res)] <- lapply(res[,3:ncol(res)], as.numeric)
+  anomaly_list <- lapply(responses, function(resp) {
+    anm_list <- lapply(resp$data$forecast$data, unlist)
+    anm <- data.frame(do.call(rbind, anm_list))
+    names(anm) <- resp$data$forecast$columns
+    return(anm)
+  })
 
-  # Data transformation ----
-  if(tsibble::is_tsibble(df)){
-    res$ds <- switch(freq,
-                     "Y" = as.numeric(substr(res$ds, 1, 4)),
-                     "A" = as.numeric(substr(res$ds, 1, 4)),
-                     "Q" = tsibble::yearquarter(res$ds),
-                     "MS" = tsibble::yearmonth(res$ds),
-                     "W" = tsibble::yearweek(res$ds),
-                     "H" = lubridate::ymd_hms(res$ds),
-                     lubridate::ymd(res$ds) # default (daily or other)
-    )
-    if(is.null(id_col)){
-      res <- tsibble::as_tsibble(res, index="ds")
-    }else{
-      res <- tsibble::as_tsibble(res, key="unique_id", index="ds")
-    }
-  }else{
-    # If df is a data frame, convert ds to dates
-    if(freq == "H"){
-      res$ds <- lubridate::ymd_hms(res$ds)
-    }else{
-      res$ds <- lubridate::ymd(res$ds)
-    }
-  }
+  res <- do.call(rbind, anomaly_list)
+  res[, 3:ncol(res)] <- future.apply::future_lapply(res[, 3:ncol(res)], as.numeric)
+
+  # Date transformation ----
+  res <- .transform_output_dates(res, "ds", freq, data$flag)
 
   # Rename columns ----
   colnames(res)[which(colnames(res) == "ds")] <- time_col
@@ -125,6 +100,11 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
     res <- res |>
       dplyr::select(-c(.data$unique_id))
   }
+
+  row.names(res) <- NULL
+
+  end <- Sys.time()
+  print(paste0("Total execution time: ", end-start))
 
   return(res)
 }

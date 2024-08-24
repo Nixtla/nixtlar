@@ -12,7 +12,8 @@ nixtla_client_detect_anomalies(
   target_col = "y",
   level = c(99),
   clean_ex_first = TRUE,
-  model = "timegpt-1"
+  model = "timegpt-1",
+  num_partitions = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ nixtla_client_detect_anomalies(
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+
+\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
 A tsibble or a data frame with the anomalies detected in the historical period.
