@@ -14,7 +14,7 @@
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param add_history Return fitted values of the model.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
-#' @param num_partitions Number of partitions to use.
+#' @param num_partitions A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.
 #'
 #' @return 'TimeGPT''s forecast.
 #' @export
@@ -28,6 +28,7 @@
 #'
 nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1", num_partitions=NULL){
 
+  start_time <- Sys.time()
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
   names(df)[which(names(df) == target_col)] <- "y"
@@ -105,52 +106,11 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   # Create request ----
   url <- "https://api.nixtla.io/forecast_multi_series"
 
-  unique_ids <- unique(sapply(timegpt_data$y$data, function(x) x$unique_id))
-
-  num_parts <- as.numeric(future::availableCores())
-  if(is.null(num_partitions)){
-    num_parts <- 1
-  }else if(num_partitions == "auto" | num_partitions >= as.numeric(future::availableCores())){
-    num_parts <- as.numeric(future::availableCores())
-  } # else use the number of partitions given by the user
-
-  ids_per_set <- ceiling(length(unique_ids)/num_parts)
-  split_unique_ids <- split(unique_ids, rep(1:num_parts, each = ids_per_set, length.out = length(unique_ids)))
-  unique_ids_sets <- lapply(split_unique_ids, function(x) as.character(x))
-
-  filter_by_unique_id <- function(original_list, unique_ids) {
-    new_list <- original_list
-    new_list$y$data <- Filter(function(x) x$unique_id %in% unique_ids, original_list$y$data)
-    new_list$x$data <- Filter(function(x) x$unique_id %in% unique_ids, original_list$x$data)
-    return(new_list)
-  }
-
-  filtered_lists <- lapply(unique_ids_sets, function(ids) filter_by_unique_id(timegpt_data, ids))
+  payload_list <- .partition_payload(timegpt_data, num_partitions)
 
   future::plan(future::multisession)
 
-  make_request <- function(filtered_lists_element) {
-    req <- httr2::request(url) |>
-      httr2::req_headers(
-        "accept" = "application/json",
-        "content-type" = "application/json",
-        "authorization" = paste("Bearer", .get_api_key())
-      ) |>
-      httr2::req_user_agent("nixtlar") |>
-      httr2::req_body_json(data = filtered_lists_element) |>
-      httr2::req_retry(
-        max_tries = 6,
-        is_transient = .transient_errors
-      )
-
-    resp <- req |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
-
-    return(resp)
-  }
-
-  responses <- future.apply::future_lapply(filtered_lists, make_request)
+  responses <- .make_request(url, payload_list)
 
   fcst_list <- lapply(responses, function(resp) {
     fc_list <- lapply(resp$data$forecast$data, unlist)
@@ -194,34 +154,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   }
 
   # Date transformation ----
-  transform_ds <- function(date) {
-    switch(freq,
-           "Y" = as.numeric(substr(date, 1, 4)),
-           "A" = as.numeric(substr(date, 1, 4)),
-           "Q" = tsibble::yearquarter(date),
-           "MS" = tsibble::yearmonth(date),
-           "W" = tsibble::yearweek(date),
-           "H" = lubridate::ymd_hms(date),
-           lubridate::ymd(date)  # default (daily or other)
-    )
-  }
-
-  if(tsibble::is_tsibble(df)){
-    new_ds <- future.apply::future_lapply(fcst$ds, transform_ds)
-    fcst$ds <- do.call(c, new_ds)
-    if(is.null(id_col)){
-      fcst <- tsibble::as_tsibble(fcst, index="ds")
-    }else{
-      fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
-    }
-  }else{
-    if(freq == "H") {
-      new_ds <- future.apply::future_lapply(fcst$ds, lubridate::ymd_hms)
-    }else{
-      new_ds <- future.apply::future_lapply(fcst$ds, lubridate::ymd)
-    }
-    fcst$ds <- do.call(c, new_ds)
-  }
+  fcst <- .transform_output_dates(fcst, freq, data$flag)
 
   # Rename columns ----
   names(fcst)[which(names(fcst) == "ds")] <- time_col
@@ -247,6 +180,8 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds
   }
 
   row.names(fcst) <- NULL
+  end_time <- Sys.time()
+  print(paste0("Total execution time: ", end_time-start_time))
 
   return(fcst)
 }

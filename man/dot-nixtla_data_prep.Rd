@@ -19,7 +19,7 @@ This is a private function of 'nixtlar'}
 \item{target_col}{Column that contains the target variable. Should be named y.}
 }
 \value{
-A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
+A list with the given or inferred frequency, the prepared data, the original data frame renamed, and a flag indicating the obejct type of the dataset.
 }
 \description{
 Prepares data for 'TimeGPT''s 'API'

@@ -2,7 +2,10 @@
 
 export(.get_api_key)
 export(.level_from_quantiles)
+export(.make_request)
 export(.nixtla_data_prep)
+export(.partition_payload)
+export(.transform_output_dates)
 export(.transient_errors)
 export(.validate_exogenous)
 export(date_conversion)
