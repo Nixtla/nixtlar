@@ -22,84 +22,30 @@
 #'
 nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
 
-  # Prepare data ----
-  names(df)[which(names(df) == time_col)] <- "ds"
-  names(df)[which(names(df) == target_col)] <- "y"
-
-  if(is.null(id_col)){
-    # create unique_id for single series
-    df <- df |>
-      dplyr::mutate(unique_id = "ts_0") |>
-      dplyr::select(c("unique_id", tidyselect::everything()))
-  }else{
-    # id_col is not NULL
-    names(df)[which(names(df) == id_col)] <- "unique_id"
-  }
-
-  data <- .nixtla_data_prep(df, freq, id_col, time_col, target_col)
-  freq <- data$freq
-  y <- data$y
-
-  timegpt_data <- list(
-    model = model,
-    y = y,
-    freq = freq,
-    clean_ex_first = clean_ex_first
-  )
-
-  if(!any(names(df) %in% c("unique_id", "ds", "y"))){
-    # input includes exogenous variables
-    exogenous <-  df |>
-      dplyr::select(-c(.data$y))
-
-    x <- list(
-      columns = names(exogenous),
-      data = lapply(1:nrow(exogenous), function(i) as.list(exogenous[i,]))
+  if(is.null(num_partitions) || num_partitions == 1){
+    res <- .nixtla_client_detect_anomalies_seq(
+      df=df,
+      freq=freq,
+      id_col=id_col,
+      time_col=time_col,
+      target_col=target_col,
+      level=level,
+      clean_ex_first=clean_ex_first,
+      model=model
     )
-
-    timegpt_data[['x']] <- x
-  }
-
-  if(length(level) > 1){
-    message("Multiple levels are not allowed for anomaly detection. Will use the largest level.")
-  }
-  level <- as.list(level)
-  timegpt_data[["level"]] <- level
-
-  # Create request ----
-  url_anomaly <- "https://api.nixtla.io/anomaly_detection_multi_series"
-
-  payload_list <- .partition_payload(timegpt_data, num_partitions)
-
-  future::plan(future::multisession)
-
-  responses <- .make_request(url_anomaly, payload_list)
-
-  # Extract anomalies ----
-  anomaly_list <- lapply(responses, function(resp) {
-    anm_list <- lapply(resp$data$forecast$data, unlist)
-    anm <- data.frame(do.call(rbind, anm_list))
-    names(anm) <- resp$data$forecast$columns
-    return(anm)
-  })
-
-  res <- do.call(rbind, anomaly_list)
-  res[, 3:ncol(res)] <- future.apply::future_lapply(res[, 3:ncol(res)], as.numeric)
-
-  # Date transformation ----
-  res <- .transform_output_dates(res, id_col, "ds", freq, data$flag)
-
-  # Rename columns ----
-  colnames(res)[which(colnames(res) == "ds")] <- time_col
-  if(!is.null(id_col)){
-    colnames(res)[which(colnames(res) == "unique_id")] <- id_col
   }else{
-    # remove unique_id column
-    res <- res |>
-      dplyr::select(-c(.data$unique_id))
+    res <- .nixtla_client_detect_anomalies_distributed(
+      df=df,
+      freq=freq,
+      id_col=id_col,
+      time_col=time_col,
+      target_col=target_col,
+      level=level,
+      clean_ex_first=clean_ex_first,
+      model=model,
+      num_partitions=num_partitions
+    )
   }
-
-  row.names(res) <- NULL
 
   return(res)
 }
