@@ -5,10 +5,12 @@
 \title{Transform and format dates in 'TimeGPT' output
 This is a private function of 'nixtlar'}
 \usage{
-.transform_output_dates(df, col, freq, flag)
+.transform_output_dates(df, id_col, col, freq, flag)
 }
 \arguments{
 \item{df}{Dataframe with the 'TimeGPT' output, where column 'col' contains date strings.}
+
+\item{id_col}{Column that identifies each series.}
 
 \item{col}{Name of the column with the dates to transform.}
 

@@ -29,8 +29,6 @@
 #'
 nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
 
-  start <- Sys.time()
-
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
   names(df)[which(names(df) == target_col)] <- "y"
@@ -158,7 +156,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
   }
 
   # Date transformation ----
-  res <- .transform_output_dates(res, "ds", freq, data$flag)
+  res <- .transform_output_dates(res, id_col, "ds", freq, data$flag)
   new_cutoff <- future.apply::future_lapply(res$cutoff, lubridate::ymd_hms)
   res$cutoff <- do.call(c, new_cutoff)
 
@@ -173,9 +171,6 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
   }
 
   row.names(res) <- NULL
-
-  end <- Sys.time()
-  print(paste0("Total execution time: ", end-start))
 
   return(res)
 }

@@ -2,6 +2,7 @@
 ##' This is a private function of 'nixtlar'
 #'
 #' @param df Dataframe with the 'TimeGPT' output, where column 'col' contains date strings.
+#' @param id_col Column that identifies each series.
 #' @param col Name of the column with the dates to transform.
 #' @param freq Frequency of the data.
 #' @param flag Indicator where 1 denotes 'tsibble' and 0 denotes 'dataframe'.
@@ -15,7 +16,7 @@
 #'   fcst <- .transform_output_dates(fcst, col, freq, flag)
 #' }
 #'
-.transform_output_dates <- function(df, col, freq, flag){
+.transform_output_dates <- function(df, id_col, col, freq, flag){
 
   index_col <- which(names(df) == col)
 

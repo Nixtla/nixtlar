@@ -22,8 +22,6 @@
 #'
 nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
 
-  start <- Sys.time()
-
   # Prepare data ----
   names(df)[which(names(df) == time_col)] <- "ds"
   names(df)[which(names(df) == target_col)] <- "y"
@@ -89,7 +87,7 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
   res[, 3:ncol(res)] <- future.apply::future_lapply(res[, 3:ncol(res)], as.numeric)
 
   # Date transformation ----
-  res <- .transform_output_dates(res, "ds", freq, data$flag)
+  res <- .transform_output_dates(res, id_col, "ds", freq, data$flag)
 
   # Rename columns ----
   colnames(res)[which(colnames(res) == "ds")] <- time_col
@@ -102,9 +100,6 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col=NULL, time_col=
   }
 
   row.names(res) <- NULL
-
-  end <- Sys.time()
-  print(paste0("Total execution time: ", end-start))
 
   return(res)
 }
