@@ -4,7 +4,7 @@
 #'
 #' @return A list with the inferred frequency and data frame with dates in format yyyy-mm-dd.
 #' @export
-#'
+#' @keywords internal
 #' @examples
 #' df <- AirPassengers
 #' tsbl <- tsibble::as_tsibble(df)

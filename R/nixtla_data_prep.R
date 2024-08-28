@@ -7,7 +7,7 @@
 #' @param time_col Column that identifies each timestep. Should be named ds.
 #' @param target_col Column that contains the target variable. Should be named y.
 #'
-#' @return A list with the given or inferred frequency, the prepared data, and the original data frame renamed.
+#' @return A list with the given or inferred frequency, the prepared data, the original data frame renamed, and a flag indicating the obejct type of the dataset.
 #' @export
 #' @keywords internal
 #'
@@ -20,12 +20,14 @@
   if(!tsibble::is_tsibble(df) & !is.data.frame(df)){
     stop("Only tsibbles or data frames are allowed.")
   }
+  flag <- 0
 
   # If df is a tsibble, convert dates to strings and infer frequency if necessary
   if(tsibble::is_tsibble(df)){
     res <- date_conversion(df)
     df <- res$df
     freq <- res$freq
+    flag <- 1
   }
 
   # Infer frequency if not available
@@ -41,9 +43,11 @@
     data = lapply(1:nrow(filtered_df), function(i) as.list(filtered_df[i,]))
     )
 
-  res <- list(freq = freq,
-              y = y
-              )
+  res <- list(
+    freq = freq,
+    y = y,
+    flag = flag
+    )
 
   return(res)
 }

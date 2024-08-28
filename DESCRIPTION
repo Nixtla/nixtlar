@@ -20,6 +20,8 @@ Depends:
 LazyData: true
 Imports: 
     dplyr,
+    future,
+    future.apply,
     ggplot2,
     httr2,
     lubridate,

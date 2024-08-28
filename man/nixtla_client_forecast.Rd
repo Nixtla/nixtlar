@@ -18,7 +18,8 @@ nixtla_client_forecast(
   finetune_loss = "default",
   clean_ex_first = TRUE,
   add_history = FALSE,
-  model = "timegpt-1"
+  model = "timegpt-1",
+  num_partitions = NULL
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ nixtla_client_forecast(
 \item{add_history}{Return fitted values of the model.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+
+\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
 'TimeGPT''s forecast.
