@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nixtlar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +75,27 @@
 </div>
 <!-- badges: start -->
 
+<div class="section level2">
+<h2 id="news-28-aug-2024-parallel-processing-is-now-available-in-nixtlar">NEWS (28 Aug 2024): Parallel processing is now available in <code>nixtlar</code>
+<a class="anchor" aria-label="anchor" href="#news-28-aug-2024-parallel-processing-is-now-available-in-nixtlar"></a>
+</h2>
+<p>The development version of <code>nixtlar</code> now supports parallel processing, making it suitable for handling large datasets with thousands of time series. To access this functionality, simply install the package from GitHub.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
+<p>Configure the new <code>num_partitions</code> parameter in any of the <code>nixtlar</code> methods as follows:</p>
+<ul>
+<li>
+<code>num_partitions=NULL</code>: This is the default setting, operating in sequential mode, equivalent to <code>num_partitions=1</code>.</li>
+<li>
+<code>num_partitions="auto"</code>: Automatically uses all available resources as determined by <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">future::availableCores()</a></code>.</li>
+<li>
+<code>num_partitions</code> can be set to any positive integer. If it exceeds the number of available resources determined by <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">future::availableCores()</a></code>, it will default to the maximum available cores.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h<span class="op">=</span><span class="fl">8</span>, id_col<span class="op">=</span><span class="st">"unique_id"</span>, num_partitions<span class="op">=</span><span class="st">"auto"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that <code>df</code> must be an R data frame or a tsibble. See <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">data requierements</a> for more details.</p>
+</div>
 </div>
 <div class="section level1">
 <h1 id="timegpt-1">TimeGPT-1<a class="anchor" aria-label="anchor" href="#timegpt-1"></a>
@@ -107,18 +128,18 @@
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
 <p><code>nixtlar</code> is available on CRAN, so you can install the latest stable version using <code>install.packages</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install nixtlar from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nixtlar"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Then load it </span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install the development version of <code>nixtlar</code> from <a href="https://github.com/" class="external-link">GitHub</a> with <code>devtools::install_github</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
-<h4 id="cran-vs-development-version">CRAN vs development version<a class="anchor" aria-label="anchor" href="#cran-vs-development-version"></a>
+<h4 id="cran-v052-vs-development-version-v053">CRAN (v0.5.2) vs development version (v0.5.3)<a class="anchor" aria-label="anchor" href="#cran-v052-vs-development-version-v053"></a>
 </h4>
 <p>Currently, the development version contains some features not yet available in CRAN. To learn more, please read the release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3" class="external-link">here</a>.</p>
 </div>
@@ -126,18 +147,21 @@
 <div class="section level1">
 <h1 id="forecast-using-timegpt-in-3-easy-steps">Forecast Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#forecast-using-timegpt-in-3-easy-steps"></a>
 </h1>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
+<span><span class="co">#&gt;   method               from </span></span>
+<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Set your API key. Get yours at <a href="https://dashboard.nixtla.io/" class="external-link">dashboard.nixtla.io</a>
 </li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Load sample data</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y</span></span>
@@ -150,7 +174,7 @@
 <ol start="3" style="list-style-type: decimal">
 <li>Forecast the next 8 steps ahead</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nixtla_client_fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fcst</span><span class="op">)</span></span>
@@ -169,7 +193,7 @@
 <span><span class="co">#&gt; 5      48.05812      54.87038</span></span>
 <span><span class="co">#&gt; 6      48.61520      53.31284</span></span></code></pre></div>
 <p>Optionally, plot the results</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/fcst.png"></p>
 </div>
@@ -177,7 +201,7 @@
 <h1 id="anomaly-detection-using-timegpt-in-3-easy-steps">Anomaly Detection Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#anomaly-detection-using-timegpt-in-3-easy-steps"></a>
 </h1>
 <p>Do anomaly detection with <code>TimeGPT</code>, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the <code>nixtla_client_detect_anomalies</code> and the <code>nixtla_client_plot</code> functions.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Frequency chosen: H</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
@@ -195,7 +219,7 @@
 <span><span class="co">#&gt; 4      137.2498</span></span>
 <span><span class="co">#&gt; 5      137.3326</span></span>
 <span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/anomalies.png"></p>
 </div>
@@ -242,11 +266,6 @@
 <h1 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h1>
 <p>TimeGPT is closed source. However, this SDK is open source and available under the Apache 2.0 License, so feel free to contribute!</p>
-</div>
-<div class="section level1">
-<h1 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
-</h1>
-<p>Please note that the nixtlar project is released with a <a href="https://nixtla.github.io/nixtlar/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 <div class="section level1">
 <h1 id="get-in-touch">Get in Touch<a class="anchor" aria-label="anchor" href="#get-in-touch"></a>
