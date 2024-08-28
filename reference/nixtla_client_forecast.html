@@ -65,7 +65,8 @@
 <span>  finetune_loss <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  clean_ex_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  add_history <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"timegpt-1"</span></span>
+<span>  model <span class="op">=</span> <span class="st">"timegpt-1"</span>,</span>
+<span>  num_partitions <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -127,6 +128,10 @@
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
 <dd><p>Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.</p></dd>
+
+
+<dt id="arg-num-partitions">num_partitions<a class="anchor" aria-label="anchor" href="#arg-num-partitions"></a></dt>
+<dd><p>A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.</p></dd>
 
 </dl></div>
     <div class="section level2">
