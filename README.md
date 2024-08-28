@@ -14,6 +14,38 @@ status](https://www.r-pkg.org/badges/version/nixtlar)](https://CRAN.R-project.or
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
+## NEWS (28 Aug 2024): Parallel processing is now available in `nixtlar`
+
+The development version of `nixtlar` now supports parallel processing,
+making it suitable for handling large datasets with thousands of time
+series. To access this functionality, simply install the package from
+GitHub.
+
+``` r
+library(devtools)
+devtools::install_github("Nixtla/nixtlar")
+```
+
+Configure the new `num_partitions` parameter in any of the `nixtlar`
+methods as follows:
+
+- `num_partitions=NULL`: This is the default setting, operating in
+  sequential mode, equivalent to `num_partitions=1`.
+- `num_partitions="auto"`: Automatically uses all available resources as
+  determined by `future::availableCores()`.
+- `num_partitions` can be set to any positive integer. If it exceeds the
+  number of available resources determined by
+  `future::availableCores()`, it will default to the maximum available
+  cores.
+
+``` r
+nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", num_partitions="auto")
+```
+
+Note that `df` must be an R data frame or a tsibble. See [data
+requierements](https://nixtla.github.io/nixtlar/articles/data-requirements.html)
+for more details.
+
 # TimeGPT-1
 
 **The first foundation model for time series forecasting and anomaly
@@ -67,7 +99,7 @@ Alternatively, you can install the development version of `nixtlar` from
 devtools::install_github("Nixtla/nixtlar")
 ```
 
-#### CRAN vs development version
+#### CRAN (v0.5.2) vs development version (v0.5.3)
 
 Currently, the development version contains some features not yet
 available in CRAN. To learn more, please read the release notes
@@ -77,6 +109,9 @@ available in CRAN. To learn more, please read the release notes
 
 ``` r
 library(nixtlar)
+#> Registered S3 method overwritten by 'tsibble':
+#>   method               from 
+#>   as_tibble.grouped_df dplyr
 ```
 
 1.  Set your API key. Get yours at
@@ -239,10 +274,6 @@ arXiv preprint arXiv:2310.03589. Available at
 TimeGPT is closed source. However, this SDK is open source and available
 under the Apache 2.0 License, so feel free to contribute!
 
-# Code of Conduct
-
-Please note that the nixtlar project is released with a [Contributor Code of Conduct](https://nixtla.github.io/nixtlar/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
-
 # Get in Touch
 
 We welcome your input and contributions to the `nixtlar` package!
@@ -255,5 +286,3 @@ We welcome your input and contributions to the `nixtlar` package!
   request](https://github.com/Nixtla/nixtlar/pulls) in our repository.
   Whether it is fixing a bug, adding a new feature, or improving the
   documentation, we appreciate your help in making `nixtlar` better.
-  
-
