@@ -31,6 +31,28 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
+## NEWS (28 Aug 2024): Parallel processing is now available in `nixtlar`
+
+The development version of `nixtlar` now supports parallel processing, making it suitable for handling large datasets with thousands of time series. To access this functionality, simply install the package from GitHub.
+
+```{r, eval=FALSE}
+library(devtools)
+devtools::install_github("Nixtla/nixtlar")
+```
+
+Configure the new `num_partitions` parameter in any of the `nixtlar` methods as follows:
+
+- `num_partitions=NULL`: This is the default setting, operating in sequential mode, equivalent to `num_partitions=1`.
+- `num_partitions="auto"`: Automatically uses all available resources as determined by `future::availableCores()`.
+- `num_partitions` can be set to any positive integer. If it exceeds the number of available resources determined by `future::availableCores()`, it will default to the maximum available cores.
+
+```{r, eval=FALSE}
+nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", num_partitions="auto")
+```
+
+Note that `df` must be an R data frame or a tsibble. See [data requierements](https://nixtla.github.io/nixtlar/articles/data-requirements.html) for more details. 
+
+
 # TimeGPT-1 
 
 **The first foundation model for time series forecasting and anomaly detection**

@@ -1,6 +1,6 @@
 Package: nixtlar
 Title: A Software Development Kit for 'Nixtla''s 'TimeGPT'
-Version: 0.5.2
+Version: 0.5.4
 Authors@R: c(
     person("Mariana", "Menchero", email = "mariana@nixtla.io", role = c("aut", "cre"), comment = "First author and maintainer"),
     person("Nixtla", role = "cph", comment = "Copyright held by 'Nixtla'")
