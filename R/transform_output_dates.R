@@ -36,7 +36,7 @@
     new_ds <- future.apply::future_lapply(df[,index_col], transform_ds)
     df[,index_col] <- do.call(c, new_ds)
   }else{
-    if(freq == "H") {
+    if(freq == "H" || grepl("^[0-9]*min$", freq) || grepl("^[0-9]*S$", freq)) {
       new_ds <- future.apply::future_lapply(df[,index_col], lubridate::ymd_hms)
     }else{
       new_ds <- future.apply::future_lapply(df[,index_col], lubridate::ymd)
