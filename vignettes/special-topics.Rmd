@@ -65,7 +65,7 @@ However, this method is ineffective when the missing dates are not continuous. O
 
 The frequency parameter is crucial when working with time series data because it informs the model about the expected intervals between data points. The core functions of `nixtlar` that interface with `TimeGPT`, such as `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_detect_anomalies`, and `nixtla_client_cross_validation`, require you to specify the `freq` parameter, although in some cases `nixtlar` can deduce it from your data. 
 
-`TimeGPT` supports any of [pandas's offset aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases). Some common aliases are presented in the table below. 
+`TimeGPT` supports the following aliases: 
 
 | Frequency                 | Alias   | 
 |---------------------------|---------|
@@ -75,6 +75,10 @@ The frequency parameter is crucial when working with time series data because it
 | Weekly (starting Sundays) | W       | 
 | Daily                     | D       |
 | Hourly                    | H       | 
+| Minute-level              | min     |
+| Second-level              | S       |
+
+Both minute-level and second-level frequencies can be preceded by an integer, such as "10min" or "30S". 
 
 The default value of the frequency parameter is `NULL`. When this parameter is not specified, `nixtlar` will attempt to determine the frequency of your data. For most common frequencies, such as yearly, quarterly, monthly, weekly, daily, and hourly, `nixtlar` can identify the frequency from the `time_col` column, regardless of whether you are working with data frames or tsibbles. 
 
@@ -85,9 +89,9 @@ fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level =
 # infer the frequency when `freq` is not specified 
 ```
 
-When the frequency is not apparent, `nixtlar` will default to a daily frequency. Currently, `nixtlar` cannot automatically detect subhourly frequencies. In such cases, you must explicitly specify these frequencies. For example, for subhourly data, you should set `freq="15T"` for fifteen-minute data intervals.
+When the frequency is not apparent, `nixtlar` will default to a daily frequency. Currently, `nixtlar` cannot automatically detect subhourly frequencies. In such cases, you must explicitly specify these frequencies. For example, for subhourly data, you should set `freq="15min"` for fifteen-minute data intervals or `freq="S"` for data that is taken every second. **Only the aliases "min" and "S" are allowed for minute and second-level frequencies**. 
 
-Moreover, if you are dealing with irregular frequencies, such as business days or custom holiday calendars, you must specify them directly. For instance, for business days, you should set `freq="B"`, which corresponds to the pandas alias for business day frequency.
+Moreover, if you are dealing with irregular frequencies, such as business days or custom holiday calendars, you must specify them directly. For instance, for business days, you should set `freq="B"`, which corresponds to the pandas alias for business day frequency. Please refer to [pandas's offset aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for more information, and keep in mind that if you are dealing with minute-level or second-level data you can only use the aliases "min" and "S". 
 
 When dealing with weekly frequency (`W`), `nixtlar` assumes that the weeks start on Sunday. Consequently, `TimeGPT` will return dates corresponding to weeks that begin on Sundays. If your weeks start on a different day, for example, Mondays, you should specify the frequency as `W-MON`. You can select any day of the week with the aliases `W-MON`, `W-TUE`, `W-WED`, `W-THU`, `W-FRI`, and `W-SAT`.
 

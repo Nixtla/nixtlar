@@ -176,7 +176,7 @@
       fcst <- tsibble::as_tsibble(fcst, key="unique_id", index="ds")
     }
   }else{
-    if(freq == "H"){
+    if(freq == "H" || grepl("^[0-9]*min$", freq) || grepl("^[0-9]*S$", freq)){
       fcst$ds <- lubridate::ymd_hms(fcst$ds)
     }else{
       fcst$ds <- lubridate::ymd(fcst$ds)

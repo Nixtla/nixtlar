@@ -111,7 +111,7 @@
     }
   }else{
     # If df is a data frame, convert ds to dates
-    if(freq == "H"){
+    if(freq == "H" || grepl("^[0-9]*min$", freq) || grepl("^[0-9]*S$", freq)){
       res$ds <- lubridate::ymd_hms(res$ds)
     }else{
       res$ds <- lubridate::ymd(res$ds)
