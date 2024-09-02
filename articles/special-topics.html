@@ -150,9 +150,7 @@ points. The core functions of <code>nixtlar</code> that interface with
 <code>nixtla_client_cross_validation</code>, require you to specify the
 <code>freq</code> parameter, although in some cases <code>nixtlar</code>
 can deduce it from your data.</p>
-<p><code>TimeGPT</code> supports any of <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases" class="external-link">pandas’s
-offset aliases</a>. Some common aliases are presented in the table
-below.</p>
+<p><code>TimeGPT</code> supports the following aliases:</p>
 <table class="table">
 <thead><tr class="header">
 <th>Frequency</th>
@@ -183,8 +181,18 @@ below.</p>
 <td>Hourly</td>
 <td>H</td>
 </tr>
+<tr class="odd">
+<td>Minute-level</td>
+<td>min</td>
+</tr>
+<tr class="even">
+<td>Second-level</td>
+<td>S</td>
+</tr>
 </tbody>
 </table>
+<p>Both minute-level and second-level frequencies can be preceded by an
+integer, such as “10min” or “30S”.</p>
 <p>The default value of the frequency parameter is <code>NULL</code>.
 When this parameter is not specified, <code>nixtlar</code> will attempt
 to determine the frequency of your data. For most common frequencies,
@@ -202,13 +210,18 @@ data frames or tsibbles.</p>
 to a daily frequency. Currently, <code>nixtlar</code> cannot
 automatically detect subhourly frequencies. In such cases, you must
 explicitly specify these frequencies. For example, for subhourly data,
-you should set <code>freq="15T"</code> for fifteen-minute data
-intervals.</p>
+you should set <code>freq="15min"</code> for fifteen-minute data
+intervals or <code>freq="S"</code> for data that is taken every second.
+<strong>Only the aliases “min” and “S” are allowed for minute and
+second-level frequencies</strong>.</p>
 <p>Moreover, if you are dealing with irregular frequencies, such as
 business days or custom holiday calendars, you must specify them
 directly. For instance, for business days, you should set
 <code>freq="B"</code>, which corresponds to the pandas alias for
-business day frequency.</p>
+business day frequency. Please refer to <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases" class="external-link">pandas’s
+offset aliases</a> for more information, and keep in mind that if you
+are dealing with minute-level or second-level data you can only use the
+aliases “min” and “S”.</p>
 <p>When dealing with weekly frequency (<code>W</code>),
 <code>nixtlar</code> assumes that the weeks start on Sunday.
 Consequently, <code>TimeGPT</code> will return dates corresponding to
