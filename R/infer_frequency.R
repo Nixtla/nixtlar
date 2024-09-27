@@ -1,6 +1,7 @@
 #' Infer frequency of a data frame.
 #'
 #' @param df A data frame with time series data.
+#' @param freq The frequency of the data as specified by the user; NULL otherwise.
 #'
 #' @return The inferred frequency.
 #' @export
@@ -9,48 +10,60 @@
 #' df <- nixtlar::electricity
 #' infer_frequency(df)
 #'
-infer_frequency <- function(df){
-  freq <- NULL
-  dates <- sort(unique(df$ds))
-
-  # Check if it's hourly data
-  nchrs <- lapply(as.character(dates), nchar)
-  ntable <- sort(table(unlist(nchrs)))
-  nmode <- ntable[length(ntable)]
-  nmode <- as.numeric(names(nmode))
-
-  if(nmode > 10){
-    freq <- "H" # We'll assume hourly data
-    message("Frequency chosen: H")
+infer_frequency <- function(df, freq){
+  if(!is.null(freq)){
     return(freq)
   }
 
-  # If it's not hourly data, check the time differences in days
-  ddiff <- diff(as.Date(dates))
-  table <- sort(table(ddiff))
-  mode <- table[length(table)]
-  mode <- as.numeric(names(mode))
+  num_chars <- nchar(as.character(df$ds[1]))
 
-  freq_list = list(
-    list(alias = "Y", value = c(365,366)),
-    list(alias = "Q", value = c(91,92)),
-    list(alias = "MS", value = c(30,31)),
-    list(alias = "W", value = c(7)),
-    list(alias = "D", value = c(1))
-  )
+  if(num_chars <= 10){
+    # assumes dates in format YYYY-MM-DD
+    dates <- lubridate::ymd(sort(unique(df$ds)))
+    dates_diff <- diff(dates)
+    dates_table <- table(dates_diff)
+    mode <- as.numeric(names(which.max(dates_table)))
 
-  for(i in 1:length(freq_list)){
-    if(mode %in% freq_list[i][[1]]$value){
-      freq <- freq_list[i][[1]]$alias
+    freq_list = list(
+      list(alias = "Y", value = c(365,366)),
+      list(alias = "Q", value = c(91,92)),
+      list(alias = "MS", value = c(30,31)),
+      list(alias = "W", value = c(7)),
+      list(alias = "D", value = c(1))
+    )
+
+    for(item in freq_list){
+      if(mode %in% item$value){
+        freq <- item$alias
+        break
+      }
     }
+
+    message(paste0("Frequency chosen: ", freq))
+    return(freq)
+
+  }else{
+    # assumes dates in format YYYY-MM-DD hh:mm:ss
+    dates <- lubridate::ymd_hms(sort(unique(df$ds)))
+    dates_diff <- diff(dates)
+    dates_table <- table(dates_diff)
+    mode <- as.numeric(names(which.max(dates_table)))
+
+    units <- attr(dates_diff, "units")
+
+    freq <- switch(
+      units,
+      "hours" = ifelse(mode == 1, "h", paste0(mode, "h")),
+      "mins" = ifelse(mode == 1, "min", paste0(mode, "min")),
+      "secs" = ifelse(mode == 1, "s", paste0(mode, "s"))
+    )
+
+    message(paste0("Frequency chosen: ", freq))
+    return(freq)
   }
 
   if(is.null(freq)){
-    freq <- "D"
-    message("I'm not sure about the frequency of the data. Will default to daily (D). Please provide it if you know it.")
+    stop("I can't figure out the frequency of the data. Please specify it with the `freq` parameter")
   }
-
-  message(paste0("Frequency chosen: ", freq))
-
-  return(freq)
 }
+

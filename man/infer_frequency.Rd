@@ -4,10 +4,12 @@
 \alias{infer_frequency}
 \title{Infer frequency of a data frame.}
 \usage{
-infer_frequency(df)
+infer_frequency(df, freq)
 }
 \arguments{
 \item{df}{A data frame with time series data.}
+
+\item{freq}{The frequency of the data as specified by the user; NULL otherwise.}
 }
 \value{
 The inferred frequency.

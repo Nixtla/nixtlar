@@ -27,16 +27,21 @@
 #'   fcst <- nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", level=c(80,95))
 #' }
 #'
-.nixtla_client_forecast_seq <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
+.nixtla_client_forecast_seq <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, add_history=FALSE, model="timegpt-1"){
 
-  # Check data type
+  # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
     stop("Only data frames, tibbles, and tsibbles are allowed.")
   }
 
-  # Rename columns
+  # Rename columns ----
   names(df)[which(names(df) == time_col)] <- "ds"
   names(df)[which(names(df) == target_col)] <- "y"
+
+  cols <- c("ds", "y") %in% names(df)
+  if(any(!cols)){
+    stop(paste0("The following columns are missing: ", paste(c("ds", "y")[!cols], collapse = ", ")))
+  }
 
   if(is.null(id_col)){
     # create unique_id for single series
@@ -48,16 +53,42 @@
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
-  # Restrict input
+  # More input validation ----
+  if(any(is.na(df$y))){
+    stop(paste0("Target column '", target_col, "' cannot contain missing values."))
+  }
+
+  # Infer frequency if necessary ----
+  freq <- infer_frequency(df, freq)
+
+  # Add fitted values if required ----
+  if(add_history){
+    fitted <- .nixtla_client_historic_seq(df=df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, level=level, quantiles=quantiles, finetune_steps=finetune_steps, finetune_loss=finetune_loss, clean_ex_first=clean_ex_first)
+  }
+
+  # Obtain model parameters ----
+  model_params <- .get_model_params(model, freq)
+
+  # Make sure there is enough data ----
+  if(h > model_params$horizon){
+    message("The specified horizon h exceeds the model horizon. This may lead to less accurate forecasts. Please consider using a smaller horizon.")
+  }
+
+  if(finetune_steps > 0 | !is.null(level)){
+    num_rows <- df |>
+      dplyr::group_by(.data$unique_id) |>
+      dplyr::summarise(initial_size = dplyr::n())
+
+    if(any(num_rows$initial_size < model_params$input_size+model_params$horizon)){
+      stop(paste0("Your time series is too short. Please make sure that each of your series contains at least ", model_params$input_size+model_params$horizon, " observations."))
+    }
+  }
+
+  # Restrict input if necessary ----
   contains_exogenous <- any(!(names(df) %in% c("unique_id", "ds", "y")))
 
-  if(!contains_exogenous){
-    model_params <- .get_model_params(model, freq)
-
-    if(h > model_params$horizon){
-      message("The specified horizon h exceeds the model horizon. This may lead to less accurate forecasts. Please consider using a smaller horizon.")
-    }
-
+  if(!contains_exogenous & finetune_steps == 0){
+    # Input is restricted only when there are no exogenous variables and no finetuning
     if(is.null(level) & is.null(quantiles)){
       input_samples = model_params$input_size
     }else{
@@ -65,30 +96,30 @@
     }
 
     num_rows <- df |>
-      dplyr::group_by(unique_id) |>
+      dplyr::group_by(.data$unique_id) |>
       dplyr::summarise(initial_size = dplyr::n())
 
     if (any(input_samples > num_rows$initial_size)){
-      stop(paste0("Your time series is too short. Please make sure that each of your series contains at least ", model_params$input_size+model_params$horizon, " observations"))
+      stop(paste0("Your time series is too short. Please make sure that each of your series contains at least ", model_params$input_size+model_params$horizon, " observations."))
     }
 
     df <- df |>
-      dplyr::group_by(unique_id) |>
+      dplyr::group_by(.data$unique_id) |>
       dplyr::slice_tail(n = input_samples) |>
       dplyr::ungroup()
   }
 
-  # Extract unique ids
+  # Extract unique ids, sizes, and last times ----
   uids <- unique(df$unique_id)
 
-  # Extract sizes and last times
   df_info <- df |>
-    dplyr::group_by(unique_id) |>
+    dplyr::group_by(.data$unique_id) |>
     dplyr::summarise(
       size = dplyr::n(),
       last_ds = dplyr::nth(ds, -1)
     )
 
+  # Create payload ----
   payload <- list(
     series =  list(
       sizes = as.list(df_info$size),
@@ -104,7 +135,7 @@
     finetune_loss = finetune_loss
   )
 
-  # Add level or quantiles
+  # Add level or quantiles ----
   if(!is.null(level) && !is.null(quantiles)){
     stop("You should include 'level' or 'quantiles' but not both.")
   }
@@ -122,11 +153,10 @@
     payload[["level"]] <- as.list(lvl$level)
   }
 
-  # Add exogenous variables if present
+  # Add exogenous variables ----
   if(contains_exogenous){
-
     exogenous <- df |>
-      dplyr::select(-c(unique_id, ds, y)) |>
+      dplyr::select(-dplyr::all_of(c("unique_id", "ds", "y"))) |>
       as.list()
 
     message(paste0("Using historical exogenous features: ", paste(names(exogenous), collapse=", ")))
@@ -134,9 +164,13 @@
     payload$series$X <- exogenous
 
     if(!is.null(X_df)){
+      vals_df <- .validate_exogenous(df, h, X_df)
+
+      X_df <- X_df |> # same order as df
+        dplyr::select(dplyr::all_of(c("unique_id", "ds", vals_df)))
 
       future_exogenous <- X_df |>
-        dplyr::select(-c(unique_id, ds)) |>
+        dplyr::select(-dplyr::all_of(c("unique_id", "ds"))) |>
         as.list()
 
       message(paste0("Using future exogenous features: ", paste(names(future_exogenous), collapse=", ")))
@@ -145,7 +179,7 @@
     }
   }
 
-  # Make request
+  # Make request ----
   url <- "https://api.nixtla.io/v2/forecast"
   req <- httr2::request(url) |>
     httr2::req_headers(
@@ -164,15 +198,16 @@
     httr2::req_perform() |>
     httr2::resp_body_json()
 
+  # Extract response ----
   fc <- data.frame(TimeGPT = unlist(resp$data$mean))
 
-  if("intervals" %in% names(resp$data)){
+  if("intervals" %in% names(resp$data) & !is.null(resp$data$intervals)){
     intervals <- data.frame(lapply(resp$data$intervals, unlist))
     names(intervals) <- paste0("TimeGPT-", names(resp$data$intervals))
     fc <- cbind(fc, intervals)
   }
 
-  # Rename quantile columns if present
+  # Rename quantile columns if present ----
   if(!is.null(quantiles)){
     cols_table <- lvl$ql_df$quantiles_col
     names(cols_table) <- lvl$ql_df$level_col
@@ -189,23 +224,17 @@
       dplyr::select(.data$TimeGPT, sort(tidyselect::peek_vars()))
   }
 
-  #--------------------------*
-  cls <- class(df_info$last_ds)
-
-  if(cls == "character"){
-    nch <- nchar(df_info$last_ds[1])
-    if(nch <= 0){
-      df_info$dates <- lubridate::ymd(df_info$last_ds)
-    }else{
-      df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
-    }
+  # Add unique ids and dates to forecast ----
+  nch <- nchar(df_info$last_ds[1])
+  if(nch <= 10){
+    df_info$dates <- lubridate::ymd(df_info$last_ds)
+  }else{
+    df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
   }
-  # what happens with hourly dates that don't include the hms part?
-  # for example "2024-01-01", "2024-01-01 01:00:00"
 
   new_dates <- vector("list", nrow(df_info))
   for(i in 1:nrow(df_info)){
-    dt <- seq(df_info$dates[i], by = "1 hour", length.out = h+1)
+    dt <- seq(df_info$dates[i], by = freq, length.out = h+1)
     new_dates[[i]] <- dt[2:length(dt)]
   }
   names(new_dates) <- df_info$unique_id
@@ -216,10 +245,15 @@
     tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds") |>
     dplyr::arrange(unique_id)
 
-  #--------------------------*
+  forecast <- cbind(dates_long_df, fc)
 
-  fcst <- cbind(dates_long_df, fc)
-  head(fcst)
+  # Rename columns back ----
+  if(id_col != "unique_id"){
+    names(forecast)[which(names(forecast) == "unique_id")] <- id_col
+  }
+  if(time_col != "ds"){
+    names(forecast)[which(names(forecast) == "ds")] <- time_col
+  }
 
-  return(fcst)
+  return(forecast)
 }
