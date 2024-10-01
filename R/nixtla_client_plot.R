@@ -80,7 +80,7 @@ nixtla_client_plot <- function(df, fcst=NULL, h=NULL, id_col=NULL, time_col="ds"
       df <- df_list$df
       freq <- df_list$freq
     }else{
-      freq <- infer_frequency(df)
+      freq <- infer_frequency(df, freq)
     }
 
     if(is.null(freq)){

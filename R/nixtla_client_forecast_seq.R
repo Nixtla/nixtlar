@@ -61,7 +61,7 @@
   # Infer frequency if necessary ----
   freq <- infer_frequency(df, freq)
 
-  # Add fitted values if required ----
+  # Generate fitted values if required ----
   if(add_history){
     fitted <- .nixtla_client_historic_seq(df=df, freq=freq, id_col=id_col, time_col=time_col, target_col=target_col, level=level, quantiles=quantiles, finetune_steps=finetune_steps, finetune_loss=finetune_loss, clean_ex_first=clean_ex_first)
   }
@@ -125,11 +125,9 @@
       sizes = as.list(df_info$size),
       y = as.list(df$y)
     ),
-    uids = uids,
-    last_times = df_info$last_ds,
+    model = model,
     h = h,
     freq = freq,
-    model = model,
     clean_ex_first = clean_ex_first,
     finetune_steps = finetune_steps,
     finetune_loss = finetune_loss
@@ -253,6 +251,13 @@
   }
   if(time_col != "ds"){
     names(forecast)[which(names(forecast) == "ds")] <- time_col
+  }
+
+  # Add fitted values if required ----
+  if(add_history){
+    forecast <- dplyr::bind_rows(fitted, forecast) |>
+      dplyr::arrange(dplyr::across(1))
+
   }
 
   return(forecast)

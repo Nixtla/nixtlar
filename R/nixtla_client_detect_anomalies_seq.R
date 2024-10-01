@@ -76,10 +76,8 @@
       sizes = as.list(df_info$size),
       y = as.list(df$y)
     ),
-    uids = uids,
-    h = h,
-    freq = freq,
     model = model,
+    freq = freq,
     clean_ex_first = clean_ex_first,
     level = max(level)
   )
@@ -128,27 +126,25 @@
   }
 
   # Add unique ids and dates to forecast ----
-  nch <- nchar(df_info$last_ds[1])
+  df_info$fitted_sizes <- unlist(resp$data$sizes)
+
+  ddf <- df |>
+    dplyr::group_by(.data$unique_id) |>
+    dplyr::group_split()
+
+  dates <- purrr::map2_dfr(ddf, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
+
+  dates <- dates |>
+    dplyr::select(dplyr::all_of(c("unique_id", "ds")))
+
+  nch <- nchar(dates$ds[1])
   if(nch <= 10){
-    df_info$dates <- lubridate::ymd(df_info$last_ds)
+    dates$ds <- lubridate::ymd(dates$ds)
   }else{
-    df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+    dates$ds <- lubridate::ymd_hms(dates$ds)
   }
 
-  new_dates <- vector("list", nrow(df_info))
-  for(i in 1:nrow(df_info)){
-    dt <- seq(df_info$dates[i], by = freq, length.out = h+1)
-    new_dates[[i]] <- dt[2:length(dt)]
-  }
-  names(new_dates) <- df_info$unique_id
-
-  dates_df <- data.frame(lapply(new_dates, as.POSIXct))
-
-  dates_long_df <- dates_df |>
-    tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds") |>
-    dplyr::arrange(unique_id)
-
-  forecast <- cbind(dates_long_df, fc)
+  forecast <- cbind(dates, fc)
 
   # Rename columns back ----
   if(id_col != "unique_id"){

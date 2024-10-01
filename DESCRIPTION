@@ -25,6 +25,7 @@ Imports:
     ggplot2,
     httr2,
     lubridate,
+    purrr,
     rlang,
     tidyr,
     tidyselect,
