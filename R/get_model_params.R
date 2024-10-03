@@ -38,8 +38,8 @@
     httr2::resp_body_json()
 
   model_params <- list(
-    input_size = resp$data$detail$input_size,
-    horizon = resp$data$detail$horizon
+    input_size = resp$detail$input_size,
+    horizon = resp$detail$horizon
   )
 
   return(model_params)

@@ -197,11 +197,11 @@
     httr2::resp_body_json()
 
   # Extract response ----
-  fc <- data.frame(TimeGPT = unlist(resp$data$mean))
+  fc <- data.frame(TimeGPT = unlist(resp$mean))
 
-  if("intervals" %in% names(resp$data) & !is.null(resp$data$intervals)){
-    intervals <- data.frame(lapply(resp$data$intervals, unlist))
-    names(intervals) <- paste0("TimeGPT-", names(resp$data$intervals))
+  if("intervals" %in% names(resp) & !is.null(resp$intervals)){
+    intervals <- data.frame(lapply(resp$intervals, unlist))
+    names(intervals) <- paste0("TimeGPT-", names(resp$intervals))
     fc <- cbind(fc, intervals)
   }
 
@@ -259,5 +259,4 @@
   }
 
   return(forecast)
-  tail(forecast)
 }

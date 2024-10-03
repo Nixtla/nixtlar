@@ -8,7 +8,7 @@ nixtla_client_plot(
   df,
   fcst = NULL,
   h = NULL,
-  id_col = NULL,
+  id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
   unique_ids = NULL,

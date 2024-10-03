@@ -115,18 +115,18 @@
 
   # Extract response ----
   fc <- data.frame(
-    anomaly = unlist(resp$data$anomaly),
-    TimeGPT = unlist(resp$data$mean)
+    anomaly = unlist(resp$anomaly),
+    TimeGPT = unlist(resp$mean)
   )
 
-  if("intervals" %in% names(resp$data) & !is.null(resp$data$intervals)){
-    intervals <- data.frame(lapply(resp$data$intervals, unlist))
-    names(intervals) <- paste0("TimeGPT-", names(resp$data$intervals))
+  if("intervals" %in% names(resp) & !is.null(resp$intervals)){
+    intervals <- data.frame(lapply(resp$intervals, unlist))
+    names(intervals) <- paste0("TimeGPT-", names(resp$intervals))
     fc <- cbind(fc, intervals)
   }
 
   # Add unique ids and dates to forecast ----
-  df_info$fitted_sizes <- unlist(resp$data$sizes)
+  df_info$fitted_sizes <- unlist(resp$sizes)
 
   grouped_df_list <- df |>
     dplyr::select(dplyr::all_of(c("unique_id", "ds", "y"))) |>

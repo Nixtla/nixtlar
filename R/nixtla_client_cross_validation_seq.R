@@ -183,11 +183,11 @@
     httr2::resp_body_json()
 
   # Extract response ----
-  fc <- data.frame(TimeGPT = unlist(resp$data$mean))
+  fc <- data.frame(TimeGPT = unlist(resp$mean))
 
-  if("intervals" %in% names(resp$data) & !is.null(resp$data$intervals)){
-    intervals <- data.frame(lapply(resp$data$intervals, unlist))
-    names(intervals) <- paste0("TimeGPT-", names(resp$data$intervals))
+  if("intervals" %in% names(resp) & !is.null(resp$intervals)){
+    intervals <- data.frame(lapply(resp$intervals, unlist))
+    names(intervals) <- paste0("TimeGPT-", names(resp$intervals))
     fc <- cbind(fc, intervals)
   }
 
@@ -209,7 +209,7 @@
   }
 
   # Add unique ids and dates to forecast ----
-  idxs <- unlist(resp$data$idxs)
+  idxs <- unlist(resp$idxs)
   idxs_r <- idxs+1 # Python indices start at 0
 
   dates <- df$ds[idxs_r]
@@ -217,7 +217,7 @@
 
   yvals <- df$y[idxs_r]
 
-  df_info$new_size <- unlist(resp$data$sizes)
+  df_info$new_size <- unlist(resp$sizes)
   ids <- unlist(lapply(1:nrow(df_info), function(i) {rep(df_info$unique_id[i], times = df_info$new_size[i])}))
 
   ct <- which(c(0, diff(idxs)) != 1)
