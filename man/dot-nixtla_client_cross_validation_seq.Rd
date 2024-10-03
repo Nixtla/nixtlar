@@ -12,7 +12,6 @@ This is a private function of 'nixtlar'}
   id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
-  X_df = NULL,
   level = NULL,
   quantiles = NULL,
   n_windows = 1,
@@ -35,8 +34,6 @@ This is a private function of 'nixtlar'}
 \item{time_col}{Column that identifies each timestep.}
 
 \item{target_col}{Column that contains the target variable.}
-
-\item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
 

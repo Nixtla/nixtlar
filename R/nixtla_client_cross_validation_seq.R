@@ -89,7 +89,7 @@
   if(!contains_exogenous & finetune_steps == 0){
     # Input is restricted only when there are no exogenous variables and no finetuning
     if(is.null(level) & is.null(quantiles)){
-      input_samples = model_params$input_size
+      input_samples = model_params$input_size+h+step_size*(n_windows-1)
     }else{
       input_samples = 3*model_params$input_size+max(model_params$horizon, h)+h+step_size*(n_windows-1)
     }

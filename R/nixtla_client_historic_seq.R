@@ -110,21 +110,6 @@
     message(paste0("Using historical exogenous features: ", paste(names(exogenous), collapse=", ")))
     names(exogenous) <- NULL
     payload$series$X <- exogenous
-
-    if(!is.null(X_df)){
-      vals_df <- .validate_exogenous(df, h, X_df)
-
-      X_df <- X_df |> # same order as df
-        dplyr::select(dplyr::all_of(c("unique_id", "ds", vals_df)))
-
-      future_exogenous <- X_df |>
-        dplyr::select(-dplyr::all_of(c("unique_id", "ds"))) |>
-        as.list()
-
-      message(paste0("Using future exogenous features: ", paste(names(future_exogenous), collapse=", ")))
-      names(future_exogenous) <- NULL
-      payload$series$X_future <- future_exogenous
-    }
   }
 
   # Make request ----

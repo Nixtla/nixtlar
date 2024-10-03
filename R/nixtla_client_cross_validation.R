@@ -27,7 +27,7 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
 
   if(is.null(num_partitions) || num_partitions == 1){
     res <- .nixtla_client_cross_validation_seq(
@@ -37,7 +37,6 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col=NULL, time
       id_col=id_col,
       time_col=time_col,
       target_col=target_col,
-      X_df=X_df,
       level=level,
       quantiles=quantiles,
       n_windows=n_windows,

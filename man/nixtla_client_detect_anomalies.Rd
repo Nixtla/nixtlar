@@ -7,7 +7,7 @@
 nixtla_client_detect_anomalies(
   df,
   freq = NULL,
-  id_col = NULL,
+  id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
   level = c(99),

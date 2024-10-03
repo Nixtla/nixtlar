@@ -23,7 +23,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
+nixtla_client_historic <- function(df, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1", num_partitions=NULL){
 
   if(is.null(num_partitions) || num_partitions == 1){
     fitted <- .nixtla_client_historic_seq(

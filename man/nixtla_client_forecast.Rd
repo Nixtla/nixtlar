@@ -8,7 +8,7 @@ nixtla_client_forecast(
   df,
   h = 8,
   freq = NULL,
-  id_col = NULL,
+  id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
   X_df = NULL,

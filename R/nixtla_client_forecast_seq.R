@@ -87,7 +87,7 @@
   # Restrict input if necessary ----
   contains_exogenous <- any(!(names(df) %in% c("unique_id", "ds", "y")))
 
-  if(!contains_exogenous & finetune_steps == 0){
+  if(!contains_exogenous & finetune_steps == 0 & !add_history){
     # Input is restricted only when there are no exogenous variables and no finetuning
     if(is.null(level) & is.null(quantiles)){
       input_samples = model_params$input_size
@@ -255,10 +255,9 @@
 
   # Add fitted values if required ----
   if(add_history){
-    forecast <- dplyr::bind_rows(fitted, forecast) |>
-      dplyr::arrange(dplyr::across(1))
-
+    forecast <- dplyr::bind_rows(fitted, forecast)
   }
 
   return(forecast)
+  tail(forecast)
 }

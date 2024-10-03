@@ -128,23 +128,21 @@
   # Add unique ids and dates to forecast ----
   df_info$fitted_sizes <- unlist(resp$data$sizes)
 
-  ddf <- df |>
+  grouped_df_list <- df |>
+    dplyr::select(dplyr::all_of(c("unique_id", "ds", "y"))) |>
     dplyr::group_by(.data$unique_id) |>
     dplyr::group_split()
 
-  dates <- purrr::map2_dfr(ddf, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
+  df_tail <- purrr::map2_dfr(grouped_df_list, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
 
-  dates <- dates |>
-    dplyr::select(dplyr::all_of(c("unique_id", "ds")))
-
-  nch <- nchar(dates$ds[1])
+  nch <- nchar(df_tail$ds[1])
   if(nch <= 10){
-    dates$ds <- lubridate::ymd(dates$ds)
+    df_tail$ds <- lubridate::ymd(df_tail$ds)
   }else{
-    dates$ds <- lubridate::ymd_hms(dates$ds)
+    df_tail$ds <- lubridate::ymd_hms(df_tail$ds)
   }
 
-  forecast <- cbind(dates, fc)
+  forecast <- cbind(df_tail, fc)
 
   # Rename columns back ----
   if(id_col != "unique_id"){
