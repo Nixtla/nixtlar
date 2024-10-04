@@ -49,7 +49,6 @@
       dplyr::mutate(unique_id = "ts_0") |>
       dplyr::select(c("unique_id", tidyselect::everything()))
   }else{
-    # id_col is not NULL
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
@@ -209,19 +208,18 @@
   }
 
   # Add unique ids and dates to forecast ----
-  idxs <- unlist(resp$idxs)
-  idxs_r <- idxs+1 # Python indices start at 0
+  ids <- rep(uids, each = h*n_windows)
 
-  dates <- df$ds[idxs_r]
+  idxs <- unlist(resp$idxs)+1 # R indices start at 0
+
+  dates <- df$ds[idxs]
   dates <- as.POSIXct(dates)
 
-  yvals <- df$y[idxs_r]
+  yvals <- df$y[idxs]
 
-  df_info$new_size <- unlist(resp$sizes)
-  ids <- unlist(lapply(1:nrow(df_info), function(i) {rep(df_info$unique_id[i], times = df_info$new_size[i])}))
-
-  ct <- which(c(0, diff(idxs)) != 1)
-  cutoff_dates <- df$ds[idxs[ct]]
+  window_starts <- seq(0, sum(unlist(resp$sizes)) - 1, by = h)
+  cutoff_idxs <- rep(idxs[window_starts + 1] - 1, each = h)
+  cutoff_dates <- df$ds[unique(cutoff_idxs)]
   cutoff <- unlist(lapply(cutoff_dates, function(i) {rep(i, times = h)}))
   cutoff <- as.POSIXct(cutoff)
 
@@ -235,9 +233,13 @@
   forecast <- cbind(dt, fc)
 
   # Rename columns back ----
-  if(id_col != "unique_id"){
+  if(is.null(id_col)){
+    forecast <- forecast |>
+      dplyr::select(-dplyr::all_of(c("unique_id")))
+  }else if(id_col != "unique_id"){
     names(forecast)[which(names(forecast) == "unique_id")] <- id_col
   }
+
   if(time_col != "ds"){
     names(forecast)[which(names(forecast) == "ds")] <- time_col
   }

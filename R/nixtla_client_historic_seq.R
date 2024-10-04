@@ -46,7 +46,6 @@
       dplyr::mutate(unique_id = "ts_0") |>
       dplyr::select(c("unique_id", tidyselect::everything()))
   }else{
-    # id_col is not NULL
     names(df)[which(names(df) == id_col)] <- "unique_id"
   }
 
@@ -179,9 +178,13 @@
   forecast <- cbind(dates, fc)
 
   # Rename columns back ----
-  if(id_col != "unique_id"){
+  if(is.null(id_col)){
+    forecast <- forecast |>
+      dplyr::select(-dplyr::all_of(c("unique_id")))
+  }else if(id_col != "unique_id"){
     names(forecast)[which(names(forecast) == "unique_id")] <- id_col
   }
+
   if(time_col != "ds"){
     names(forecast)[which(names(forecast) == "ds")] <- time_col
   }
