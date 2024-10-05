@@ -13,7 +13,7 @@
 #' .r_frequency("h")    # Returns "h" (unchanged)
 .r_frequency <- function(freq){
 
-  r_freq <- 1
+  r_freq <- freq
   contains_units <- grepl("\\d(h|min|s)", freq)
 
   if(contains_units){
