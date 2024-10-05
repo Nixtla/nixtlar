@@ -8,7 +8,8 @@
 #'
 #' @examples
 #' df <- nixtlar::electricity
-#' infer_frequency(df)
+#' freq <- NULL
+#' infer_frequency(df, freq)
 #'
 infer_frequency <- function(df, freq){
   if(!is.null(freq)){

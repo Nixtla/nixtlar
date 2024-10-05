@@ -58,14 +58,14 @@ head(df)
 For any of these functions, simply set the `level` argument to the desired confidence level for the prediction intervals. Keep in mind that `level` should be a vector with numbers between 0 and 100. You can use either `quantiles` or `level` for uncertainty quantification, but not both. 
 
 ```{r}
-fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", level=c(80,95))
+fcst <- nixtla_client_forecast(df, h = 8, level=c(80,95))
 head(fcst)
 ```
 
 Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function uses only the maximum value when there are multiple values. Hence, setting `level=c(90,95,99)`, for example, is equivalent to setting `level=c(99)`, which is the default value.  
 
 ```{r}
-anomalies <- nixtla_client_detect_anomalies(df, id_col = "unique_id") # level=c(90,95,99)
+anomalies <- nixtla_client_detect_anomalies(df) # level=c(90,95,99)
 head(anomalies) # only the 99% confidence level is used 
 ```
 
@@ -75,11 +75,11 @@ head(anomalies) # only the 99% confidence level is used
 When available, `nixtlar::nixtla_client_plot` will automatically plot the prediction intervals. 
 
 ```{r}
-nixtla_client_plot(df, fcst, id_col = "unique_id", max_insample_length = 100)
+nixtla_client_plot(df, fcst, max_insample_length = 100)
 ```
 
 ```{r}
-nixtlar::nixtla_client_plot(df, anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+nixtlar::nixtla_client_plot(df, anomalies, plot_anomalies = TRUE)
 ```
 
 ```{r, include=FALSE}

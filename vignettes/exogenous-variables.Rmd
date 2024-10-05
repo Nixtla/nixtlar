@@ -57,7 +57,7 @@ To generate a forecast with exogenous variables, use the `nixtla_client_forecast
 Keep in mind that the default names for the time and target columns are `ds` and `y`, respectively. If your time and target columns have different names, specify them with `time_col` and `target_col`. Since this dataset has multiple ids (one for every electricity market), you will need to specify the name of the column that contains these ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`.  
 
 ````{r}
-fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, id_col = "unique_id", X_df = future_exo_vars)
+fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, X_df = future_exo_vars)
 head(fcst_exo_vars)
 ````
 
@@ -66,7 +66,7 @@ For comparison, we will also generate a forecast without the exogenous variables
 ````{r}
 df <- nixtlar::electricity # same dataset but without the exogenous variables
 
-fcst <- nixtla_client_forecast(df, h = 24, id_col = "unique_id")
+fcst <- nixtla_client_forecast(df, h = 24)
 head(fcst)
 ````
 
@@ -75,7 +75,7 @@ head(fcst)
 `nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-nixtla_client_plot(df_exo_vars, fcst_exo_vars, id_col = "unique_id", max_insample_length = 500)
+nixtla_client_plot(df_exo_vars, fcst_exo_vars, max_insample_length = 500)
 ```
 
 ```{r, include=FALSE}

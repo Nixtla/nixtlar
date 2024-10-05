@@ -61,7 +61,7 @@ train <- df[df$ds %in% setdiff(df$ds, test$ds), ]
 To use the long-horizon model of `TimeGPT`, set the `model` argument to `timegpt-1-long-horizon`. 
 
 ```{r}
-fcst_long_horizon <- nixtlar::nixtla_client_forecast(train, h=96, id_col="unique_id", model="timegpt-1-long-horizon")
+fcst_long_horizon <- nixtlar::nixtla_client_forecast(train, h=96, model="timegpt-1-long-horizon")
 head(fcst_long_horizon)
 ```
 
@@ -72,7 +72,7 @@ head(fcst_long_horizon)
 When using `nixtlar::nixtla_client_plot` with the output of `nixtlar::nixtla_client_detect_anomalies`, set `plot_anomalies=TRUE` to plot the anomalies. 
 
 ```{r}
-nixtlar::nixtla_client_plot(train, fcst_long_horizon, id_col="unique_id", max_insample_length = 200)
+nixtlar::nixtla_client_plot(train, fcst_long_horizon, max_insample_length = 200)
 ```
 
 ## 5. Evaluate the long-horizon model 
@@ -80,7 +80,7 @@ nixtlar::nixtla_client_plot(train, fcst_long_horizon, id_col="unique_id", max_in
 To evaluate the long-horizon forecast, we'll generate the same forecast with the default model of `TimeGPT`, which is `timegpt-1`, and then we'll compute and compare the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) of the two models. 
 
 ```{r}
-fcst <- nixtlar::nixtla_client_forecast(train, h=96, id_col="unique_id")
+fcst <- nixtlar::nixtla_client_forecast(train, h=96)
 head(fcst)
 ```
 

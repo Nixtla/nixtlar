@@ -19,6 +19,7 @@ Infer frequency of a data frame.
 }
 \examples{
 df <- nixtlar::electricity
-infer_frequency(df)
+freq <- NULL
+infer_frequency(df, freq)
 
 }

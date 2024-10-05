@@ -102,7 +102,7 @@ You will need to restart R for the changes to take effect. Note that modifying t
 
 `nixtlar` includes a function to validate your API key.
 
-```{r}
+```{r, eval=FALSE}
 nixtlar::nixtla_validate_api_key()
 ```
 

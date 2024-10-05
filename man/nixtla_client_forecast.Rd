@@ -2,7 +2,8 @@
 % Please edit documentation in R/nixtla_client_forecast.R
 \name{nixtla_client_forecast}
 \alias{nixtla_client_forecast}
-\title{Generate 'TimeGPT' forecast}
+\title{Sequential version of 'nixtla_client_forecast'
+This is a private function of 'nixtlar'}
 \usage{
 nixtla_client_forecast(
   df,
@@ -18,12 +19,11 @@ nixtla_client_forecast(
   finetune_loss = "default",
   clean_ex_first = TRUE,
   add_history = FALSE,
-  model = "timegpt-1",
-  num_partitions = NULL
+  model = "timegpt-1"
 )
 }
 \arguments{
-\item{df}{A tsibble or a data frame with time series data.}
+\item{df}{A data frame with time series data.}
 
 \item{h}{Forecast horizon.}
 
@@ -50,14 +50,13 @@ nixtla_client_forecast(
 \item{add_history}{Return fitted values of the model.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
-
-\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
 'TimeGPT''s forecast.
 }
 \description{
-Generate 'TimeGPT' forecast
+Sequential version of 'nixtla_client_forecast'
+This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{
@@ -67,3 +66,4 @@ Generate 'TimeGPT' forecast
 }
 
 }
+\keyword{internal}

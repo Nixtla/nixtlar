@@ -45,10 +45,9 @@ head(df)
 To detect anomalies, use `nixtlar::nixtla_client_detect_anomalies`. The key parameters of this method are: 
 
 - **df**: The data frame or `tsibble` with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
-- **id_col**: If the data contains multiple ids, as in this case, please specify the column that contains them. If working with a single series, leave it as it is by default (NULL).    
 
 ```{r}
-nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, id_col = "unique_id") 
+nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df) 
 head(nixtla_client_anomalies)
 ```
 
@@ -60,7 +59,7 @@ The `anomaly_detection` method from `TimeGPT` evaluates each observation and use
 When using `nixtlar::nixtla_client_plot` with the output of `nixtlar::nixtla_client_detect_anomalies`, set `plot_anomalies=TRUE` to plot the anomalies. 
 
 ```{r}
-nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, plot_anomalies = TRUE)
 ```
 
 ```{r, include=FALSE}

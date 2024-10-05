@@ -85,7 +85,7 @@ The default value of the frequency parameter is `NULL`. When this parameter is n
 ```{r}
 
 df <- nixtlar::electricity
-fcst <- nixtlar::nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95)) # freq = "H"
+fcst <- nixtlar::nixtla_client_forecast(df, h = 8, level = c(80,95)) # freq = "H"
 # infer the frequency when `freq` is not specified 
 ```
 

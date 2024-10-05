@@ -64,7 +64,7 @@ You'll need to restart R for changes to take effect. Keep in mind that modifying
 ### Validate your API key 
 If you want to validate your API key, call `nixtla_validate_api_key`. 
 
-```{r}
+```{r, eval=FALSE}
 nixtla_validate_api_key()
 ```
 

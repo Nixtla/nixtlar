@@ -57,7 +57,7 @@ head(df)
 For any of these functions, simply set the `quantiles` argument to the desired values as a vector. Keep in mind that quantiles should all be numbers between 0 and 1. You can use either `quantiles` or `level` for uncertainty quantification, but not both. 
 
 ```{r}
-fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", quantiles = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
+fcst <- nixtla_client_forecast(df, h = 8, quantiles = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
 head(fcst)
 ```
 
@@ -67,7 +67,7 @@ head(fcst)
 When available, `nixtlar::nixtla_client_plot` will automatically plot the quantiles. 
 
 ```{r}
-nixtla_client_plot(df, fcst, id_col = "unique_id", max_insample_length = 100)
+nixtla_client_plot(df, fcst, max_insample_length = 100)
 ```
 
 
