@@ -2,24 +2,24 @@
 % Please edit documentation in R/r_frequency.R
 \name{.r_frequency}
 \alias{.r_frequency}
-\title{Convert 'TimeGPT' frequency alias to a character string recognized by R.
+\title{Convert period or offset aliases to a character string recognized by R.
 This is a private function of 'nixtlar'}
 \usage{
 .r_frequency(freq)
 }
 \arguments{
-\item{freq}{A character string specifying the frequency alias used by 'TimeGPT'.}
+\item{freq}{The period or offset alias used by 'TimeGPT'.}
 }
 \value{
 A character string recognized by R for generating a regular sequence of times.
 }
 \description{
-Convert 'TimeGPT' frequency alias to a character string recognized by R.
+Convert period or offset aliases to a character string recognized by R.
 This is a private function of 'nixtlar'
 }
 \examples{
-r_frequency("MS")   # Returns "month"
-r_frequency("10h")  # Returns "10 h"
-r_frequency("h")    # Returns "h" (unchanged)
+.r_frequency("MS")   # Returns "month"
+.r_frequency("10h")  # Returns "10 h"
+.r_frequency("h")    # Returns "h" (unchanged)
 }
 \keyword{internal}

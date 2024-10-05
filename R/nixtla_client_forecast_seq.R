@@ -229,14 +229,7 @@
     df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
   }
 
-  new_dates <- vector("list", nrow(df_info))
-  for(i in 1:nrow(df_info)){
-    dt <- seq(df_info$dates[i], by = .r_frequency(freq), length.out = h+1)
-    new_dates[[i]] <- dt[2:length(dt)]
-  }
-  names(new_dates) <- df_info$unique_id
-
-  dates_df <- data.frame(lapply(new_dates, as.POSIXct))
+  dates_df <- .generate_output_dates(df_info, freq)
 
   dates_long_df <- dates_df |>
     tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds") |>
