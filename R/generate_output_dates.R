@@ -36,8 +36,13 @@
     dt[2:length(dt)]
   })
 
-  names(new_dates) <- df_info$unique_id
   dates_df <- data.frame(lapply(new_dates, as.POSIXct))
+
+  ids <- df_info$unique_id
+  if(class(df_info$unique_id) == "integer"){
+    ids <- as.character(df_info$unique_id)
+  }
+  names(dates_df) <- ids
 
   return(dates_df)
 }
