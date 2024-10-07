@@ -20,6 +20,7 @@
     r_freq <- .r_frequency(freq)
 
     if(freq == "QE") {
+      # End of quarter dates are: "YYY-03-31", "YYYY-06-30", "YYYY-09-30" and "YYYY-12-31".
       dt <- seq(from = start_date, by = "quarter", length.out = h+1)
       month <- lubridate::month(start_date)
       if (month %in% c(3, 12)) {
@@ -39,7 +40,7 @@
   dates_df <- data.frame(lapply(new_dates, as.POSIXct))
 
   ids <- df_info$unique_id
-  if(class(df_info$unique_id) == "integer"){
+  if(inherits(df_info$unique_id, "numeric") | inherits(df_info$unique_id, "integer")){
     ids <- as.character(df_info$unique_id)
   }
   names(dates_df) <- ids
