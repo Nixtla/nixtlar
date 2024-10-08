@@ -42,9 +42,9 @@ head(df)
 ```
 
 ## 3. Forecast historical data 
-To generate a forecast for the historical data, use `nixtlar::nixtla_client_historic`. The key parameters of this method are: 
+To generate a forecast for the historical data, use `nixtlar::nixtla_client_historic`, which should include the following parameters: 
 
-- **df**: The dataframe or `tsibble` with the time series data. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. 
+- **df**: The time series data, either as a data frame, a tibble, or a tsibble. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. If working with multiple series, you also need to include a column with unique identifiers. The default name for this column is `unique_id`. 
 - **level**: The prediction intervals for the forecast. 
 
 ```{r}

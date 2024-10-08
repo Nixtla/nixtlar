@@ -17,9 +17,10 @@ status](https://www.r-pkg.org/badges/version/nixtlar)](https://CRAN.R-project.or
 ## Version 0.6.0 of nixtlar is now available! (2024-10-07)
 
 We are excited to announce the release of `nixtlar` version 0.6.0, which
-integrates the latest release of the `TimeGPT` API—v2. This update
-focuses on what matters most to our users: speed, scalability, and
-reliability.
+integrates the [latest
+release](https://github.com/Nixtla/nixtla/releases/v0.6.0) of the
+`TimeGPT` API—v2. This update focuses on what matters most to our users:
+speed, scalability, and reliability.
 
 **Key updates include**:
 

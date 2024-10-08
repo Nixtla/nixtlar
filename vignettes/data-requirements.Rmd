@@ -39,20 +39,19 @@ This vignette explains the data requirements for using any of the core functions
 - nixtlar::nixtla_client_plot()
 ```
 
-## 1. Input requirements 
+## 1. Input Requirements
 
-`nixtlar` supports input data in the form of data frames and `tsibbles`. When working with the latter, `nixtlar` will do some transformations in the background to comply with `TimeGPT`'s data requirements, but the output will always be a `tsibble` with no additional action required on your part. 
+`nixtlar` now supports the following data structures: data frames, tibbles, and tsibbles. The output format will always be a data frame.
 
-Whether you use a data frame or a `tsibble`, when using any of the core functions of `nixtlar`, you must include the following two columns: 
+Regardless of your data structure, the following two columns must always be included when using any core functions of `nixtlar`:
 
-- **Date column**: This column should contain timestamps, which may be formatted as character strings ( `yyyy-mm-dd` or `yyyy-mm-dd HH:MM:SS`), integers, or date-time objects. The character string format is preferred, although `nixtlar` is compatible with the latter two types. The default name for this column is `ds`. If your dataset uses a different name, please specify it by setting the parameter `time_col="your_time_column_name"`.
+- **Date Column**: This column must contain timestamps formatted as `YYYY-MM-DD` or `YYYY-MM-DD hh:mm:ss`, either as character strings or date-time objects. The default name for this column is `ds`. If your dataset uses a different name, please specify it by setting the parameter `time_col="your_time_column_name"`.
 
-- **Target column**: This column should contain the target variable to forecast, and it must be numeric. The default name for this column is `y`. If your data uses a different name, please specify it by setting the parameter `target_col="your target column"`. 
+- **Target Column**: This column should contain the numeric target variable for forecasting. The default name for this column is `y`. If your dataset uses a different name, specify it by setting the parameter `target_col="your_target_column_name"`.
 
-## 2. Multiple series 
+## 2. Multiple Series
 
-If you are working with multiple series, you must include a column with a unique identifier for each of them. This column should contain character strings or integers. Unlike the [Python SDK](https://github.com/Nixtla/nixtla), which defaults to `unique_id`, `nixtlar` does not have a default name for this identifier column. **This is one of the few differences between nixtlar and the Python SDK**. You **must** specify the name of this identifier column if it exists in your dataset. Set this by using `id_col="your_unique_id_column"`.
-
+If you are working with multiple series, you must include a column with a unique identifier for each series. This column can contain characters or integers, and its default name is `unique_id`. If your dataset uses a different name for the identifier column, please specify it by setting the parameter `id_col="your_id_column_name"`. If your dataset contains only one series and does not need an identifier, set `id_col` to `NULL`.
 
 ```{r}
 # sample valid input 
@@ -61,14 +60,13 @@ head(df)
 str(df)
 ```
 
-## 3. Exogenous variables 
+## 3. Exogenous Variables
 
-When using exogenous variables, you need to 
+When using exogenous variables, `nixtlar` differentiates between historical and future exogenous variables:
 
-1. Add the historical exogenous variables to your input data, and 
-2. Create a dataset with the future values of said exogenous variables, ensuring it spans the entire forecast horizon. This dataset should include a column with the appropriate timestamps and, if available, the unique identifiers, in the formats explained in the previous sections.  
+- **Historical Exogenous Variables**: These should be included in the input data immediately following the `id_col`, `ds`, and `y` columns. If your dataset contains additional columns that are not exogenous variables, you must remove them before using any core functions of `nixtlar`.
 
-Please note that all columns after the target column will be considered exogenous variables. Hence, if you have additional columns in your dataset that are not exogenous variables, you must remove them before using any of the core functions of `nixtlar`. 
+- **Future Exogenous Variables**: These correspond to the `X_df` parameter and should cover the entire forecast horizon. This dataset should include columns with the appropriate timestamps and, if available, unique identifiers, formatted as explained in previous sections.
 
 ```{r}
 # sample valid input with exogenous variables 

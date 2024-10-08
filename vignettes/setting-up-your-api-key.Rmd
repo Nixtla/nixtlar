@@ -42,9 +42,9 @@ An API key is a unique string of characters that is used to authenticate your re
 ```
 
 ## 2. How can I get one? 
-To obtain you API key, please sign up here: https://dashboard.nixtla.io/ 
+To obtain you API key, please sign up here: https://dashboard.nixtla.io/sign_in
 
-After registering, you will have access to your developer dashboard. Under `API keys`, you will find your personal API key. Please note that your API key should not be shared with others, and it is your responsability to keep it safe. 
+After registering, you will have access to your developer dashboard. Under `API keys`, you will find your personal API key. Please note that your API key should not be shared with others, and it is your responsibility to keep it safe. 
 
 ## 3. How do I set up my API key? 
 
@@ -105,6 +105,8 @@ You will need to restart R for the changes to take effect. Note that modifying t
 ```{r, eval=FALSE}
 nixtlar::nixtla_validate_api_key()
 ```
+
+The `nixtla_validate_api_key` function will return `TRUE` if your key is valid, and `FALSE` otherwise. 
 
 You do not need to validate your API key every time you set it up, only when you are unsure of its status. Alternatively, in your dashboard, under `API keys`, there is a label next to your API key indicating its status, for example, `active`. 
 
