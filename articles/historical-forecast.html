@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="timegpt-historical-forecast">1. TimeGPT Historical Forecast<a class="anchor" aria-label="anchor" href="#timegpt-historical-forecast"></a>
 </h2>
@@ -117,41 +114,39 @@ five different electricity markets.</p>
 <h2 id="forecast-historical-data">3. Forecast historical data<a class="anchor" aria-label="anchor" href="#forecast-historical-data"></a>
 </h2>
 <p>To generate a forecast for the historical data, use
-<code><a href="../reference/nixtla_client_historic.html">nixtlar::nixtla_client_historic</a></code>. The key parameters of this
-method are:</p>
+<code><a href="../reference/nixtla_client_historic.html">nixtlar::nixtla_client_historic</a></code>, which should include the
+following parameters:</p>
 <ul>
 <li>
-<strong>df</strong>: The dataframe or <code>tsibble</code> with the
-time series data. It should include at least a column with the
+<strong>df</strong>: The time series data, either as a data frame, a
+tibble, or a tsibble. It should include at least a column with the
 datestamps and a column with the observations. Default names for these
 columns are <code>ds</code> and <code>y</code>. If different, please
-specify their names.</li>
-<li>
-<strong>id_col</strong>: If the data contains multiple ids, as in
-this case, please specify the column that contains them. If working with
-a single series, leave it as it is by default (NULL).</li>
+specify their names. If working with multiple series, you also need to
+include a column with unique identifiers. The default name for this
+column is <code>unique_id</code>.</li>
 <li>
 <strong>level</strong>: The prediction intervals for the
 forecast.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_fitted_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_historic.html">nixtla_client_historic</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<code class="sourceCode R"><span><span class="va">nixtla_client_fitted_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_historic.html">nixtla_client_historic</a></span><span class="op">(</span><span class="va">df</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fitted_values</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-80 TimeGPT-lo-95</span></span>
-<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 56.07623      13.95557     -8.341764</span></span>
-<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 52.41973      10.29907    -11.998258</span></span>
-<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 52.81474      10.69408    -11.603250</span></span>
-<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 52.59026      10.46960    -11.827729</span></span>
-<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 52.67297      10.55231    -11.745015</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 54.10659      11.98593    -10.311399</span></span>
-<span><span class="co">#&gt;   TimeGPT-hi-80 TimeGPT-hi-95</span></span>
-<span><span class="co">#&gt; 1      98.19688      120.4942</span></span>
-<span><span class="co">#&gt; 2      94.54039      116.8377</span></span>
-<span><span class="co">#&gt; 3      94.93540      117.2327</span></span>
-<span><span class="co">#&gt; 4      94.71092      117.0082</span></span>
-<span><span class="co">#&gt; 5      94.79363      117.0910</span></span>
-<span><span class="co">#&gt; 6      96.22725      118.5246</span></span></code></pre></div>
+<span><span class="co">#&gt;                    ds  TimeGPT TimeGPT-lo-80 TimeGPT-lo-95 TimeGPT-hi-80</span></span>
+<span><span class="co">#&gt; 1 2016-10-27 00:00:00 56.07623      25.27245      8.965920      86.88000</span></span>
+<span><span class="co">#&gt; 2 2016-10-27 01:00:00 52.41973      21.61596      5.309425      83.22350</span></span>
+<span><span class="co">#&gt; 3 2016-10-27 02:00:00 52.81474      22.01096      5.704433      83.61852</span></span>
+<span><span class="co">#&gt; 4 2016-10-27 03:00:00 52.59026      21.78649      5.479953      83.39404</span></span>
+<span><span class="co">#&gt; 5 2016-10-27 04:00:00 52.67297      21.86920      5.562667      83.47675</span></span>
+<span><span class="co">#&gt; 6 2016-10-27 05:00:00 54.10659      23.30282      6.996284      84.91036</span></span>
+<span><span class="co">#&gt;   TimeGPT-hi-95</span></span>
+<span><span class="co">#&gt; 1     103.18653</span></span>
+<span><span class="co">#&gt; 2      99.53004</span></span>
+<span><span class="co">#&gt; 3      99.92505</span></span>
+<span><span class="co">#&gt; 4      99.70057</span></span>
+<span><span class="co">#&gt; 5      99.78328</span></span>
+<span><span class="co">#&gt; 6     101.21690</span></span></code></pre></div>
 <p>Notice that there are no fitted values for some of the initial
 observations. This is because <code>TimeGPT</code> requires a minimum
 number of values to generate reliable forecasts.</p>
@@ -175,21 +170,6 @@ the historical data and for the next
 future observations.</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="plot-historical-forecast">4. Plot historical forecast<a class="anchor" aria-label="anchor" href="#plot-historical-forecast"></a>
-</h2>
-<p><code>nixtlar</code> includes a function to plot the historical data
-and any output from <code>nixtla_client_forecast</code>,
-<code>nixtla_client_historic</code>,
-<code>nixtla_client_anomaly_detection</code> and
-<code>nixtla_client_cross_validation</code>. If you have long series,
-you can use <code>max_insample_length</code> to only plot the last N
-historical values (the forecast will always be plotted in full).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fitted_values</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
-<p><img src="historical-forecast_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
-</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -201,7 +181,7 @@ historical values (the forecast will always be plotted in full).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

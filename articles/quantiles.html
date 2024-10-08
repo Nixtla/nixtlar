@@ -80,10 +80,7 @@
     
 <hr>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="uncertainty-quantification-via-quantiles">1. Uncertainty quantification via quantiles<a class="anchor" aria-label="anchor" href="#uncertainty-quantification-via-quantiles"></a>
 </h2>
@@ -137,23 +134,23 @@ should all be numbers between 0 and 1. You can use either
 <code>quantiles</code> or <code>level</code> for uncertainty
 quantification, but not both.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<code class="sourceCode R"><span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-q-10 TimeGPT-q-20 TimeGPT-q-30</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045     40.42074     42.34211     43.54112</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445     36.91513     40.05255     41.62179</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839     35.55863     38.39862     39.92430</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649     33.45859     36.34654     38.08909</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454     30.35095     34.39800     36.65258</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878     31.60236     34.85969     37.43258</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045     35.50842     38.47870     40.71582</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445     35.37463     37.77037     39.31913</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839     35.34079     37.21802     39.44543</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649     32.32625     34.98683     35.96071</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454     30.99895     32.74554     34.72325</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878     32.43504     34.25011     35.10687</span></span>
 <span><span class="co">#&gt;   TimeGPT-q-40 TimeGPT-q-50 TimeGPT-q-60 TimeGPT-q-70 TimeGPT-q-80 TimeGPT-q-90</span></span>
-<span><span class="co">#&gt; 1     44.72518     45.19045     45.65572     46.83979     48.03880     49.96017</span></span>
-<span><span class="co">#&gt; 2     42.51711     43.24445     43.97178     44.86710     46.43634     49.57376</span></span>
-<span><span class="co">#&gt; 3     41.13472     41.95839     42.78206     43.99248     45.51815     48.35815</span></span>
-<span><span class="co">#&gt; 4     38.62703     39.79649     40.96594     41.50388     43.24643     46.13438</span></span>
-<span><span class="co">#&gt; 5     38.17931     39.20454     40.22976     41.75650     44.01107     48.05812</span></span>
-<span><span class="co">#&gt; 6     39.16840     40.10878     41.04916     42.78498     45.35787     48.61520</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     43.92545     45.19045     46.45545     49.66508     51.90221     54.87248</span></span>
+<span><span class="co">#&gt; 2     42.58400     43.24445     43.90489     47.16976     48.71852     51.11427</span></span>
+<span><span class="co">#&gt; 3     40.85600     41.95839     43.06078     44.47135     46.69876     48.57599</span></span>
+<span><span class="co">#&gt; 4     37.46390     39.79649     42.12907     43.63226     44.60614     47.26672</span></span>
+<span><span class="co">#&gt; 5     36.01405     39.20454     42.39502     43.68583     45.66353     47.41012</span></span>
+<span><span class="co">#&gt; 6     38.76697     40.10878     41.45059     45.11069     45.96745     47.78252</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-quantiles">4. Plot quantiles<a class="anchor" aria-label="anchor" href="#plot-quantiles"></a>
@@ -169,8 +166,7 @@ full).</p>
 <p>When available, <code><a href="../reference/nixtla_client_plot.html">nixtlar::nixtla_client_plot</a></code> will
 automatically plot the quantiles.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">fcst</span>, max_insample_length <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p><img src="quantiles_files/figure-html/unnamed-chunk-5-1.png" width="1152"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -184,7 +180,7 @@ automatically plot the quantiles.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="exogenous-variables">1. Exogenous variables<a class="anchor" aria-label="anchor" href="#exogenous-variables"></a>
 </h2>
@@ -123,12 +120,21 @@ indicating the day of the week.</p>
 <span><span class="co">#&gt; 4     0     0     1     0</span></span>
 <span><span class="co">#&gt; 5     0     0     1     0</span></span>
 <span><span class="co">#&gt; 6     0     0     1     0</span></span></code></pre></div>
-<p>When using exogenous variables, you must provide their future values
-to cover the complete forecast horizon; otherwise, <code>TimeGPT</code>
-will result in an error. Ensure that the dates of the future exogenous
-variables exactly match the forecast horizon. For the electricity
-consumption dataset with exogenous variables, <code>nixtlar</code>
-provides their values for the next 24 steps ahead.</p>
+<p>When using exogenous variables, <code>nixtlar</code> differentiates
+between historical and future exogenous variables:</p>
+<ul>
+<li><p><strong>Historical Exogenous Variables</strong>: These should be
+included in the input data immediately following the
+<code>id_col</code>, <code>ds</code>, and <code>y</code> columns. If
+your dataset contains additional columns that are not exogenous
+variables, you must remove them before using any core functions of
+<code>nixtlar</code>.</p></li>
+<li><p><strong>Future Exogenous Variables</strong>: These correspond to
+the <code>X_df</code> parameter and should cover the entire forecast
+horizon. This dataset should include columns with the appropriate
+timestamps and, if available, unique identifiers, formatted as explained
+in previous sections.</p></li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">future_exo_vars</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity_future_exo_vars.html">electricity_future_exo_vars</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">future_exo_vars</span><span class="op">)</span></span>
@@ -152,24 +158,18 @@ provides their values for the next 24 steps ahead.</p>
 </h2>
 <p>To generate a forecast with exogenous variables, use the
 <code>nixtla_client_forecast</code> function as you would for forecasts
-without them. The only difference is that you must add the exogenous
-variables using the <code>X_df</code> argument.</p>
-<p>Keep in mind that the default names for the time and target columns
-are <code>ds</code> and <code>y</code>, respectively. If your time and
-target columns have different names, specify them with
-<code>time_col</code> and <code>target_col</code>. Since this dataset
-has multiple ids (one for every electricity market), you will need to
-specify the name of the column that contains these ids, which in this
-case is <code>unique_id</code>. To do this, simply use
-<code>id_col="unique_id"</code>.</p>
+without them. The only difference is that you must add the future
+exogenous variables using the <code>X_df</code> argument.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, h <span class="op">=</span> <span class="fl">24</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, X_df <span class="op">=</span> <span class="va">future_exo_vars</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<code class="sourceCode R"><span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, h <span class="op">=</span> <span class="fl">24</span>, X_df <span class="op">=</span> <span class="va">future_exo_vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
+<span><span class="co">#&gt; Using historical exogenous features: Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6</span></span>
+<span><span class="co">#&gt; Using future exogenous features: Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst_exo_vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
 <span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 74.54077</span></span>
 <span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.34429</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42922</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42921</span></span>
 <span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09440</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38914</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08574</span></span></code></pre></div>
@@ -178,15 +178,15 @@ exogenous variables.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span> <span class="co"># same dataset but without the exogenous variables</span></span>
 <span></span>
-<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">24</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">24</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
 <span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045</span></span>
 <span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445</span></span>
 <span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839</span></span>
 <span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20453</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -200,8 +200,7 @@ and any output from <code>nixtla_client_forecast</code>,
 you can use <code>max_insample_length</code> to only plot the last N
 historical values (the forecast will always be plotted in full).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, <span class="va">fcst_exo_vars</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, <span class="va">fcst_exo_vars</span>, max_insample_length <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
 <p><img src="exogenous-variables_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -215,7 +214,7 @@ historical values (the forecast will always be plotted in full).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

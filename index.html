@@ -76,25 +76,16 @@
 <!-- badges: start -->
 
 <div class="section level2">
-<h2 id="news-28-aug-2024-parallel-processing-is-now-available-in-nixtlar">NEWS (28 Aug 2024): Parallel processing is now available in <code>nixtlar</code>
-<a class="anchor" aria-label="anchor" href="#news-28-aug-2024-parallel-processing-is-now-available-in-nixtlar"></a>
+<h2 id="version-060-of-nixtlar-is-now-available-2024-10-07">Version 0.6.0 of nixtlar is now available! (2024-10-07)<a class="anchor" aria-label="anchor" href="#version-060-of-nixtlar-is-now-available-2024-10-07"></a>
 </h2>
-<p>The development version of <code>nixtlar</code> now supports parallel processing, making it suitable for handling large datasets with thousands of time series. To access this functionality, simply install the package from GitHub.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
-<p>Configure the new <code>num_partitions</code> parameter in any of the <code>nixtlar</code> methods as follows:</p>
+<p>We are excited to announce the release of <code>nixtlar</code> version 0.6.0, which integrates the <a href="https://github.com/Nixtla/nixtla/releases/v0.6.0" class="external-link">latest release</a> of the <code>TimeGPT</code> API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.</p>
+<p><strong>Key updates include</strong>:</p>
 <ul>
-<li>
-<code>num_partitions=NULL</code>: This is the default setting, operating in sequential mode, equivalent to <code>num_partitions=1</code>.</li>
-<li>
-<code>num_partitions="auto"</code>: Automatically uses all available resources as determined by <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">future::availableCores()</a></code>.</li>
-<li>
-<code>num_partitions</code> can be set to any positive integer. If it exceeds the number of available resources determined by <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">future::availableCores()</a></code>, it will default to the maximum available cores.</li>
+<li><p><strong>Data Structures</strong>: <code>nixtlar</code> now extends support to <code>tibbles</code>, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows.</p></li>
+<li><p><strong>Date Formats</strong>: For efficiency, <code>nixtlar</code> now strictly requires dates to be in the format <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, either as character strings or date-time objects. For more details, please refer to our <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a> guide and <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">Data Requirements</a> vignette.</p></li>
+<li><p><strong>Default ID Column</strong>: In alignment with the Python SDK, <code>nixtlar</code> now defaults the <code>id_col</code> to <code>unique_id</code>. This means you no longer need to specify this column if it is already named <code>unique_id</code>. If your dataset contains only one series, simply set <code>id_col=NULL</code>.</p></li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h<span class="op">=</span><span class="fl">8</span>, id_col<span class="op">=</span><span class="st">"unique_id"</span>, num_partitions<span class="op">=</span><span class="st">"auto"</span><span class="op">)</span></span></code></pre></div>
-<p>Note that <code>df</code> must be an R data frame or a tsibble. See <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">data requierements</a> for more details.</p>
+<p>These changes leverage the capabilities of <code>TimeGPT</code>’s new API and align <code>nixtlar</code> more closely with the Python SDK, ensuring a better user experience.</p>
 </div>
 </div>
 <div class="section level1">
@@ -120,48 +111,38 @@
 </ul>
 </div>
 <div class="section level1">
-<h1 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
-</h1>
-<p><a href="https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c982724" class="external-link uri">https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c982724</a></p>
-</div>
-<div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
 <p><code>nixtlar</code> is available on CRAN, so you can install the latest stable version using <code>install.packages</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install nixtlar from CRAN</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nixtlar"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Then load it </span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install the development version of <code>nixtlar</code> from <a href="https://github.com/" class="external-link">GitHub</a> with <code>devtools::install_github</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Nixtla/nixtlar"</span><span class="op">)</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="cran-v052-vs-development-version-v053">CRAN (v0.5.2) vs development version (v0.5.3)<a class="anchor" aria-label="anchor" href="#cran-v052-vs-development-version-v053"></a>
-</h4>
-<p>Currently, the development version contains some features not yet available in CRAN. To learn more, please read the release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3" class="external-link">here</a>.</p>
-</div>
 </div>
 <div class="section level1">
 <h1 id="forecast-using-timegpt-in-3-easy-steps">Forecast Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#forecast-using-timegpt-in-3-easy-steps"></a>
 </h1>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
 <span><span class="co">#&gt;   method               from </span></span>
 <span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
 <ol style="list-style-type: decimal">
-<li>Set your API key. Get yours at <a href="https://dashboard.nixtla.io/" class="external-link">dashboard.nixtla.io</a>
+<li>Set your API key. Get yours at <a href="https://dashboard.nixtla.io/sign_in" class="external-link">dashboard.nixtla.io</a>
 </li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Load sample data</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y</span></span>
@@ -174,53 +155,53 @@
 <ol start="3" style="list-style-type: decimal">
 <li>Forecast the next 8 steps ahead</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nixtla_client_fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-95 TimeGPT-lo-80</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045      32.60115      40.42074</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445      29.30454      36.91513</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839      28.17721      35.55863</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649      25.42790      33.45859</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454      23.53869      30.35095</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878      26.90472      31.60236</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045      30.49691      35.50842</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445      28.96423      35.37463</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839      27.06667      35.34079</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649      27.96751      32.32625</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454      24.66072      30.99895</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878      23.05056      32.43504</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-80 TimeGPT-hi-95</span></span>
-<span><span class="co">#&gt; 1      49.96017      57.77975</span></span>
-<span><span class="co">#&gt; 2      49.57376      57.18435</span></span>
-<span><span class="co">#&gt; 3      48.35815      55.73957</span></span>
-<span><span class="co">#&gt; 4      46.13438      54.16507</span></span>
-<span><span class="co">#&gt; 5      48.05812      54.87038</span></span>
-<span><span class="co">#&gt; 6      48.61520      53.31284</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      54.87248      59.88399</span></span>
+<span><span class="co">#&gt; 2      51.11427      57.52467</span></span>
+<span><span class="co">#&gt; 3      48.57599      56.85011</span></span>
+<span><span class="co">#&gt; 4      47.26672      51.62546</span></span>
+<span><span class="co">#&gt; 5      47.41012      53.74836</span></span>
+<span><span class="co">#&gt; 6      47.78252      57.16700</span></span></code></pre></div>
 <p>Optionally, plot the results</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/fcst.png"></p>
 </div>
 <div class="section level1">
 <h1 id="anomaly-detection-using-timegpt-in-3-easy-steps">Anomaly Detection Using TimeGPT in 3 Easy Steps<a class="anchor" aria-label="anchor" href="#anomaly-detection-using-timegpt-in-3-easy-steps"></a>
 </h1>
 <p>Do anomaly detection with <code>TimeGPT</code>, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the <code>nixtla_client_detect_anomalies</code> and the <code>nixtla_client_plot</code> functions.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   unique_id                  ds     y anomaly TimeGPT-lo-99  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58       0     -28.58336 56.07623</span></span>
-<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86       0     -32.23986 52.41973</span></span>
-<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31       0     -31.84485 52.81474</span></span>
-<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66       0     -32.06933 52.59026</span></span>
-<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98661 52.67297</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10659</span></span>
+<span><span class="co">#&gt;   unique_id                  ds     y anomaly  TimeGPT TimeGPT-lo-99</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58   FALSE 56.07623     -28.58337</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86   FALSE 52.41973     -32.23986</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31   FALSE 52.81474     -31.84486</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66   FALSE 52.59026     -32.06934</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98   FALSE 52.67297     -31.98662</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31   FALSE 54.10659     -30.55301</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
 <span><span class="co">#&gt; 1      140.7358</span></span>
 <span><span class="co">#&gt; 2      137.0793</span></span>
 <span><span class="co">#&gt; 3      137.4743</span></span>
-<span><span class="co">#&gt; 4      137.2498</span></span>
+<span><span class="co">#&gt; 4      137.2499</span></span>
 <span><span class="co">#&gt; 5      137.3326</span></span>
 <span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/anomalies.png"></p>
 </div>
 <div class="section level1">
@@ -337,7 +318,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

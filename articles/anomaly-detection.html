@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="anomaly-detection">1. Anomaly detection<a class="anchor" aria-label="anchor" href="#anomaly-detection"></a>
 </h2>
@@ -122,36 +119,34 @@ five different electricity markets.</p>
 <h2 id="detect-anomalies">3. Detect anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
 </h2>
 <p>To detect anomalies, use
-<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>. The key parameters
-of this method are:</p>
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, which should
+include the following parameter:</p>
 <ul>
 <li>
-<strong>df</strong>: The data frame or <code>tsibble</code> with the
-time series data. It should include at least a column with the
-datestamps and a column with the observations. Default names for these
+<strong>df</strong>: The time series data, either as a data frame, a
+tibble, or a tsibble. It should include at least a column with the
+timestamps and a column with the observations. Default names for these
 columns are <code>ds</code> and <code>y</code>. If different, please
-specify their names.</li>
-<li>
-<strong>id_col</strong>: If the data contains multiple ids, as in
-this case, please specify the column that contains them. If working with
-a single series, leave it as it is by default (NULL).</li>
+specify their names. If working with multiple series, you also need to
+include a column with unique identifiers. The default name for this
+column is <code>unique_id</code>.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_anomalies</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   unique_id                  ds     y anomaly TimeGPT-lo-99  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58       0     -28.58336 56.07623</span></span>
-<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86       0     -32.23986 52.41973</span></span>
-<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31       0     -31.84485 52.81474</span></span>
-<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66       0     -32.06933 52.59026</span></span>
-<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98       0     -31.98661 52.67297</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31       0     -30.55300 54.10659</span></span>
+<span><span class="co">#&gt;   unique_id                  ds     y anomaly  TimeGPT TimeGPT-lo-99</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58   FALSE 56.07623     -28.58337</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86   FALSE 52.41973     -32.23986</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31   FALSE 52.81474     -31.84486</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66   FALSE 52.59026     -32.06934</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98   FALSE 52.67297     -31.98662</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31   FALSE 54.10659     -30.55301</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
 <span><span class="co">#&gt; 1      140.7358</span></span>
 <span><span class="co">#&gt; 2      137.0793</span></span>
 <span><span class="co">#&gt; 3      137.4743</span></span>
-<span><span class="co">#&gt; 4      137.2498</span></span>
+<span><span class="co">#&gt; 4      137.2499</span></span>
 <span><span class="co">#&gt; 5      137.3326</span></span>
 <span><span class="co">#&gt; 6      138.7662</span></span></code></pre></div>
 <p>The <code>anomaly_detection</code> method from <code>TimeGPT</code>
@@ -159,12 +154,13 @@ evaluates each observation and uses a prediction interval to determine
 if it is an anomaly or not. By default,
 <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> uses a 99%
 prediction interval. Observations that fall outside this interval will
-be considered anomalies and will have a value of 1 in the
-<code>anomaly</code> column (zero otherwise). To change the prediction
-interval, for example to 95%, use the argument <code>level=c(95)</code>.
-Keep in mind that multiple levels are not allowed, so when given several
-values, <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> will use
-the maximum.</p>
+be considered anomalies and will have a value of <code>True</code> in
+the <code>anomaly</code> column (<code>False</code> otherwise). To
+change the prediction interval, for example to 95%, use the argument
+<code>level=c(95)</code>. Keep in mind that multiple levels are not
+allowed, so when given several values,
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code> will use the
+maximum.</p>
 </div>
 <div class="section level2">
 <h2 id="plot-anomalies">4. Plot anomalies<a class="anchor" aria-label="anchor" href="#plot-anomalies"></a>
@@ -181,8 +177,7 @@ full).</p>
 of <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, set
 <code>plot_anomalies=TRUE</code> to plot the anomalies.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_anomalies</span>, plot_anomalies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="anomaly-detection_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -196,7 +191,7 @@ of <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nix
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

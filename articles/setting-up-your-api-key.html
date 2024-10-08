@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <p>This vignette explains what an API key is, how to get yours and how
 to set it up to use <code>nixtlar</code>.</p>
 <div class="section level2">
@@ -102,11 +99,11 @@ necessary to have a valid API key to use any of the core functions from
 <div class="section level2">
 <h2 id="how-can-i-get-one">2. How can I get one?<a class="anchor" aria-label="anchor" href="#how-can-i-get-one"></a>
 </h2>
-<p>To obtain you API key, please sign up here: <a href="https://dashboard.nixtla.io/" class="external-link uri">https://dashboard.nixtla.io/</a></p>
+<p>To obtain you API key, please sign up here: <a href="https://dashboard.nixtla.io/sign_in" class="external-link uri">https://dashboard.nixtla.io/sign_in</a></p>
 <p>After registering, you will have access to your developer dashboard.
 Under <code>API keys</code>, you will find your personal API key. Please
 note that your API key should not be shared with others, and it is your
-responsability to keep it safe.</p>
+responsibility to keep it safe.</p>
 </div>
 <div class="section level2">
 <h2 id="how-do-i-set-up-my-api-key">3. How do I set up my API key?<a class="anchor" aria-label="anchor" href="#how-do-i-set-up-my-api-key"></a>
@@ -167,9 +164,10 @@ key using the <code>nixtlar::nixtla_set_api_key function</code>.</p>
 <p><code>nixtlar</code> includes a function to validate your API
 key.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_validate_api_key.html">nixtla_validate_api_key</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; API key validation successful. Happy forecasting! :) </span></span>
-<span><span class="co">#&gt; If you have questions or need support, please email ops@nixtla.io</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_validate_api_key.html">nixtla_validate_api_key</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>The <code>nixtla_validate_api_key</code> function will return
+<code>TRUE</code> if your key is valid, and <code>FALSE</code>
+otherwise.</p>
 <p>You do not need to validate your API key every time you set it up,
 only when you are unsure of its status. Alternatively, in your
 dashboard, under <code>API keys</code>, there is a label next to your
@@ -186,7 +184,7 @@ API key indicating its status, for example, <code>active</code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

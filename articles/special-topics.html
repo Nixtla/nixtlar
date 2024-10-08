@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="special-topics">Special topics<a class="anchor" aria-label="anchor" href="#special-topics"></a>
 </h2>
@@ -159,15 +156,15 @@ can deduce it from your data.</p>
 <tbody>
 <tr class="odd">
 <td>Yearly</td>
-<td>Y or A</td>
+<td>Y</td>
 </tr>
 <tr class="even">
 <td>Quarterly</td>
-<td>Q</td>
+<td>Q, QS, or QE</td>
 </tr>
 <tr class="odd">
 <td>Monthly</td>
-<td>M</td>
+<td>M, MS, or MS</td>
 </tr>
 <tr class="even">
 <td>Weekly (starting Sundays)</td>
@@ -175,11 +172,11 @@ can deduce it from your data.</p>
 </tr>
 <tr class="odd">
 <td>Daily</td>
-<td>D</td>
+<td>d</td>
 </tr>
 <tr class="even">
 <td>Hourly</td>
-<td>H</td>
+<td>h</td>
 </tr>
 <tr class="odd">
 <td>Minute-level</td>
@@ -187,49 +184,38 @@ can deduce it from your data.</p>
 </tr>
 <tr class="even">
 <td>Second-level</td>
-<td>S</td>
+<td>s</td>
 </tr>
 </tbody>
 </table>
-<p>Both minute-level and second-level frequencies can be preceded by an
-integer, such as “10min” or “30S”.</p>
+<p>In this table, QS and MS stand for quarter and month start, while QE
+and ME stand for quarter and month end. Hourly and subhourly frequencies
+can be preceded by an integer, such as “6h”, “10min” or “30s”.
+<strong>Only the aliases “min” and “S” are allowed for minute and
+second-level frequencies</strong>.</p>
 <p>The default value of the frequency parameter is <code>NULL</code>.
 When this parameter is not specified, <code>nixtlar</code> will attempt
-to determine the frequency of your data. For most common frequencies,
-such as yearly, quarterly, monthly, weekly, daily, and hourly,
-<code>nixtlar</code> can identify the frequency from the
-<code>time_col</code> column, regardless of whether you are working with
-data frames or tsibbles.</p>
+to determine the frequency of your data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
-<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "H"</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "h"</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
-<p>When the frequency is not apparent, <code>nixtlar</code> will default
-to a daily frequency. Currently, <code>nixtlar</code> cannot
-automatically detect subhourly frequencies. In such cases, you must
-explicitly specify these frequencies. For example, for subhourly data,
-you should set <code>freq="15min"</code> for fifteen-minute data
-intervals or <code>freq="S"</code> for data that is taken every second.
-<strong>Only the aliases “min” and “S” are allowed for minute and
-second-level frequencies</strong>.</p>
-<p>Moreover, if you are dealing with irregular frequencies, such as
-business days or custom holiday calendars, you must specify them
-directly. For instance, for business days, you should set
-<code>freq="B"</code>, which corresponds to the pandas alias for
-business day frequency. Please refer to <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases" class="external-link">pandas’s
-offset aliases</a> for more information, and keep in mind that if you
-are dealing with minute-level or second-level data you can only use the
-aliases “min” and “S”.</p>
+<p>If you are dealing with irregular frequencies, such as business days
+or custom holiday calendars, you must specify them directly. For
+instance, for business days, you should set <code>freq="B"</code>, which
+corresponds to the pandas alias for business day frequency. Please refer
+to <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases" class="external-link">pandas’s
+offset aliases</a> for more information.</p>
 <p>When dealing with weekly frequency (<code>W</code>),
 <code>nixtlar</code> assumes that the weeks start on Sunday.
-Consequently, <code>TimeGPT</code> will return dates corresponding to
-weeks that begin on Sundays. If your weeks start on a different day, for
-example, Mondays, you should specify the frequency as
-<code>W-MON</code>. You can select any day of the week with the aliases
-<code>W-MON</code>, <code>W-TUE</code>, <code>W-WED</code>,
-<code>W-THU</code>, <code>W-FRI</code>, and <code>W-SAT</code>.</p>
+Consequently, it will return dates corresponding to weeks that begin on
+Sundays. If your weeks start on a different day, for example, Mondays,
+you should specify the frequency as <code>W-MON</code>. You can select
+any day of the week with the aliases <code>W-MON</code>,
+<code>W-TUE</code>, <code>W-WED</code>, <code>W-THU</code>,
+<code>W-FRI</code>, and <code>W-SAT</code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -242,7 +228,7 @@ example, Mondays, you should specify the frequency as
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

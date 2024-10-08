@@ -79,10 +79,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'tsibble':</span></span>
-<span><span class="co">#&gt;   method               from </span></span>
-<span><span class="co">#&gt;   as_tibble.grouped_df dplyr</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="time-series-cross-validation">1. Time series cross-validation<a class="anchor" aria-label="anchor" href="#time-series-cross-validation"></a>
 </h2>
@@ -125,28 +122,25 @@ use <code><a href="../reference/nixtla_client_cross_validation.html">nixtlar::ni
 parameters of this method are:</p>
 <ul>
 <li>
-<strong>df</strong>: The dataframe or <code>tsibble</code> with the
-time series data. It should include at least a column with the
+<strong>df</strong>: The time series data, either as a data frame, a
+tibble, or a tsibble. It should include at least a column with the
 datestamps and a column with the observations. Default names for these
 columns are <code>ds</code> and <code>y</code>. If different, please
-specify their names.</li>
+specify their names. If working with multiple series, you also need to
+include a column with unique identifiers. The default name for this
+column is <code>unique_id</code>.</li>
 <li>
 <strong>h</strong>: The forecast horizon.</li>
-<li>
-<strong>id_col</strong>: If the data contains multiple ids, as in
-this case, please specify the column that contains them. If working with
-a single series, leave it as it is by default (NULL).<br>
-</li>
 <li>
 <strong>n_windows</strong>: The number of windows to evaluate.
 Default value is 1.</li>
 <li>
 <strong>step_size</strong>: The gap between each cross-validation
-window. Default value is NULL.</li>
+window. Default value is <code>NULL</code>.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nixtla_client_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_cross_validation.html">nixtla_client_cross_validation</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, n_windows <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span>
+<code class="sourceCode R"><span><span class="va">nixtla_client_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_cross_validation.html">nixtla_client_cross_validation</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, n_windows <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_cv</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds              cutoff     y  TimeGPT</span></span>
 <span><span class="co">#&gt; 1        BE 2016-12-29 08:00:00 2016-12-29 07:00:00 53.30 51.79829</span></span>
@@ -174,8 +168,7 @@ lines. For any given pair of these lines, the data before the first line
 forms the training set. This set is then used to forecast the data
 between the two lines.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_cv</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Frequency chosen: H</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_cv</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cross-validation_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -189,7 +182,7 @@ between the two lines.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
