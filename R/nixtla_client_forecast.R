@@ -222,11 +222,17 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
   }
 
   # Add unique ids and dates to forecast ----
-  nch <- nchar(df_info$last_ds[1])
-  if(nch <= 10){
-    df_info$dates <- lubridate::ymd(df_info$last_ds)
+  if(inherits(df_info$last_ds, "character")){
+    dt <- ifelse(length(df_info$last_ds) > 1, sample(df$ds, 2), df$ds)
+    nch <- max(nchar(as.character(dt)))
+    if(nch <= 10){
+      df_info$dates <- lubridate::ymd(df_info$last_ds)
+    }else{
+      df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+    }
   }else{
-    df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+    # assumes df_info$last_ds is already a date-object
+    df_info$dates <- df_info$last_ds
   }
 
   dates_df <- .generate_output_dates(df_info, freq, h)
