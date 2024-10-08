@@ -2,7 +2,7 @@
 % Please edit documentation in R/validate_exogenous.R
 \name{.validate_exogenous}
 \alias{.validate_exogenous}
-\title{Validate exogenous variables (if applicable)
+\title{Validate future exogenous variables (if applicable)
 This is a private function of 'nixtlar'}
 \usage{
 .validate_exogenous(df, h, X_df)
@@ -15,10 +15,10 @@ This is a private function of 'nixtlar'}
 \item{X_df}{A tsibble or a data frame with future exogenous variables.}
 }
 \value{
-A list with the result of the validation (TRUE/FALSE) and an error message (if applicable)
+Returns a vector with the exogenous variable names if the validation is successful. If the validation fails, it stops execution and returns an error message, indicating what went wrong.
 }
 \description{
-Validate exogenous variables (if applicable)
+Validate future exogenous variables (if applicable)
 This is a private function of 'nixtlar'
 }
 \examples{

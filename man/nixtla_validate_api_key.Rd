@@ -7,7 +7,7 @@
 nixtla_validate_api_key()
 }
 \value{
-A status code and a message indicating whether the 'API' key is valid.
+TRUE if the API key is valid, FALSE otherwise.
 }
 \description{
 Validate 'API' key
@@ -15,7 +15,7 @@ Validate 'API' key
 \examples{
 \dontrun{
   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
-  nixtlar::nixtla_validate_api_key
+  nixtlar::nixtla_validate_api_key()
 }
 
 }

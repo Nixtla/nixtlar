@@ -31,27 +31,19 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-## NEWS (28 Aug 2024): Parallel processing is now available in `nixtlar`
+## Version 0.6.0 of nixtlar is now available! (2024-10-07)
 
-The development version of `nixtlar` now supports parallel processing, making it suitable for handling large datasets with thousands of time series. To access this functionality, simply install the package from GitHub.
+We are excited to announce the release of `nixtlar` version 0.6.0, which integrates the [latest release](https://github.com/Nixtla/nixtla/releases/v0.6.0) of the `TimeGPT` API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.
 
-```{r, eval=FALSE}
-library(devtools)
-devtools::install_github("Nixtla/nixtlar")
-```
+**Key updates include**:
 
-Configure the new `num_partitions` parameter in any of the `nixtlar` methods as follows:
+- **Data Structures**: `nixtlar` now extends support to `tibbles`, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows. 
 
-- `num_partitions=NULL`: This is the default setting, operating in sequential mode, equivalent to `num_partitions=1`.
-- `num_partitions="auto"`: Automatically uses all available resources as determined by `future::availableCores()`.
-- `num_partitions` can be set to any positive integer. If it exceeds the number of available resources determined by `future::availableCores()`, it will default to the maximum available cores.
+- **Date Formats**: For efficiency, `nixtlar` now strictly requires dates to be in the format `YYYY-MM-DD` or `YYYY-MM-DD hh:mm:ss`, either as character strings or date-time objects. For more details, please refer to our [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) guide and [Data Requirements](https://nixtla.github.io/nixtlar/articles/data-requirements.html) vignette. 
 
-```{r, eval=FALSE}
-nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", num_partitions="auto")
-```
+- **Default ID Column**: In alignment with the Python SDK, `nixtlar` now defaults the `id_col` to `unique_id`. This means you no longer need to specify this column if it is already named `unique_id`. If your dataset contains only one series, simply set `id_col=NULL`.
 
-Note that `df` must be an R data frame or a tsibble. See [data requierements](https://nixtla.github.io/nixtlar/articles/data-requirements.html) for more details. 
-
+These changes leverage the capabilities of `TimeGPT`'s new API and align `nixtlar` more closely with the Python SDK, ensuring a better user experience. 
 
 # TimeGPT-1 
 
@@ -72,9 +64,6 @@ Note that `df` must be an R data frame or a tsibble. See [data requierements](ht
 - [License](#license)
 - [Get in Touch](#get-in-touch)
 
-# Quickstart 
-https://github.com/Nixtla/nixtlar/assets/47995617/1be6d63c-7cfd-4c29-b8e8-f7378c982724
-
 # Installation
 
 `nixtlar` is available on CRAN, so you can install the latest stable version using `install.packages`. 
@@ -94,17 +83,13 @@ Alternatively, you can install the development version of `nixtlar` from [GitHub
 devtools::install_github("Nixtla/nixtlar")
 ```
 
-#### CRAN (v0.5.2) vs development version (v0.5.3)
-
-Currently, the development version contains some features not yet available in CRAN. To learn more, please read the release notes [here](https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3). 
-
 # Forecast Using TimeGPT in 3 Easy Steps 
 
 ```{r}
 library(nixtlar)
 ```
 
-1. Set your API key. Get yours at [dashboard.nixtla.io](https://dashboard.nixtla.io/)
+1. Set your API key. Get yours at [dashboard.nixtla.io](https://dashboard.nixtla.io/sign_in)
 ```{r eval=FALSE}
 nixtla_set_api_key(api_key = "Your API key here")
 ```
@@ -117,14 +102,14 @@ head(df)
 
 3. Forecast the next 8 steps ahead
 ```{r}
-nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, level = c(80,95))
 head(nixtla_client_fcst)
 ```
 
 Optionally, plot the results
 
 ```{r, eval=FALSE}
-nixtla_client_plot(df, nixtla_client_fcst, id_col = "unique_id", max_insample_length = 200)
+nixtla_client_plot(df, nixtla_client_fcst, max_insample_length = 200)
 ```
 
 ![](man/figures/fcst.png) 
@@ -134,12 +119,12 @@ nixtla_client_plot(df, nixtla_client_fcst, id_col = "unique_id", max_insample_le
 Do anomaly detection with `TimeGPT`, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the `nixtla_client_detect_anomalies` and the `nixtla_client_plot` functions. 
 
 ```{r}
-nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, id_col = "unique_id") 
+nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df) 
 head(nixtla_client_anomalies)
 ```
 
 ```{r, eval=FALSE}
-nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, id_col = "unique_id", plot_anomalies = TRUE)
+nixtlar::nixtla_client_plot(df, nixtla_client_anomalies, plot_anomalies = TRUE)
 ```
 
 ![](man/figures/anomalies.png)

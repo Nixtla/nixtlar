@@ -43,7 +43,11 @@ df_exo_vars <- nixtlar::electricity_exo_vars
 head(df_exo_vars)
 ````
 
-When using exogenous variables, you must provide their future values to cover the complete forecast horizon; otherwise, `TimeGPT` will result in an error. Ensure that the dates of the future exogenous variables exactly match the forecast horizon. For the electricity consumption dataset with exogenous variables, `nixtlar` provides their values for the next 24 steps ahead.
+When using exogenous variables, `nixtlar` differentiates between historical and future exogenous variables:
+
+- **Historical Exogenous Variables**: These should be included in the input data immediately following the `id_col`, `ds`, and `y` columns. If your dataset contains additional columns that are not exogenous variables, you must remove them before using any core functions of `nixtlar`.
+
+- **Future Exogenous Variables**: These correspond to the `X_df` parameter and should cover the entire forecast horizon. This dataset should include columns with the appropriate timestamps and, if available, unique identifiers, formatted as explained in previous sections.
 
 ````{r}
 future_exo_vars <- nixtlar::electricity_future_exo_vars
@@ -52,12 +56,10 @@ head(future_exo_vars)
 
 ## 3. Forecast with exogenous variables 
 
-To generate a forecast with exogenous variables, use the `nixtla_client_forecast` function as you would for forecasts without them. The only difference is that you must add the exogenous variables using the `X_df` argument.
-
-Keep in mind that the default names for the time and target columns are `ds` and `y`, respectively. If your time and target columns have different names, specify them with `time_col` and `target_col`. Since this dataset has multiple ids (one for every electricity market), you will need to specify the name of the column that contains these ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`.  
+To generate a forecast with exogenous variables, use the `nixtla_client_forecast` function as you would for forecasts without them. The only difference is that you must add the future exogenous variables using the `X_df` argument.
 
 ````{r}
-fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, id_col = "unique_id", X_df = future_exo_vars)
+fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, X_df = future_exo_vars)
 head(fcst_exo_vars)
 ````
 
@@ -66,7 +68,7 @@ For comparison, we will also generate a forecast without the exogenous variables
 ````{r}
 df <- nixtlar::electricity # same dataset but without the exogenous variables
 
-fcst <- nixtla_client_forecast(df, h = 24, id_col = "unique_id")
+fcst <- nixtla_client_forecast(df, h = 24)
 head(fcst)
 ````
 
@@ -75,7 +77,7 @@ head(fcst)
 `nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-nixtla_client_plot(df_exo_vars, fcst_exo_vars, id_col = "unique_id", max_insample_length = 500)
+nixtla_client_plot(df_exo_vars, fcst_exo_vars, max_insample_length = 500)
 ```
 
 ```{r, include=FALSE}

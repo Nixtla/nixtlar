@@ -2,16 +2,16 @@
 % Please edit documentation in R/nixtla_client_cross_validation.R
 \name{nixtla_client_cross_validation}
 \alias{nixtla_client_cross_validation}
-\title{Perform cross validation with 'TimeGPT'.}
+\title{Sequential version of 'nixtla_client_cross_validation'
+This is a private function of 'nixtlar'}
 \usage{
 nixtla_client_cross_validation(
   df,
   h = 8,
   freq = NULL,
-  id_col = NULL,
+  id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
-  X_df = NULL,
   level = NULL,
   quantiles = NULL,
   n_windows = 1,
@@ -19,12 +19,11 @@ nixtla_client_cross_validation(
   finetune_steps = 0,
   finetune_loss = "default",
   clean_ex_first = TRUE,
-  model = "timegpt-1",
-  num_partitions = NULL
+  model = "timegpt-1"
 )
 }
 \arguments{
-\item{df}{A tsibble or a data frame with time series data.}
+\item{df}{A data frame with time series data.}
 
 \item{h}{Forecast horizon.}
 
@@ -35,8 +34,6 @@ nixtla_client_cross_validation(
 \item{time_col}{Column that identifies each timestep.}
 
 \item{target_col}{Column that contains the target variable.}
-
-\item{X_df}{A tsibble or a data frame with future exogenous variables.}
 
 \item{level}{The confidence levels (0-100) for the prediction intervals.}
 
@@ -53,14 +50,13 @@ nixtla_client_cross_validation(
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
-
-\item{num_partitions}{A positive integer, "auto", or NULL specifying the number of partitions. When set to "auto", the number of partitions is equal to the number of available cores. When NULL, it defaults to a single partition.}
 }
 \value{
-A tsibble or a data frame with 'TimeGPT''s cross validation result.
+A data frame with 'TimeGPT''s cross validation result.
 }
 \description{
-Perform cross validation with 'TimeGPT'.
+Sequential version of 'nixtla_client_cross_validation'
+This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{
@@ -70,3 +66,4 @@ Perform cross validation with 'TimeGPT'.
 }
 
 }
+\keyword{internal}

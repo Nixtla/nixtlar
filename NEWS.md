@@ -1,3 +1,7 @@
+# nixtlar 0.6.0 
+
+- Development version. See release notes [here]()
+
 # nixtlar 0.5.4
 
 - Development version. See release notes [here](https://github.com/Nixtla/nixtlar/releases/tag/v0.5.4)

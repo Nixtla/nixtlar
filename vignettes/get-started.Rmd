@@ -31,7 +31,7 @@ library(nixtlar)
 `nixtlar` provides an R interface to [Nixtla's TimeGPT](https://docs.nixtla.io/), a generative pre-trained forecasting model for time series data. `TimeGPT` is the first foundation model capable of producing accurate forecasts for new time series not seen during training, using only its historical values as inputs. `TimeGPT` can also be used for other time series related tasks, such as anomaly detection and cross-validation. Here we explain how to get started with `TimeGPT` in R and give a quick overview of the main features of `nixtlar`. 
 
 ## 1. Setting up your API key
-First, you need to set up your API key. An API key is a string of characters that allows you to authenticate your requests when using `TimeGPT` via `nixtlar`. This API key needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/). 
+First, you need to set up your API key. An API key is a string of characters that allows you to authenticate your requests when using `TimeGPT` via `nixtlar`. This API key needs to be provided by Nixtla, so if you don't have one, please request one [here](https://dashboard.nixtla.io/sign_in). 
 
 When using `nixtlar`, there are two ways of setting up your API key: 
 
@@ -64,11 +64,11 @@ You'll need to restart R for changes to take effect. Keep in mind that modifying
 ### Validate your API key 
 If you want to validate your API key, call `nixtla_validate_api_key`. 
 
-```{r}
+```{r, eval=FALSE}
 nixtla_validate_api_key()
 ```
 
-You don't need to validate your API key every time you set it up, only when you want to check if it's valid. 
+You don't need to validate your API key every time you set it up, only when you want to check if it's valid. The `nixtla_validate_api_key` will return `TRUE` if you API key is valid, and `FALSE` otherwise. 
 
 ## 2. Generate TimeGPT forecast 
 Once your API key has been set up, you're ready to use `TimeGPT`. Here we'll show you how this is done using a dataset that contains prices of different electricity markets. 
@@ -81,7 +81,7 @@ head(df)
 To generate a forecast for this dataset, use `nixtla_client_forecast`. Default names for the time and the target columns are `ds` and `y`. If your time and target columns have different names, specify them with `time_col` and `target_col`. Since it has multiple ids (one for every electricity market), you'll need to specify the name of the column that contains the ids, which in this case is `unique_id`. To do this, simply use `id_col="unique_id"`. You can also choose confidence levels (0-100) for prediction intervals with `level`. 
 
 ```{r}
-nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, id_col = "unique_id", level = c(80,95))
+nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, level = c(80,95))
 head(nixtla_client_fcst)
 ```
 
