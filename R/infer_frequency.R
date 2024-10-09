@@ -16,12 +16,23 @@ infer_frequency <- function(df, freq){
     return(freq)
   }
 
-  dt <- ifelse(length(df$unique_id) > 1, sample(df$ds, 2), df$ds)
+  if(length(unique(df$ds)) > 1){ # this is done to avoid the vanishing dates issue
+    dt <- sample(df$ds, 2)
+  }else{
+    dt <- df$ds[1]
+  }
+
+  # Vanishing dates issue: Dates that correspond to midnight only show YYYY-MM-DD, excluding 00:00:00
+
   num_chars <- max(nchar(as.character(dt)))
 
   if(num_chars <= 10){
     # assumes dates in format YYYY-MM-DD
-    dates <- lubridate::ymd(sort(unique(df$ds)))
+    if(inherits(df$ds, "character")){
+      dates <- lubridate::ymd(sort(unique(df$ds)))
+    }else{
+      dates <- sort(unique(df$ds))
+    }
     dates_diff <- diff(dates)
     dates_table <- table(dates_diff)
     mode <- as.numeric(names(which.max(dates_table)))

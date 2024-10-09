@@ -223,7 +223,11 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
 
   # Add unique ids and dates to forecast ----
   if(inherits(df_info$last_ds, "character")){
-    dt <- ifelse(length(df_info$last_ds) > 1, sample(df$ds, 2), df$ds)
+    if(length(df_info$last_ds) > 1){
+      dt <- sample(df_info$last_ds, 2)
+    }else{
+      dt <- df_info$last_ds[1]
+    }
     nch <- max(nchar(as.character(dt)))
     if(nch <= 10){
       df_info$dates <- lubridate::ymd(df_info$last_ds)
@@ -238,8 +242,14 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
   dates_df <- .generate_output_dates(df_info, freq, h)
 
   dates_long_df <- dates_df |>
-    tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds") |>
-    dplyr::arrange(.data$unique_id)
+    tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds")
+
+  if(inherits(df$unique_id, "integer")){
+    dates_long_df$unique_id <- as.numeric(dates_long_df$unique_id)
+  }
+
+  dates_long_df <- dates_long_df |>
+      dplyr::arrange(.data$unique_id)
 
   forecast <- cbind(dates_long_df, fc)
 
