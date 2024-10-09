@@ -222,18 +222,34 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
   }
 
   # Add unique ids and dates to forecast ----
-  nch <- nchar(df_info$last_ds[1])
-  if(nch <= 10){
-    df_info$dates <- lubridate::ymd(df_info$last_ds)
+  if(inherits(df_info$last_ds, "character")){
+    if(length(df_info$last_ds) > 1){
+      dt <- sample(df_info$last_ds, 2)
+    }else{
+      dt <- df_info$last_ds[1]
+    }
+    nch <- max(nchar(as.character(dt)))
+    if(nch <= 10){
+      df_info$dates <- lubridate::ymd(df_info$last_ds)
+    }else{
+      df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+    }
   }else{
-    df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+    # assumes df_info$last_ds is already a date-object
+    df_info$dates <- df_info$last_ds
   }
 
   dates_df <- .generate_output_dates(df_info, freq, h)
 
   dates_long_df <- dates_df |>
-    tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds") |>
-    dplyr::arrange(.data$unique_id)
+    tidyr::pivot_longer(cols = everything(), names_to = "unique_id", values_to = "ds")
+
+  if(inherits(df$unique_id, "integer")){
+    dates_long_df$unique_id <- as.numeric(dates_long_df$unique_id)
+  }
+
+  dates_long_df <- dates_long_df |>
+      dplyr::arrange(.data$unique_id)
 
   forecast <- cbind(dates_long_df, fc)
 

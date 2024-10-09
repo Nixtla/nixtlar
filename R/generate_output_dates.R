@@ -14,28 +14,46 @@
 #'   dates_df <- .generate_output_dates(df_info, freq, h)
 #' }
 #'
-.generate_output_dates <- function(df_info, freq, h) {
-  new_dates <- lapply(1:nrow(df_info), function(i) {
-    start_date <- df_info$dates[i]
-    r_freq <- .r_frequency(freq)
+.generate_output_dates <- function(df_info, freq, h){
 
-    if(freq == "QE") {
-      # End of quarter dates are: "YYY-03-31", "YYYY-06-30", "YYYY-09-30" and "YYYY-12-31".
-      dt <- seq(from = start_date, by = "quarter", length.out = h+1)
-      month <- lubridate::month(start_date)
-      if (month %in% c(3, 12)) {
-        dt <- ifelse(lubridate::month(dt) %in% c(7, 10), dt - lubridate::days(1), dt)
-      } else {
-        dt <- ifelse(lubridate::month(dt) %in% c(3, 12), dt + lubridate::days(1), dt)
-      }
-    } else if(freq == "ME") {
-      dt <- seq(from = start_date + lubridate::days(1), by = r_freq, length.out = h+1) - lubridate::days(1)
-    } else {
+  new_dates <- vector("list", nrow(df_info))
+  r_freq <- .r_frequency(freq)
+
+  for(i in 1:nrow(df_info)){
+    start_date <- df_info$dates[i]
+
+    if(freq %in% c("QE", "Q")){
       dt <- seq(from = start_date, by = r_freq, length.out = h+1)
+      month <- lubridate::month(start_date)
+      dt <- seq(from = start_date, by = "quarter", length.out = h+1)
+
+      # Calendar adjustments
+      if (month %in% c(3, 12)) {
+        for (j in 1:length(dt)) {
+          mt <- lubridate::month(dt[j])
+          if (mt %in% c(7, 10)) {
+            dt[j] <- dt[j] - lubridate::days(1)
+          }
+        }
+      } else {
+        # month %in% c(6, 9)
+        for (j in 1:length(dt)) {
+          mt <- lubridate::month(dt[j])
+          if (mt %in% c(3, 12)) {
+            dt[j] <- dt[j] + lubridate::days(1)
+          }
+        }
+      }
+
+    }else if(freq %in% c("ME", "M")){
+      start_date <- start_date+lubridate::days(1)
+      dt <- seq(from = start_date, by = r_freq, length.out = h+1)-lubridate::days(1)
+    }else{
+      dt <- seq(df_info$dates[i], by = r_freq, length.out = h+1)
     }
 
-    dt[2:length(dt)]
-  })
+    new_dates[[i]] <- dt[2:length(dt)]
+  }
 
   dates_df <- data.frame(lapply(new_dates, as.POSIXct))
 
