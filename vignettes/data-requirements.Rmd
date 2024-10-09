@@ -60,6 +60,8 @@ head(df)
 str(df)
 ```
 
+The `id_col` only accepts characters or integers. 
+
 ## 3. Exogenous Variables
 
 When using exogenous variables, `nixtlar` differentiates between historical and future exogenous variables:

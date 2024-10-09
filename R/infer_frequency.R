@@ -40,9 +40,9 @@ infer_frequency <- function(df, freq){
     freq_list = list(
       list(alias = "Y", value = c(365,366)),
       list(alias = "Q", value = c(91,92)),
-      list(alias = "MS", value = c(30,31)),
+      list(alias = "M", value = c(30,31)),
       list(alias = "W", value = c(7)),
-      list(alias = "D", value = c(1))
+      list(alias = "D", value = c(24,1))
     )
 
     for(item in freq_list){
