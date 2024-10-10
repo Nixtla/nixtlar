@@ -1,3 +1,12 @@
+## Resubmission 09/10/2024 
+This is a resubmission. In this version I have:
+
+* Fixed issue flagged by CRAN reviewer related to undocumented variable in function. 
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
 ## Submission 09/10/2024 
 
 ## R CMD check results
