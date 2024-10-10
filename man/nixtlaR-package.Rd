@@ -15,6 +15,8 @@ Useful links:
 \itemize{
   \item \url{https://nixtla.github.io/nixtlar/}
   \item \url{https://docs.nixtla.io/}
+  \item \url{https://github.com/Nixtla/nixtlar}
+  \item Report bugs at \url{https://github.com/Nixtla/nixtlar/issues}
 }
 
 }

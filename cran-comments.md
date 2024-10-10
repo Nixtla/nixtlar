@@ -1,3 +1,8 @@
+## Submission 09/10/2024 
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
 
 ## Resubmission 29/05/2024
 

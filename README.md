@@ -41,7 +41,8 @@ speed, scalability, and reliability.
 - **Default ID Column**: In alignment with the Python SDK, `nixtlar` now
   defaults the `id_col` to `unique_id`. This means you no longer need to
   specify this column if it is already named `unique_id`. If your
-  dataset contains only one series, simply set `id_col=NULL`.
+  dataset contains only one series, simply set `id_col=NULL`. The
+  `id_col` only accepts characters or integers.
 
 These changes leverage the capabilities of `TimeGPT`’s new API and align
 `nixtlar` more closely with the Python SDK, ensuring a better user
@@ -100,9 +101,6 @@ devtools::install_github("Nixtla/nixtlar")
 
 ``` r
 library(nixtlar)
-#> Registered S3 method overwritten by 'tsibble':
-#>   method               from 
-#>   as_tibble.grouped_df dplyr
 ```
 
 1.  Set your API key. Get yours at
