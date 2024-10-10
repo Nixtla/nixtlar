@@ -186,6 +186,10 @@ can deduce it from your data.</p>
 <td>Second-level</td>
 <td>s</td>
 </tr>
+<tr class="odd">
+<td>Business day</td>
+<td>B</td>
+</tr>
 </tbody>
 </table>
 <p>In this table, QS and MS stand for quarter and month start, while QE
@@ -202,20 +206,9 @@ to determine the frequency of your data.</p>
 <span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "h"</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
-<p>If you are dealing with irregular frequencies, such as business days
-or custom holiday calendars, you must specify them directly. For
-instance, for business days, you should set <code>freq="B"</code>, which
-corresponds to the pandas alias for business day frequency. Please refer
-to <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases" class="external-link">pandas’s
-offset aliases</a> for more information.</p>
-<p>When dealing with weekly frequency (<code>W</code>),
-<code>nixtlar</code> assumes that the weeks start on Sunday.
-Consequently, it will return dates corresponding to weeks that begin on
-Sundays. If your weeks start on a different day, for example, Mondays,
-you should specify the frequency as <code>W-MON</code>. You can select
-any day of the week with the aliases <code>W-MON</code>,
-<code>W-TUE</code>, <code>W-WED</code>, <code>W-THU</code>,
-<code>W-FRI</code>, and <code>W-SAT</code>.</p>
+<p><strong>Currently, <code>nixtlar</code> can’t infer business day
+frequency, so you must set it directly using
+<code>freq="B"</code>.</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
