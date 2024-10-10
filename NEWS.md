@@ -1,3 +1,5 @@
+# nixtlar 0.6.1
+
 # nixtlar 0.7.0
 
 # nixtlar 0.6.0 
