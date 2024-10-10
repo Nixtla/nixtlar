@@ -2,7 +2,7 @@
 #' This is a private function of 'nixtlar'
 #'
 #' @param url String specifying the API endpoint to which the request is sent.
-#' @param payload_list_element List containing the information to be sent to the 'TimeGPT' API.
+#' @param payload_list List containing the information to be sent to the 'TimeGPT' API.
 #'
 #' @return List representing the JSON response from the API endpoint.
 #' @export

@@ -10,7 +10,7 @@ This is a private function of 'nixtlar'}
 \arguments{
 \item{url}{String specifying the API endpoint to which the request is sent.}
 
-\item{payload_list_element}{List containing the information to be sent to the 'TimeGPT' API.}
+\item{payload_list}{List containing the information to be sent to the 'TimeGPT' API.}
 }
 \value{
 List representing the JSON response from the API endpoint.
