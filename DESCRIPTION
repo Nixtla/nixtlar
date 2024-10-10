@@ -36,5 +36,6 @@ Suggests:
     testthat (>= 3.0.0),
     usethis
 Config/testthat/edition: 3
-URL: https://nixtla.github.io/nixtlar/, https://docs.nixtla.io/
+URL: https://nixtla.github.io/nixtlar/, https://docs.nixtla.io/, https://github.com/Nixtla/nixtlar
 VignetteBuilder: knitr
+BugReports: https://github.com/Nixtla/nixtlar/issues
