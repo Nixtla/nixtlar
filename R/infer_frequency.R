@@ -35,7 +35,13 @@ infer_frequency <- function(df, freq){
     }
     dates_diff <- diff(dates)
     dates_table <- table(dates_diff)
-    mode <- as.numeric(names(which.max(dates_table)))
+    sorted_dates <- sort(dates_table, decreasing = TRUE)
+    mode <- as.numeric(names(sorted_dates[1]))
+    if(length(sorted_dates) > 1){
+      mode2 <- as.numeric(names(sorted_dates[2])) # second most frequent value
+    }else{
+      mode2 <- NA
+    }
 
     freq_list = list(
       list(alias = "Y", value = c(365,366)),
@@ -49,6 +55,12 @@ infer_frequency <- function(df, freq){
       if(mode %in% item$value){
         freq <- item$alias
         break
+      }
+    }
+
+    if(!is.na(mode2) && freq == "D") { # check if daily is business-day
+      if(mode2 == 3) {
+        freq <- "B"
       }
     }
 
