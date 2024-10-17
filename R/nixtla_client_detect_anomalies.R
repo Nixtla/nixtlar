@@ -94,12 +94,12 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col="unique_id", ti
   }
 
   # Make request ----
-  url <- "https://api.nixtla.io/v2/anomaly_detection"
-  req <- httr2::request(url) |>
+  setup <- .get_client_steup()
+  req <- httr2::request(paste0(setup$base_url, "v2/anomaly_detection")) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_api_key())
+      "authorization" = paste("Bearer", setup$api_key)
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = payload) |>

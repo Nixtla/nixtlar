@@ -21,7 +21,7 @@ This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{
-  .get_model_params()
+  .get_model_params(model, freq)
 }
 
 }
