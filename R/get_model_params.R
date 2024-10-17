@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   .get_model_params()
+#'   .get_model_params(model, freq)
 #' }
 #'
 .get_model_params <- function(model, freq){
@@ -20,11 +20,12 @@
     freq = freq
   )
 
-  req <- httr2::request("https://api.nixtla.io/model_params") |>
+  setup <- .get_client_steup()
+  req <- httr2::request(paste0(setup$base_url, "model_params")) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", .get_api_key())
+      "authorization" = paste("Bearer", setup$api_key)
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = payload_params) |>

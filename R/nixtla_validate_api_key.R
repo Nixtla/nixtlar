@@ -5,20 +5,19 @@
 #'
 #' @examples
 #' \dontrun{
-#'   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
+#'   nixtlar::nixtla_client_setup(api_key = "Your API key")
 #'   nixtlar::nixtla_validate_api_key()
 #' }
 #'
 nixtla_validate_api_key <- function(){
 
-  api_key <- .get_api_key()
-  url <- "https://api.nixtla.io/validate_token"
+  setup <- .get_client_steup()
 
-  req <- httr2::request(url) |>
+  req <- httr2::request(paste0(setup$base_url, "validate_token")) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", api_key)
+      "authorization" = paste("Bearer", setup$api_key)
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = NULL)
