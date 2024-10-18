@@ -79,7 +79,7 @@ The frequency parameter is crucial when working with time series data because it
 | Second-level              | s            |
 | Business day              | B            |
 
-In this table, QS and MS stand for quarter and month start, while QE and ME stand for quarter and month end. Hourly and subhourly frequencies can be preceded by an integer, such as "6h", "10min" or "30s". **Only the aliases "min" and "S" are allowed for minute and second-level frequencies**. 
+In this table, QS and MS stand for quarter and month start, while QE and ME stand for quarter and month end. Hourly and subhourly frequencies can be preceded by an integer, such as "6h", "10min" or "30s". **Only the aliases "min" and "s" are allowed for minute and second-level frequencies**. 
 
 The default value of the frequency parameter is `NULL`. When this parameter is not specified, `nixtlar` will attempt to determine the frequency of your data. 
 
@@ -89,8 +89,6 @@ df <- nixtlar::electricity
 fcst <- nixtlar::nixtla_client_forecast(df, h = 8, level = c(80,95)) # freq = "h"
 # infer the frequency when `freq` is not specified 
 ```
-
-**Currently, `nixtlar` can't infer business day frequency, so you must set it directly using `freq="B"`.** 
 
 ```{r, include=FALSE}
 options(original_options)
