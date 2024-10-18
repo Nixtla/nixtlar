@@ -13,11 +13,11 @@ nixtla_set_api_key(api_key)
 A message indicating the 'API' key has been set in the global environment.
 }
 \description{
-Set 'API' key in global environment
+This function will be deprecated in future versions. Please use \code{nixtla_client_setup} instead.
 }
 \examples{
 \dontrun{
-  nixtlar::nixtla_set_api_key("YOUR_API_KEY")
+  nixtlar::nixtla_set_api_key("Your API key")
 }
 
 }

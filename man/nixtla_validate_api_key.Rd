@@ -14,7 +14,7 @@ Validate 'API' key
 }
 \examples{
 \dontrun{
-  nixtlar::nixtla_set_api_key("YOUR_API_KEY")
+  nixtlar::nixtla_client_setup(api_key = "Your API key")
   nixtlar::nixtla_validate_api_key()
 }
 

@@ -2,6 +2,7 @@
 #' This is a private function of 'nixtlar'
 #'
 #' @param url String specifying the API endpoint to which the request is sent.
+#' @param api_key The user's API key.
 #' @param payload_list List containing the information to be sent to the 'TimeGPT' API.
 #'
 #' @return List representing the JSON response from the API endpoint.
@@ -10,17 +11,17 @@
 #'
 #' @examples
 #' \dontrun{
-#'   response <- .make_request(url, payload_list_element)
+#'   response <- .make_request(url, api_key, payload_list_element)
 #' }
 #'
-.make_request <- function(url, payload_list) {
+.make_request <- function(base_url, api_key, payload_list) {
 
   req_resp <- function(payload) {
     req <- httr2::request(url) |>
       httr2::req_headers(
         "accept" = "application/json",
         "content-type" = "application/json",
-        "authorization" = paste("Bearer", .get_api_key())
+        "authorization" = paste("Bearer", api_key)
       ) |>
       httr2::req_user_agent("nixtlar") |>
       httr2::req_body_json(data = payload) |>
