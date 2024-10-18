@@ -220,7 +220,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id
   window_starts <- seq(0, sum(unlist(resp$sizes)) - 1, by = h)
   cutoff_idxs <- rep(idxs[window_starts + 1] - 1, each = h)
   cutoff_dates <- df$ds[unique(cutoff_idxs)]
-  cutoff <- unlist(lapply(cutoff_dates, function(i) {rep(i, times = h)}))
+  cutoff <- do.call(c, sapply(cutoff_dates, function(i) rep(i, times = h), simplify = FALSE))
   cutoff <- as.POSIXct(cutoff)
 
   dt <- data.frame(
