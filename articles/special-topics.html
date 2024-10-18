@@ -195,7 +195,7 @@ can deduce it from your data.</p>
 <p>In this table, QS and MS stand for quarter and month start, while QE
 and ME stand for quarter and month end. Hourly and subhourly frequencies
 can be preceded by an integer, such as “6h”, “10min” or “30s”.
-<strong>Only the aliases “min” and “S” are allowed for minute and
+<strong>Only the aliases “min” and “s” are allowed for minute and
 second-level frequencies</strong>.</p>
 <p>The default value of the frequency parameter is <code>NULL</code>.
 When this parameter is not specified, <code>nixtlar</code> will attempt
@@ -206,9 +206,6 @@ to determine the frequency of your data.</p>
 <span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "h"</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
-<p><strong>Currently, <code>nixtlar</code> can’t infer business day
-frequency, so you must set it directly using
-<code>freq="B"</code>.</strong></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
