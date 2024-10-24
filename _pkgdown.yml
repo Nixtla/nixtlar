@@ -19,6 +19,8 @@ navbar:
       menu:
         - text: "Anomaly Detection"
           href: articles/anomaly-detection.html
+        - text: "Azure Quickstart"
+          href: articles/azure-quickstart.html
         - text: "Cross-Validation"
           href: articles/cross-validation.html
         - text: "Data requirements"
