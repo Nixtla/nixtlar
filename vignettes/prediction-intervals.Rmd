@@ -35,10 +35,10 @@ For uncertainty quantification, `TimeGPT` can generate both prediction intervals
 
 A prediction interval is a range of values that the forecast can take with a given probability, often referred to as the confidence level. Hence, a 95% prediction interval should contain a range of values that includes the actual future value with a probability of 95%. Prediction intervals are part of probabilistic forecasting, which, unlike point forecasting, aims to generate the full forecast distribution instead of just the mean or the median of that distribution.
 
-This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first. 
 
 ## 2. Load data 
-For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
+For this vignette, we will use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
 
 ```{r}
 df <- nixtlar::electricity
@@ -62,7 +62,7 @@ fcst <- nixtla_client_forecast(df, h = 8, level=c(80,95))
 head(fcst)
 ```
 
-Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function uses only the maximum value when there are multiple values. Hence, setting `level=c(90,95,99)`, for example, is equivalent to setting `level=c(99)`, which is the default value.  
+Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function only uses the maximum value when multiple values are provided. Therefore, setting `level = c(90, 95, 99)`, for example, is equivalent to setting `level = c(99)`, which is the default value.
 
 ```{r}
 anomalies <- nixtla_client_detect_anomalies(df) # level=c(90,95,99)

@@ -35,10 +35,10 @@ For uncertainty quantification, `TimeGPT` can generate both prediction intervals
 
 Quantiles represent the cumulative proportion of the forecast distribution. For instance, the 90th quantile is the value below which 90% of the data points are expected to fall. Notably, the 50th quantile corresponds to the median forecast value provided by `TimeGPT`. The quantiles are produced using [conformal prediction](https://en.wikipedia.org/wiki/Conformal_prediction), a framework for creating distribution-free uncertainty intervals for predictive models. 
 
-This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first. 
 
 ## 2. Load data 
-For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
+For this vignette, we will use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
 
 ```{r}
 df <- nixtlar::electricity

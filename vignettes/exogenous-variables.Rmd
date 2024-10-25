@@ -32,7 +32,7 @@ library(nixtlar)
 
 Exogenous variables are external factors that provide additional information about the behavior of the target variable in time series forecasting. These variables, which are correlated with the target, can significantly improve predictions. Examples of exogenous variables include weather data, economic indicators, holiday markers, and promotional sales.
 
-`TimeGPT` allows you to include exogenous variables when generating a forecast. This vignette will show you how to include them. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+`TimeGPT` allows you to include exogenous variables when generating a forecast. This vignette will show you how to include them. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first. 
 
 ## 2. Load data 
 
@@ -43,11 +43,11 @@ df_exo_vars <- nixtlar::electricity_exo_vars
 head(df_exo_vars)
 ````
 
-When using exogenous variables, `nixtlar` differentiates between historical and future exogenous variables:
+When using exogenous variables, `nixtlar` distinguishes between historical and future exogenous variables:
 
 - **Historical Exogenous Variables**: These should be included in the input data immediately following the `id_col`, `ds`, and `y` columns. If your dataset contains additional columns that are not exogenous variables, you must remove them before using any core functions of `nixtlar`.
 
-- **Future Exogenous Variables**: These correspond to the `X_df` parameter and should cover the entire forecast horizon. This dataset should include columns with the appropriate timestamps and, if available, unique identifiers, formatted as explained in previous sections.
+- **Future Exogenous Variables**: These correspond to the `X_df` parameter and should cover the entire forecast horizon. This dataset must include columns with the appropriate timestamps and, if applicable, unique identifiers. 
 
 ````{r}
 future_exo_vars <- nixtlar::electricity_future_exo_vars
@@ -63,10 +63,10 @@ fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, X_df = future_exo_v
 head(fcst_exo_vars)
 ````
 
-For comparison, we will also generate a forecast without the exogenous variables. 
+For comparison, we will also generate a forecast without exogenous variables. 
 
 ````{r}
-df <- nixtlar::electricity # same dataset but without the exogenous variables
+df <- nixtlar::electricity # same dataset but without exogenous variables
 
 fcst <- nixtla_client_forecast(df, h = 24)
 head(fcst)

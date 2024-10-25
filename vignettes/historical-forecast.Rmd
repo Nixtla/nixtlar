@@ -31,7 +31,7 @@ library(nixtlar)
 ## 1. TimeGPT Historical Forecast
 When generating a forecast, sometimes you might be interested in forecasting the historical observations. These predictions, known as **fitted values**, can help you better understand and evaluate a model's performance over time. 
 
-`TimeGPT` has a method for generating fitted values, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first.  
+`TimeGPT` has a method for generating fitted values, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first.  
 
 ## 2. Load data 
 For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
@@ -44,7 +44,7 @@ head(df)
 ## 3. Forecast historical data 
 To generate a forecast for the historical data, use `nixtlar::nixtla_client_historic`, which should include the following parameters: 
 
-- **df**: The time series data, either as a data frame, a tibble, or a tsibble. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. If working with multiple series, you also need to include a column with unique identifiers. The default name for this column is `unique_id`. 
+- **df**: The time series data, provided as a data frame, tibble, or tsibble. It must include at least two columns: one for the timestamps and one for the observations. The default names for these columns are `ds` and `y`. If your column names are different, specify them with `time_col` and `target_col`, respectively. If you are working with multiple series, you must also include a column with unique identifiers. The default name for this column is `unique_id`; if different, specify it with `id_col`.
 - **level**: The prediction intervals for the forecast. 
 
 ```{r}
@@ -52,13 +52,12 @@ nixtla_client_fitted_values <- nixtla_client_historic(df, level = c(80,95))
 head(nixtla_client_fitted_values)
 ```
 
-Notice that there are no fitted values for some of the initial observations. This is because `TimeGPT` requires a minimum number of values to generate reliable forecasts. 
+Notice that there are no fitted values for some of the initial observations. This is because `TimeGPT` requires a minimum number of values to generate a forecast for the historical data. 
 
 All the fitted values are generated using a rolling window, meaning that the fitted value for observation $T$ is generated using the first $T-1$ observations. 
 
 ### 3.1 Fitted values from `nixtlar::nixtla_client_forecast`
 `nixtlar::nixtla_client_historic` is the dedicated function that calls `TimeGPT`'s method for generating fitted values. However, you can also use `nixtlar::nixtla_client_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
-
 
 ```{r, include=FALSE}
 options(original_options)

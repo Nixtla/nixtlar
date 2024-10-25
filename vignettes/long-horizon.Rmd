@@ -30,11 +30,11 @@ library(nixtlar)
 
 ## 1. Long-horizon forecasting 
 
-For some problems, it is necessary to forecast long horizons. Here "long horizons" refer to predictions that exceed more than two seasonal periods. For instance, this means predicting more than 48 hours ahead for hourly data, and more than 7 days for daily data. The specific definition of "long horizon" varies according to the frequency of the data.
+In some cases, it is necessary to forecast long horizons. Here "long horizons" refer to predictions that exceed more than two seasonal periods. For example, this would mean forecasting more than 48 hours ahead for hourly data or more than 7 days for daily data. The specific definition of "long horizon" varies depending on the data frequency.
 
-`TimeGPT` features a specialized model designed for long-horizon forecasting. This model is trained to predict far into the future, where the uncertainty increases as the forecast extends further. Here we'll explain how to use the long horizon model of `TimeGPT`. 
+There is a specialized `TimeGPT` model designed for long-horizon forecasting, which is trained to predict far into the future, where the uncertainty increases as the forecast extends further. Here we will explain how to use the long horizon model of `TimeGPT` via `nixtlar`. 
 
-This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+This vignette assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first. 
 
 ## 2. Load data 
 
@@ -45,7 +45,7 @@ df <- nixtlar::electricity
 head(df)
 ```
 
-For every `unique_id`, we'll try to predict the last 96 hours. Hence, we'll separate the data into training and test datasets. 
+For every `unique_id`, we'll try to predict the last 96 hours. Hence, we will first separate the data into training and test sets. 
 
 ```{r}
 test <- df |> 
@@ -69,22 +69,20 @@ head(fcst_long_horizon)
 
 `nixtlar` includes a function to plot the historical data and any output from `nixtlar::nixtla_client_forecast`, `nixtlar::nixtla_client_historic`, `nixtlar::nixtla_client_detect_anomalies` and `nixtlar::nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
-When using `nixtlar::nixtla_client_plot` with the output of `nixtlar::nixtla_client_detect_anomalies`, set `plot_anomalies=TRUE` to plot the anomalies. 
-
 ```{r}
 nixtlar::nixtla_client_plot(train, fcst_long_horizon, max_insample_length = 200)
 ```
 
 ## 5. Evaluate the long-horizon model 
 
-To evaluate the long-horizon forecast, we'll generate the same forecast with the default model of `TimeGPT`, which is `timegpt-1`, and then we'll compute and compare the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) of the two models. 
+To evaluate the long-horizon forecast, we will generate the same forecast with the default model of `TimeGPT`, which is `timegpt-1`, and then we will compute and compare the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) of the two models. 
 
 ```{r}
 fcst <- nixtlar::nixtla_client_forecast(train, h=96)
 head(fcst)
 ```
 
-We'll rename the `TimeGPT` long-horizon model to merge it with the default `TimeGPT` model. We'll then merge them with the actual values from the test set and compute the MAE. Note that in the output of the `nixtla_client_forecast` function, the `ds` column contains dates. This is because the `nixtla_client_plot` uses the dates to make the plot. However, to merge the actual values, we'll convert them to characters. 
+We will rename the `TimeGPT` long-horizon model to merge it with the default `TimeGPT` model. After that, we will combine them with the actual values from the test set and compute the MAE. Note that in the output of the `nixtla_client_forecast` function, the `ds` column contains dates. This is because `nixtla_client_plot` uses the dates for plotting. However, to merge the actual values, we will convert the dates to characters. 
 
 ```{r}
 names(fcst_long_horizon)[which(names(fcst_long_horizon) == "TimeGPT")] <- "TimeGPT-long-horizon"
