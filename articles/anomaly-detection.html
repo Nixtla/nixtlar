@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -95,7 +96,7 @@ remove, replace, or keep them.</p>
 <p><code>TimeGPT</code> has a method for detecting anomalies, and users
 can call it from <code>nixtlar</code>. This vignette will explain how to
 do this. It assumes you have already set up your API key. If you haven’t
-done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
@@ -116,20 +117,22 @@ five different electricity markets.</p>
 <span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="detect-anomalies">3. Detect anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
+<h2 id="detect-anomalies">3. Detect Anomalies<a class="anchor" aria-label="anchor" href="#detect-anomalies"></a>
 </h2>
 <p>To detect anomalies, use
-<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, which should
-include the following parameter:</p>
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, which requires the
+following parameter:</p>
 <ul>
 <li>
-<strong>df</strong>: The time series data, either as a data frame, a
-tibble, or a tsibble. It should include at least a column with the
-timestamps and a column with the observations. Default names for these
-columns are <code>ds</code> and <code>y</code>. If different, please
-specify their names. If working with multiple series, you also need to
-include a column with unique identifiers. The default name for this
-column is <code>unique_id</code>.</li>
+<strong>df</strong>: The time series data, provided as a data frame,
+tibble, or tsibble. It must include at least two columns: one for the
+timestamps and one for the observations. The default names for these
+columns are <code>ds</code> and <code>y</code>. If your column names are
+different, specify them with <code>time_col</code> and
+<code>target_col</code>, respectively. If you are working with multiple
+series, you must also include a column with unique identifiers. The
+default name for this column is <code>unique_id</code>; if different,
+specify it with <code>id_col</code>.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nixtla_client_anomalies</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> </span>

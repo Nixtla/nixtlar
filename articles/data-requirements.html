@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -101,10 +102,13 @@ always be included when using any core functions of
 <ul>
 <li><p><strong>Date Column</strong>: This column must contain timestamps
 formatted as <code>YYYY-MM-DD</code> or
-<code>YYYY-MM-DD hh:mm:ss</code>, either as character strings or
-date-time objects. The default name for this column is <code>ds</code>.
-If your dataset uses a different name, please specify it by setting the
-parameter <code>time_col="your_time_column_name"</code>.</p></li>
+<code>YYYY-MM-DD hh:mm:ss</code>, either as characters or date-time
+objects. For date-time objects, we recommend using the
+<code>as.POSIX*</code> functions from base R, although
+<code>as.Date</code> is also supported. The default name for this column
+is <code>ds</code>. If your dataset uses a different name, please
+specify it by setting the parameter
+<code>time_col="your_time_column_name"</code>.</p></li>
 <li><p><strong>Target Column</strong>: This column should contain the
 numeric target variable for forecasting. The default name for this
 column is <code>y</code>. If your dataset uses a different name, specify
@@ -123,6 +127,9 @@ specify it by setting the parameter
 <code>id_col="your_id_column_name"</code>. If your dataset contains only
 one series and does not need an identifier, set <code>id_col</code> to
 <code>NULL</code>.</p>
+<p>Please be aware that in earlier versions of <code>nixtlar</code>, the
+default name for <code>id_col</code> was <code>NULL</code>, but it is
+now <code>unique_id</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sample valid input </span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
@@ -139,12 +146,11 @@ one series and does not need an identifier, set <code>id_col</code> to
 <span><span class="co">#&gt;  $ unique_id: chr  "BE" "BE" "BE" "BE" ...</span></span>
 <span><span class="co">#&gt;  $ ds       : chr  "2016-10-22 00:00:00" "2016-10-22 01:00:00" "2016-10-22 02:00:00" "2016-10-22 03:00:00" ...</span></span>
 <span><span class="co">#&gt;  $ y        : num  70 37.1 37.1 44.8 37.1 ...</span></span></code></pre></div>
-<p>The <code>id_col</code> only accepts characters or integers.</p>
 </div>
 <div class="section level2">
 <h2 id="exogenous-variables">3. Exogenous Variables<a class="anchor" aria-label="anchor" href="#exogenous-variables"></a>
 </h2>
-<p>When using exogenous variables, <code>nixtlar</code> differentiates
+<p>When using exogenous variables, <code>nixtlar</code> distinguishes
 between historical and future exogenous variables:</p>
 <ul>
 <li><p><strong>Historical Exogenous Variables</strong>: These should be
@@ -155,9 +161,9 @@ variables, you must remove them before using any core functions of
 <code>nixtlar</code>.</p></li>
 <li><p><strong>Future Exogenous Variables</strong>: These correspond to
 the <code>X_df</code> parameter and should cover the entire forecast
-horizon. This dataset should include columns with the appropriate
-timestamps and, if available, unique identifiers, formatted as explained
-in previous sections.</p></li>
+horizon. This dataset must include columns with the appropriate
+timestamps and, if applicable, unique identifiers, formatted as
+described in the previous sections.</p></li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sample valid input with exogenous variables </span></span>
@@ -201,13 +207,14 @@ variables vignette</a>.</p>
 <div class="section level2">
 <h2 id="missing-values">4. Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
 </h2>
-<p>When using <code>TimeGPT</code> via <code>nixtlar</code>, you need to
-ensure that:</p>
+<p>When using <code>TimeGPT</code> via <code>nixtlar</code>, ensure the
+following:</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>No Missing Values in Target Column</strong>: The target
-column must not contain any missing values (NA).</p></li>
+<li><p><strong>No Missing Values in the Target Column</strong>: The
+target column must not contain any missing values
+(<code>NA</code>).</p></li>
 <li><p><strong>Continuous Date Sequence</strong>: The dates must be
-continuous and without any gaps, from the start date to the end date,
+continuous, without any gaps, from the start date to the end date,
 matching the frequency of the data.</p></li>
 </ol>
 <p>Currently, <strong>nixtlar</strong> does not provide any

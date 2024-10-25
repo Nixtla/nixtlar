@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -99,15 +100,15 @@ intervals are part of probabilistic forecasting, which, unlike point
 forecasting, aims to generate the full forecast distribution instead of
 just the mean or the median of that distribution.</p>
 <p>This vignette assumes you have already set up your API key. If you
-haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
 <h2 id="load-data">2. Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h2>
-<p>For this vignette, we’ll use the electricity consumption dataset that
-is included in <code>nixtlar</code>, which contains the hourly prices of
-five different electricity markets.</p>
+<p>For this vignette, we will use the electricity consumption dataset
+that is included in <code>nixtlar</code>, which contains the hourly
+prices of five different electricity markets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -153,10 +154,10 @@ between 0 and 100. You can use either <code>quantiles</code> or
 <span><span class="co">#&gt; 5      47.41012      53.74836</span></span>
 <span><span class="co">#&gt; 6      47.78252      57.16700</span></span></code></pre></div>
 <p>Note that the <code>level</code> argument in the
-<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies()</a></code> function uses
-only the maximum value when there are multiple values. Hence, setting
-<code>level=c(90,95,99)</code>, for example, is equivalent to setting
-<code>level=c(99)</code>, which is the default value.</p>
+<code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies()</a></code> function only
+uses the maximum value when multiple values are provided. Therefore,
+setting <code>level = c(90, 95, 99)</code>, for example, is equivalent
+to setting <code>level = c(99)</code>, which is the default value.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anomalies</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_detect_anomalies.html">nixtla_client_detect_anomalies</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="co"># level=c(90,95,99)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>

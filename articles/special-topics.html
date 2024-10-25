@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -105,8 +106,7 @@ time frame.</p>
 is with the <code>any</code> and <code>is.na</code> functions from base
 R.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span> <span class="co"># load data </span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span> <span class="co"># load data </span></span>
 <span></span>
 <span><span class="co"># create some missing values at random </span></span>
 <span><span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span></span>
@@ -120,7 +120,7 @@ fill them, which is very context-dependent. For example, if you are
 dealing with daily retail data, a missing value most likely indicates
 that there were no sales on that day, and you can probably fill it with
 zero. However, if you are working with hourly temperature data, a
-missing value likely means that the sensor was not functioning
+missing value likely means that the thermometer was not functioning
 correctly, and you might prefer to use interpolation to fill the missing
 values. Whatever you decide to do, always keep in mind the nature of
 your data.</p>
@@ -144,10 +144,13 @@ points. The core functions of <code>nixtlar</code> that interface with
 <code>TimeGPT</code>, such as <code>nixtla_client_forecast</code>,
 <code>nixtla_client_historic</code>,
 <code>nixtla_client_detect_anomalies</code>, and
-<code>nixtla_client_cross_validation</code>, require you to specify the
-<code>freq</code> parameter, although in some cases <code>nixtlar</code>
-can deduce it from your data.</p>
-<p><code>TimeGPT</code> supports the following aliases:</p>
+<code>nixtla_client_cross_validation</code>, include a frequency
+parameter called <code>freq</code>, which has a default value of
+<code>NULL</code>. If you know the frequency of your data, please
+specify it. If you don’t, <code>nixtlar</code> will try to deduce it
+from the data using the <code><a href="../reference/infer_frequency.html">nixtlar::infer_frequency</a></code>
+function.</p>
+<p>The <code>freq</code> parameter supports the following aliases:</p>
 <table class="table">
 <thead><tr class="header">
 <th>Frequency</th>
@@ -193,19 +196,38 @@ can deduce it from your data.</p>
 </tbody>
 </table>
 <p>In this table, QS and MS stand for quarter and month start, while QE
-and ME stand for quarter and month end. Hourly and subhourly frequencies
-can be preceded by an integer, such as “6h”, “10min” or “30s”.
-<strong>Only the aliases “min” and “s” are allowed for minute and
-second-level frequencies</strong>.</p>
-<p>The default value of the frequency parameter is <code>NULL</code>.
-When this parameter is not specified, <code>nixtlar</code> will attempt
-to determine the frequency of your data.</p>
+and ME stand for quarter and month end. For quarter-end, the following
+dates are used.</p>
+<table class="table">
+<thead><tr class="header">
+<th>End of Quarter Dates</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>YYYY-03-31</td>
+</tr>
+<tr class="even">
+<td>YYYY-06-30</td>
+</tr>
+<tr class="odd">
+<td>YYYY-09-30</td>
+</tr>
+<tr class="even">
+<td>YYYY-12-31</td>
+</tr>
+</tbody>
+</table>
+<p>For month-end, the last day of each month is used.</p>
+<p>Hourly and sub-hourly frequencies can be preceded by an integer, such
+as “6h”, “10min” or “30s”. <strong>Only the aliases “min” and “s” are
+allowed for minute and second-level frequencies</strong>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
+<span></span>
+<span><span class="co"># infer the frequency when `freq` is not specified </span></span>
 <span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span> <span class="co"># freq = "h"</span></span>
-<span><span class="co">#&gt; Frequency chosen: h</span></span>
-<span><span class="co"># infer the frequency when `freq` is not specified </span></span></code></pre></div>
+<span><span class="co">#&gt; Frequency chosen: h</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

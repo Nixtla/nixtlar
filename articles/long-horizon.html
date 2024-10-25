@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -83,20 +84,18 @@
 <div class="section level2">
 <h2 id="long-horizon-forecasting">1. Long-horizon forecasting<a class="anchor" aria-label="anchor" href="#long-horizon-forecasting"></a>
 </h2>
-<p>For some problems, it is necessary to forecast long horizons. Here
-“long horizons” refer to predictions that exceed more than two seasonal
-periods. For instance, this means predicting more than 48 hours ahead
-for hourly data, and more than 7 days for daily data. The specific
-definition of “long horizon” varies according to the frequency of the
-data.</p>
-<p><code>TimeGPT</code> features a specialized model designed for
-long-horizon forecasting. This model is trained to predict far into the
+<p>In some cases, it is necessary to forecast long horizons. Here “long
+horizons” refer to predictions that exceed more than two seasonal
+periods. For example, this would mean forecasting more than 48 hours
+ahead for hourly data or more than 7 days for daily data. The specific
+definition of “long horizon” varies depending on the data frequency.</p>
+<p>There is a specialized <code>TimeGPT</code> model designed for
+long-horizon forecasting, which is trained to predict far into the
 future, where the uncertainty increases as the forecast extends further.
-Here we’ll explain how to use the long horizon model of
-<code>TimeGPT</code>.</p>
-<p>This vignette will explain how to do this. It assumes you have
-already set up your API key. If you haven’t done this, please read the
-<a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+Here we will explain how to use the long horizon model of
+<code>TimeGPT</code> via <code>nixtlar</code>.</p>
+<p>This vignette assumes you have already set up your API key. If you
+haven’t done this, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
@@ -116,8 +115,8 @@ five different electricity markets.</p>
 <span><span class="co">#&gt; 5        BE 2016-10-22 04:00:00 37.10</span></span>
 <span><span class="co">#&gt; 6        BE 2016-10-22 05:00:00 35.61</span></span></code></pre></div>
 <p>For every <code>unique_id</code>, we’ll try to predict the last 96
-hours. Hence, we’ll separate the data into training and test
-datasets.</p>
+hours. Hence, we will first separate the data into training and test
+sets.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">unique_id</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -154,9 +153,6 @@ and any output from <code><a href="../reference/nixtla_client_forecast.html">nix
 series, you can use <code>max_insample_length</code> to only plot the
 last N historical values (the forecast will always be plotted in
 full).</p>
-<p>When using <code><a href="../reference/nixtla_client_plot.html">nixtlar::nixtla_client_plot</a></code> with the output
-of <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies</a></code>, set
-<code>plot_anomalies=TRUE</code> to plot the anomalies.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">train</span>, <span class="va">fcst_long_horizon</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
 <p><img src="long-horizon_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
@@ -164,9 +160,9 @@ of <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nix
 <div class="section level2">
 <h2 id="evaluate-the-long-horizon-model">5. Evaluate the long-horizon model<a class="anchor" aria-label="anchor" href="#evaluate-the-long-horizon-model"></a>
 </h2>
-<p>To evaluate the long-horizon forecast, we’ll generate the same
+<p>To evaluate the long-horizon forecast, we will generate the same
 forecast with the default model of <code>TimeGPT</code>, which is
-<code>timegpt-1</code>, and then we’ll compute and compare the <a href="https://en.wikipedia.org/wiki/Mean_absolute_error" class="external-link">Mean Absolute
+<code>timegpt-1</code>, and then we will compute and compare the <a href="https://en.wikipedia.org/wiki/Mean_absolute_error" class="external-link">Mean Absolute
 Error</a> (MAE) of the two models.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">train</span>, h<span class="op">=</span><span class="fl">96</span><span class="op">)</span></span>
@@ -180,14 +176,13 @@ Error</a> (MAE) of the two models.</p>
 <span><span class="co">#&gt; 4        BE 2016-12-27 03:00:00 39.12502</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-27 04:00:00 36.47087</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-27 05:00:00 37.22281</span></span></code></pre></div>
-<p>We’ll rename the <code>TimeGPT</code> long-horizon model to merge it
-with the default <code>TimeGPT</code> model. We’ll then merge them with
-the actual values from the test set and compute the MAE. Note that in
-the output of the <code>nixtla_client_forecast</code> function, the
-<code>ds</code> column contains dates. This is because the
-<code>nixtla_client_plot</code> uses the dates to make the plot.
-However, to merge the actual values, we’ll convert them to
-characters.</p>
+<p>We will rename the <code>TimeGPT</code> long-horizon model to merge
+it with the default <code>TimeGPT</code> model. After that, we will
+combine them with the actual values from the test set and compute the
+MAE. Note that in the output of the <code>nixtla_client_forecast</code>
+function, the <code>ds</code> column contains dates. This is because
+<code>nixtla_client_plot</code> uses the dates for plotting. However, to
+merge the actual values, we will convert the dates to characters.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fcst_long_horizon</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fcst_long_horizon</span><span class="op">)</span> <span class="op">==</span> <span class="st">"TimeGPT"</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"TimeGPT-long-horizon"</span></span>
 <span></span>

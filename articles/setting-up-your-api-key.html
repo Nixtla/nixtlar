@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -110,14 +111,27 @@ responsibility to keep it safe.</p>
 </h2>
 <p>There are several methods to set up your API key.</p>
 <div class="section level3">
-<h3 id="using-the-nixtlarnixtla_set_api_key-function">3.1 Using the <code>nixtlar::nixtla_set_api_key</code> function<a class="anchor" aria-label="anchor" href="#using-the-nixtlarnixtla_set_api_key-function"></a>
+<h3 id="using-the-nixtlarnixtla_client_setup-function">3.1 Using the <code>nixtlar::nixtla_client_setup</code>
+function<a class="anchor" aria-label="anchor" href="#using-the-nixtlarnixtla_client_setup-function"></a>
 </h3>
 <p><code>nixtlar</code> provides a function to directly set up your API
 key:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"paste your API key here"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_setup.html">nixtla_client_setup</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
 <p>Keep in mind that if you close your R session or restart it, then you
 will need to set up your API key again.</p>
+<p>In earlier versions of <code>nixtlar</code>, the function to set up
+your API key was called <code>nixtla_set_api_key</code>. However,
+<code>nixtla_client_setup</code> now provides the same functionality,
+along with the ability to set Azure endpoints. The
+<code>nixtla_set_api_key</code> function is still available, but it now
+simply calls <code>nixtla_client_setup</code>.</p>
+<p>In addition to the <code>api_key</code> parameter,
+<code>nixtla_client_setup</code> has a <code>base_url</code> parameter.
+It’s default value is <code>NULL</code>, and in this case, it uses the
+<code>TimeGPT</code> URL. You can leave is as <code>NULL</code> unless
+you are working with Azure. See Section 5 below for more
+information.</p>
 </div>
 <div class="section level3">
 <h3 id="using-an-environment-variable">3.2 Using an environment variable<a class="anchor" aria-label="anchor" href="#using-an-environment-variable"></a>
@@ -127,7 +141,7 @@ will need to set up your API key again.</p>
 </h4>
 <p>You can set up your API key using <code>options</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>NIXTLA_API_KEY<span class="op">=</span><span class="st">"paste your API key here"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>NIXTLA_API_KEY<span class="op">=</span><span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
 <p>This will make your API key globally available throughout your R
 session. Although it will not appear in the list of variables, it will
 persist until you close or restart the session or until you explicitly
@@ -153,8 +167,8 @@ here, named <code>NIXTLA_API_KEY</code>.</p>
 <p>You will need to restart R for the changes to take effect. Note that
 modifying the <code>.Renviron</code> file affects <strong>all</strong>
 your R sessions, so if you are not comfortable with this, set your API
-key using the <code>nixtlar::nixtla_set_api_key function</code>.</p>
-<p><img src="../reference/figures/diagram.png"></p>
+key using the <code><a href="../reference/nixtla_client_setup.html">nixtlar::nixtla_client_setup</a></code> function.</p>
+<p><img src="../reference/figures/diagram_setup.png"></p>
 </div>
 </div>
 </div>
@@ -172,6 +186,22 @@ otherwise.</p>
 only when you are unsure of its status. Alternatively, in your
 dashboard, under <code>API keys</code>, there is a label next to your
 API key indicating its status, for example, <code>active</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="azure-endpoints">5. Azure endpoints<a class="anchor" aria-label="anchor" href="#azure-endpoints"></a>
+</h2>
+<p>When working on Azure, you will need to specify both a Base URL and
+your API key, as shown below.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">nixtlar</span><span class="fu">::</span><span class="fu"><a href="../reference/nixtla_client_setup.html">nixtla_client_setup</a></span><span class="op">(</span></span>
+<span>  base_url <span class="op">=</span> <span class="st">"Base URL here"</span>, </span>
+<span>  api_key <span class="op">=</span> <span class="st">"Your API key here"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>You can also use one of the more secure and permanent method
+described above, by specifying the <code>NIXTLA_BASE_URL</code> in
+addition to the <code>NIXTLA_API_KEY</code>.</p>
+<p>To learn more, please refer to the <a href="https://nixtla.github.io/nixtlar/articles/azure-quickstart.html">TimeGEN-1
+Quickstart (Azure)</a> vignette.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

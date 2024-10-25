@@ -3,6 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   anomaly-detection: anomaly-detection.html
+  azure-quickstart: azure-quickstart.html
   cross-validation: cross-validation.html
   data-requirements: data-requirements.html
   exogenous-variables: exogenous-variables.html
@@ -13,7 +14,7 @@ articles:
   quantiles: quantiles.html
   setting-up-your-api-key: setting-up-your-api-key.html
   special-topics: special-topics.html
-last_built: 2024-10-18T23:59Z
+last_built: 2024-10-25T06:29Z
 urls:
   reference: https://nixtla.github.io/nixtlar/reference
   article: https://nixtla.github.io/nixtlar/articles

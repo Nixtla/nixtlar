@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -98,40 +99,57 @@ provided by Nixtla, so if you don’t have one, please request one <a href="http
 <p>When using <code>nixtlar</code>, there are two ways of setting up
 your API key:</p>
 <div class="section level3">
-<h3 id="a--using-the-nixtla_set_api_key-function">a. Using the <code>nixtla_set_api_key</code> function<a class="anchor" aria-label="anchor" href="#a--using-the-nixtla_set_api_key-function"></a>
+<h3 id="a--using-the-nixtla_client_setup-function">a. Using the <code>nixtla_client_setup</code> function<a class="anchor" aria-label="anchor" href="#a--using-the-nixtla_client_setup-function"></a>
 </h3>
 <p><code>nixtlar</code> has a function to easily set up your API key for
 your current R session. Simply call</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_set_api_key.html">nixtla_set_api_key</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"paste your API key here"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_setup.html">nixtla_client_setup</a></span><span class="op">(</span>api_key <span class="op">=</span> <span class="st">"Your API key here"</span><span class="op">)</span></span></code></pre></div>
 <p>Keep in mind that if you close your R session or you re-start it,
 then you’ll need to set up your API key again.</p>
+<p>When using Azure, you also need to add the <code>base_ur</code>
+parameter to the <code>nixtla_client_setup</code> function.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_setup.html">nixtla_client_setup</a></span><span class="op">(</span></span>
+<span>  base_url <span class="op">=</span> <span class="st">"Base ULR"</span>,</span>
+<span>  api_key <span class="op">=</span> <span class="st">"Your API key here"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="b--using-an-environment-variable">b. Using an environment variable<a class="anchor" aria-label="anchor" href="#b--using-an-environment-variable"></a>
 </h3>
 <p>For a more persistent method that can be used across different
-projects, set up your API key as environment variable. To do this, you
-first need to load the <code>usethis</code> package.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+projects, set up your API key as environment variable. To do this, first
+load the <code>usethis</code> package.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://usethis.r-lib.org" class="external-link">usethis</a></span><span class="op">)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This will open your <code>.Reviron</code> file. Place your API key
 here and named it <code>NIXTLA_API_KEY</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Inside the .Renviron file </span></span>
-<span><span class="va">NIXTLA_API_KEY</span><span class="op">=</span><span class="st">"paste your API key here"</span></span></code></pre></div>
+<span><span class="va">NIXTLA_API_KEY</span><span class="op">=</span><span class="st">"Your API key here"</span></span></code></pre></div>
 <p>You’ll need to restart R for changes to take effect. Keep in mind
 that modifying the <code>.Renviron</code> file affects all of your R
-sessions, so if you’re not comfortable with this, set your API key using
-the <code>nixtla_set_api_key</code> function.</p>
+sessions, so if you’re not comfortable with this, use the
+<code>nixtla_client_setup</code> function instead.</p>
+<p>If you are using Azure, you also need to specify the
+<code>NIXTLA_BASE_URL</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Inside the .Renviron file </span></span>
+<span><span class="va">NIXTLA_BASE_URL</span><span class="op">=</span><span class="st">"Base URL"</span></span>
+<span><span class="va">NIXTLA_API_KEY</span><span class="op">=</span><span class="st">"Your API key here"</span></span></code></pre></div>
+<p>For details on how to set up your API key, check out the <a href="https://nixtla.github.io/nixtlar/articles/setting-up-your-api-key.html">Setting
+Up Your API Key</a> vignette. To learn more about how to use Azure,
+please refer to the <a href="vignette">TimeGEN-1 Quickstart
+(Azure)</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="validate-your-api-key">Validate your API key<a class="anchor" aria-label="anchor" href="#validate-your-api-key"></a>
 </h3>
 <p>If you want to validate your API key, call
 <code>nixtla_validate_api_key</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_validate_api_key.html">nixtla_validate_api_key</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You don’t need to validate your API key every time you set it up,
 only when you want to check if it’s valid. The
@@ -145,7 +163,7 @@ you API key is valid, and <code>FALSE</code> otherwise.</p>
 <p>Once your API key has been set up, you’re ready to use
 <code>TimeGPT</code>. Here we’ll show you how this is done using a
 dataset that contains prices of different electricity markets.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y</span></span>
@@ -165,7 +183,7 @@ of the column that contains the ids, which in this case is
 <code>unique_id</code>. To do this, simply use
 <code>id_col="unique_id"</code>. You can also choose confidence levels
 (0-100) for prediction intervals with <code>level</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nixtla_client_fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">8</span>, level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fcst</span><span class="op">)</span></span>
@@ -194,9 +212,9 @@ and any output from <code>nixtla_client_forecast</code>,
 <code>nixtla_client_cross_validation</code>. If you have long series,
 you can use <code>max_insample_length</code> to only plot the last N
 historical values (the forecast will always be plotted in full).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, id_col <span class="op">=</span> <span class="st">"unique_id"</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
-<p><img src="get-started_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/nixtla_client_plot.html">nixtla_client_plot</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">nixtla_client_fcst</span>, max_insample_length <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></code></pre></div>
+<p><img src="get-started_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

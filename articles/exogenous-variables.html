@@ -43,6 +43,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/anomaly-detection.html">Anomaly Detection</a></li>
+    <li><a class="dropdown-item" href="../articles/azure-quickstart.html">Azure Quickstart</a></li>
     <li><a class="dropdown-item" href="../articles/cross-validation.html">Cross-Validation</a></li>
     <li><a class="dropdown-item" href="../articles/data-requirements.html">Data requirements</a></li>
     <li><a class="dropdown-item" href="../articles/exogenous-variables.html">Exogenous Variables</a></li>
@@ -92,7 +93,7 @@ promotional sales.</p>
 <p><code>TimeGPT</code> allows you to include exogenous variables when
 generating a forecast. This vignette will show you how to include them.
 It assumes you have already set up your API key. If you haven’t done
-this, please read the <a href="https://nixtla.github.io/nixtlar/articles/anomaly-detection.html">Get
+this, please read the <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get
 Started</a> vignette first.</p>
 </div>
 <div class="section level2">
@@ -120,7 +121,7 @@ indicating the day of the week.</p>
 <span><span class="co">#&gt; 4     0     0     1     0</span></span>
 <span><span class="co">#&gt; 5     0     0     1     0</span></span>
 <span><span class="co">#&gt; 6     0     0     1     0</span></span></code></pre></div>
-<p>When using exogenous variables, <code>nixtlar</code> differentiates
+<p>When using exogenous variables, <code>nixtlar</code> distinguishes
 between historical and future exogenous variables:</p>
 <ul>
 <li><p><strong>Historical Exogenous Variables</strong>: These should be
@@ -131,9 +132,8 @@ variables, you must remove them before using any core functions of
 <code>nixtlar</code>.</p></li>
 <li><p><strong>Future Exogenous Variables</strong>: These correspond to
 the <code>X_df</code> parameter and should cover the entire forecast
-horizon. This dataset should include columns with the appropriate
-timestamps and, if available, unique identifiers, formatted as explained
-in previous sections.</p></li>
+horizon. This dataset must include columns with the appropriate
+timestamps and, if applicable, unique identifiers.</p></li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">future_exo_vars</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity_future_exo_vars.html">electricity_future_exo_vars</a></span></span>
@@ -173,10 +173,10 @@ exogenous variables using the <code>X_df</code> argument.</p>
 <span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09440</span></span>
 <span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38914</span></span>
 <span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08574</span></span></code></pre></div>
-<p>For comparison, we will also generate a forecast without the
-exogenous variables.</p>
+<p>For comparison, we will also generate a forecast without exogenous
+variables.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span> <span class="co"># same dataset but without the exogenous variables</span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">nixtlar</span><span class="fu">::</span><span class="va"><a href="../reference/electricity.html">electricity</a></span> <span class="co"># same dataset but without exogenous variables</span></span>
 <span></span>
 <span><span class="va">fcst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df</span>, h <span class="op">=</span> <span class="fl">24</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
