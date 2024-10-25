@@ -31,7 +31,7 @@ library(nixtlar)
 ## 1. Time series cross-validation 
 Cross-validation is a method for evaluating the performance of a forecasting model. Given a time series, it is carried out by defining a sliding window across the historical data and then predicting the period following it. The accuracy of the model is computed by averaging the accuracy across all the cross-validation windows. This method results in a better estimation of the model’s predictive abilities, since it considers multiple periods instead of just one, while respecting the sequential nature of the data.
 
-`TimeGPT` has a method for performing time series cross-validation, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first.  
+`TimeGPT` has a method for performing time series cross-validation, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first.  
 
 ## 2. Load data 
 For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
@@ -44,7 +44,7 @@ head(df)
 ## 3. Perform time series cross-validation
 To perform time series cross-validation using `TimeGPT`, use `nixtlar::nixtla_client_cross_validation`. The key parameters of this method are: 
 
-- **df**: The time series data, either as a data frame, a tibble, or a tsibble. It should include at least a column with the datestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. If working with multiple series, you also need to include a column with unique identifiers. The default name for this column is `unique_id`. 
+- **df**: The time series data, provided as a data frame, tibble, or tsibble. It must include at least two columns: one for the timestamps and one for the observations. The default names for these columns are `ds` and `y`. If your column names are different, specify them with `time_col` and `target_col`, respectively. If you are working with multiple series, you must also include a column with unique identifiers. The default name for this column is `unique_id`; if different, specify it with `id_col`.
 - **h**: The forecast horizon. 
 - **n_windows**: The number of windows to evaluate. Default value is 1. 
 - **step_size**: The gap between each cross-validation window. Default value is `NULL`. 

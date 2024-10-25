@@ -31,7 +31,7 @@ library(nixtlar)
 ## 1. Anomaly detection
 Anomaly detection plays a crucial role in time series analysis and forecasting. Anomalies, also known as outliers, are unusual observations that don't follow the expected time series patterns. They can be caused by a variety of factors, including errors in the data collection process, unexpected events, or sudden changes in the patterns of the time series. Anomalies can provide critical information about a system, like a potential problem or malfunction. After identifying them, it is important to understand what caused them, and then decide whether to remove, replace, or keep them.
 
-`TimeGPT` has a method for detecting anomalies, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/anomaly-detection.html) vignette first. 
+`TimeGPT` has a method for detecting anomalies, and users can call it from `nixtlar`. This vignette will explain how to do this. It assumes you have already set up your API key. If you haven't done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first. 
 
 ## 2. Load data 
 For this vignette, we'll use the electricity consumption dataset that is included in `nixtlar`, which contains the hourly prices of five different electricity markets. 
@@ -41,10 +41,11 @@ df <- nixtlar::electricity
 head(df)
 ```
 
-## 3. Detect anomalies 
-To detect anomalies, use `nixtlar::nixtla_client_detect_anomalies`, which should include the following parameter:  
+## 3. Detect Anomalies
 
-- **df**: The time series data, either as a data frame, a tibble, or a tsibble. It should include at least a column with the timestamps and a column with the observations. Default names for these columns are `ds` and `y`. If different, please specify their names. If working with multiple series, you also need to include a column with unique identifiers. The default name for this column is `unique_id`. 
+To detect anomalies, use `nixtlar::nixtla_client_detect_anomalies`, which requires the following parameter:
+
+- **df**: The time series data, provided as a data frame, tibble, or tsibble. It must include at least two columns: one for the timestamps and one for the observations. The default names for these columns are `ds` and `y`. If your column names are different, specify them with `time_col` and `target_col`, respectively. If you are working with multiple series, you must also include a column with unique identifiers. The default name for this column is `unique_id`; if different, specify it with `id_col`.
 
 ```{r}
 nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df) 

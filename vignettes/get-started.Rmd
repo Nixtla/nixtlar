@@ -35,17 +35,26 @@ First, you need to set up your API key. An API key is a string of characters tha
 
 When using `nixtlar`, there are two ways of setting up your API key: 
 
-### a. Using the `nixtla_set_api_key` function 
+### a. Using the `nixtla_client_setup` function 
 `nixtlar` has a function to easily set up your API key for your current R session. Simply call 
 
 ```{r eval=FALSE}
-nixtla_set_api_key(api_key = "paste your API key here")
+nixtla_client_setup(api_key = "Your API key here")
 ```
 
 Keep in mind that if you close your R session or you re-start it, then you'll need to set up your API key again. 
 
+When using Azure, you also need to add the `base_ur` parameter to the `nixtla_client_setup` function. 
+
+```{r eval=FALSE}
+nixtla_client_setup(
+  base_url = "Base ULR",
+  api_key = "Your API key here"
+)
+```
+
 ### b. Using an environment variable 
-For a more persistent method that can be used across different projects, set up your API key as environment variable. To do this, you first need to load the `usethis` package. 
+For a more persistent method that can be used across different projects, set up your API key as environment variable. To do this, first load the `usethis` package. 
 
 ```{r eval=FALSE, message=FALSE}
 library(usethis)
@@ -56,10 +65,20 @@ This will open your `.Reviron` file. Place your API key here and named it `NIXTL
 
 ```{r eval=FALSE}
 # Inside the .Renviron file 
-NIXTLA_API_KEY="paste your API key here"
+NIXTLA_API_KEY="Your API key here"
 ```
 
-You'll need to restart R for changes to take effect. Keep in mind that modifying the `.Renviron` file affects all of your R sessions, so if you're not comfortable with this, set your API key using the `nixtla_set_api_key` function. 
+You'll need to restart R for changes to take effect. Keep in mind that modifying the `.Renviron` file affects all of your R sessions, so if you're not comfortable with this, use the `nixtla_client_setup` function instead. 
+
+If you are using Azure, you also need to specify the `NIXTLA_BASE_URL`. 
+
+```{r eval=FALSE}
+# Inside the .Renviron file 
+NIXTLA_BASE_URL="Base URL"
+NIXTLA_API_KEY="Your API key here"
+```
+
+For details on how to set up your API key, check out the [Setting Up Your API Key](https://nixtla.github.io/nixtlar/articles/setting-up-your-api-key.html) vignette. To learn more about how to use Azure, please refer to the [TimeGEN-1 Quickstart (Azure)](vignette). 
 
 ### Validate your API key 
 If you want to validate your API key, call `nixtla_validate_api_key`. 
@@ -89,7 +108,7 @@ head(nixtla_client_fcst)
 `nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
 ```{r}
-nixtla_client_plot(df, nixtla_client_fcst, id_col = "unique_id", max_insample_length = 200)
+nixtla_client_plot(df, nixtla_client_fcst, max_insample_length = 200)
 ```
 
 ```{r, include=FALSE}
