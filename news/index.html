@@ -46,10 +46,18 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.1" id="nixtlar-061">nixtlar 0.6.1<a class="anchor" aria-label="anchor" href="#nixtlar-061"></a></h2><p class="text-muted">CRAN release: 2024-10-10</p>
-</div>
+<h2 class="pkg-version" data-toc-text="0.6.2" id="nixtlar-062">nixtlar 0.6.2<a class="anchor" aria-label="anchor" href="#nixtlar-062"></a></h2>
+<ul><li>Current version of <code>nixtlar</code>. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.2" class="external-link">here</a>
+</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.0" id="nixtlar-070">nixtlar 0.7.0<a class="anchor" aria-label="anchor" href="#nixtlar-070"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.6.1" id="nixtlar-061-2024-10-07">nixtlar 0.6.1 (2024-10-07)<a class="anchor" aria-label="anchor" href="#nixtlar-061-2024-10-07"></a></h2><p class="text-muted">CRAN release: 2024-10-10</p>
+<p>We are excited to announce the release of <code>nixtlar</code> version 0.6.0, which integrates the <a href="https://github.com/Nixtla/nixtla/releases/v0.6.1" class="external-link">latest release</a> of the <code>TimeGPT</code> API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.</p>
+<p><strong>Key updates include</strong>:</p>
+<ul><li><p><strong>Data Structures</strong>: <code>nixtlar</code> now extends support to <code>tibbles</code>, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows.</p></li>
+<li><p><strong>Date Formats</strong>: For efficiency, <code>nixtlar</code> now strictly requires dates to be in the format <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, either as character strings or date-time objects. For more details, please refer to our <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a> guide and <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">Data Requirements</a> vignette.</p></li>
+<li><p><strong>Default ID Column</strong>: In alignment with the Python SDK, <code>nixtlar</code> now defaults the <code>id_col</code> to <code>unique_id</code>. This means you no longer need to specify this column if it is already named <code>unique_id</code>. If your dataset contains only one series, simply set <code>id_col=NULL</code>. The <code>id_col</code> only accepts characters or integers.</p></li>
+</ul><p>These changes leverage the capabilities of <code>TimeGPT</code>’s new API and align <code>nixtlar</code> more closely with the Python SDK, ensuring a better user experience. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.1" class="external-link">here</a></p>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="nixtlar-060">nixtlar 0.6.0<a class="anchor" aria-label="anchor" href="#nixtlar-060"></a></h2>
