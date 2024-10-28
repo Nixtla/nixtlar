@@ -62,16 +62,16 @@ This is a private function of 'nixtlar'</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>
+<dl><dt id="arg-base-url">base_url<a class="anchor" aria-label="anchor" href="#arg-base-url"></a></dt>
+<dd><p>String specifying the API endpoint to which the request is sent.</p></dd>
+
+
+<dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>
 <dd><p>The user's API key.</p></dd>
 
 
 <dt id="arg-payload-list">payload_list<a class="anchor" aria-label="anchor" href="#arg-payload-list"></a></dt>
 <dd><p>List containing the information to be sent to the 'TimeGPT' API.</p></dd>
-
-
-<dt id="arg-url">url<a class="anchor" aria-label="anchor" href="#arg-url"></a></dt>
-<dd><p>String specifying the API endpoint to which the request is sent.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -82,7 +82,7 @@ This is a private function of 'nixtlar'</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">.make_request</span><span class="op">(</span><span class="va">url</span>, <span class="va">api_key</span>, <span class="va">payload_list_element</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">response</span> <span class="op">&lt;-</span> <span class="fu">.make_request</span><span class="op">(</span><span class="va">base_url</span>, <span class="va">api_key</span>, <span class="va">payload_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
