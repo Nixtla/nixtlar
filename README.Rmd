@@ -31,19 +31,18 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-## Version 0.6.0 of nixtlar is now available! (2024-10-07)
+## Version 0.6.2 of nixtlar is now available! (2024-10-28)
 
-We are excited to announce the release of `nixtlar` version 0.6.0, which integrates the [latest release](https://github.com/Nixtla/nixtla/releases/v0.6.0) of the `TimeGPT` API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.
+We are happy to announce the release of `nixtlar` version 0.6.2, introducing support for `TimeGEN-1`, `TimeGPT` optimized for Azure.
 
 **Key updates include**:
 
-- **Data Structures**: `nixtlar` now extends support to `tibbles`, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows. 
+- **Azure Integration**: You can now use `TimeGEN-1`, a version of `TimeGPT` optimized for the Azure infrastructure, directly through `nixtlar`. Simply configure your API key and Base URL to get started. For setup instructions, please check out our [Azure Quickstart](https://nixtla.github.io/nixtlar/articles/azure-quickstart.html) vignette.
+- **Enhanced Date Support**: In response to user feedback, we've improved support for date objects created with the `as.Date` function. For optimal performance, `nixtlar` now requires dates in the format `YYYY-MM-DD` or `YYYY-MM-DD hh:mm:ss`, either as characters or date-objects, and this update resolves issues with the latter format.
+- **Business-Day Frequency Inference**: `nixtlar` now supports inferring business-day frequency, which users previously had to specify directly.
+- **Bug Fixes**: This version also includes fixes for minor bugs reported by our users, ensuring overall stability and performance.
 
-- **Date Formats**: For efficiency, `nixtlar` now strictly requires dates to be in the format `YYYY-MM-DD` or `YYYY-MM-DD hh:mm:ss`, either as character strings or date-time objects. For more details, please refer to our [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) guide and [Data Requirements](https://nixtla.github.io/nixtlar/articles/data-requirements.html) vignette. 
-
-- **Default ID Column**: In alignment with the Python SDK, `nixtlar` now defaults the `id_col` to `unique_id`. This means you no longer need to specify this column if it is already named `unique_id`. If your dataset contains only one series, simply set `id_col=NULL`. The `id_col` only accepts characters or integers. 
-
-These changes leverage the capabilities of `TimeGPT`'s new API and align `nixtlar` more closely with the Python SDK, ensuring a better user experience. 
+Thank you for your continued support and feedback, which help us make `nixtlar` better. We encourage you to update to the latest version to take advantage of these improvements.
 
 # TimeGPT-1 
 
