@@ -78,7 +78,7 @@ NIXTLA_BASE_URL="Base URL"
 NIXTLA_API_KEY="Your API key here"
 ```
 
-For details on how to set up your API key, check out the [Setting Up Your API Key](https://nixtla.github.io/nixtlar/articles/setting-up-your-api-key.html) vignette. To learn more about how to use Azure, please refer to the [TimeGEN-1 Quickstart (Azure)](vignette). 
+For details on how to set up your API key, check out the [Setting Up Your API Key](https://nixtla.github.io/nixtlar/articles/setting-up-your-api-key.html) vignette. To learn more about how to use Azure, please refer to the [TimeGEN-1 Quickstart (Azure)](https://nixtla.github.io/nixtlar/articles/azure-quickstart.html). 
 
 ### Validate your API key 
 If you want to validate your API key, call `nixtla_validate_api_key`. 
