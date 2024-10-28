@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nixtlar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,16 +77,21 @@
 <!-- badges: start -->
 
 <div class="section level2">
-<h2 id="version-061-of-nixtlar-is-now-available-2024-10-07">Version 0.6.1 of nixtlar is now available! (2024-10-07)<a class="anchor" aria-label="anchor" href="#version-061-of-nixtlar-is-now-available-2024-10-07"></a>
+<h2 id="version-062-of-nixtlar-is-now-available-2024-10-28">Version 0.6.2 of nixtlar is now available! (2024-10-28)<a class="anchor" aria-label="anchor" href="#version-062-of-nixtlar-is-now-available-2024-10-28"></a>
 </h2>
-<p>We are excited to announce the release of <code>nixtlar</code> version 0.6.1, which integrates the <a href="https://github.com/Nixtla/nixtla/releases/v0.6.1" class="external-link">latest release</a> of the <code>TimeGPT</code> API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.</p>
+<p>We are happy to announce the release of <code>nixtlar</code> version 0.6.2, introducing support for <code>TimeGEN-1</code>, <code>TimeGPT</code> optimized for Azure.</p>
 <p><strong>Key updates include</strong>:</p>
 <ul>
-<li><p><strong>Data Structures</strong>: <code>nixtlar</code> now extends support to <code>tibbles</code>, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows.</p></li>
-<li><p><strong>Date Formats</strong>: For efficiency, <code>nixtlar</code> now strictly requires dates to be in the format <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, either as character strings or date-time objects. For more details, please refer to our <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a> guide and <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">Data Requirements</a> vignette.</p></li>
-<li><p><strong>Default ID Column</strong>: In alignment with the Python SDK, <code>nixtlar</code> now defaults the <code>id_col</code> to <code>unique_id</code>. This means you no longer need to specify this column if it is already named <code>unique_id</code>. If your dataset contains only one series, simply set <code>id_col=NULL</code>. The <code>id_col</code> only accepts characters or integers.</p></li>
+<li>
+<strong>Azure Integration</strong>: You can now use <code>TimeGEN-1</code>, a version of <code>TimeGPT</code> optimized for the Azure infrastructure, directly through <code>nixtlar</code>. Simply configure your API key and Base URL to get started. For setup instructions, please check out our <a href="https://nixtla.github.io/nixtlar/articles/azure-quickstart.html">Azure Quickstart</a> vignette.</li>
+<li>
+<strong>Enhanced Date Support</strong>: In response to user feedback, we’ve improved support for date objects created with the <code>as.Date</code> function. For optimal performance, <code>nixtlar</code> now requires dates in the format <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, either as characters or date-objects, and this update resolves issues with the latter format.</li>
+<li>
+<strong>Business-Day Frequency Inference</strong>: <code>nixtlar</code> now supports inferring business-day frequency, which users previously had to specify directly.</li>
+<li>
+<strong>Bug Fixes</strong>: This version also includes fixes for minor bugs reported by our users, ensuring overall stability and performance.</li>
 </ul>
-<p>These changes leverage the capabilities of <code>TimeGPT</code>’s new API and align <code>nixtlar</code> more closely with the Python SDK, ensuring a better user experience.</p>
+<p>Thank you for your continued support and feedback, which help us make <code>nixtlar</code> better. We encourage you to update to the latest version to take advantage of these improvements.</p>
 </div>
 </div>
 <div class="section level1">
