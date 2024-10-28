@@ -32,7 +32,7 @@ TimeGEN-1 is TimeGPT optimized for Azure, Microsoft's cloud computing service. Y
 
 ## 1. Set up a TimeGEN-1 endpoint account and generate your API key on Azure. 
 
-- Go to [ml.azure.com](ml.azure.com)
+- Go to [ml.azure.com](https://ml.azure.com)
 - Sign in or create an account.
 - If you don't have one already, create a workspace. This might require a subscription.
 

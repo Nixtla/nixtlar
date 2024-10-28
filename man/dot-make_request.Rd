@@ -8,11 +8,11 @@ This is a private function of 'nixtlar'}
 .make_request(base_url, api_key, payload_list)
 }
 \arguments{
+\item{base_url}{String specifying the API endpoint to which the request is sent.}
+
 \item{api_key}{The user's API key.}
 
 \item{payload_list}{List containing the information to be sent to the 'TimeGPT' API.}
-
-\item{url}{String specifying the API endpoint to which the request is sent.}
 }
 \value{
 List representing the JSON response from the API endpoint.
@@ -23,7 +23,7 @@ This is a private function of 'nixtlar'
 }
 \examples{
 \dontrun{
-  response <- .make_request(url, api_key, payload_list_element)
+  response <- .make_request(base_url, api_key, payload_list)
 }
 
 }
