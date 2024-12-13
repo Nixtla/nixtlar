@@ -1,0 +1,89 @@
+---
+title: "VN1 Forecasting Competition"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{VN1 Forecasting Competition}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+## Introduction 
+
+The [VN1 Forecasting Accuracy Challenge](https://www.datasource.ai/en/home/data-science-competitions-for-startups/phase-2-vn1-forecasting-accuracy-challenge/description) was a forecasting competition sponsored by SupChains, Syrup, and Flieber on the DataSource.ai platform. The competition ran from September 12 to October 17, 2024. Participants were tasked with predicting the next 13 weeks of sales for different products across multiple clients and warehouses. Submissions were evaluated based on their accuracy and bias against actual sales. 
+
+## TimeGPT 2nd Place Submission
+
+Using TimeGPT via `nixtlar`, it is possible to achieve **2nd place in the competition** with a score of **0.4651**. This result can be obtained with a zero-shot approach and the long-horizon model. Unlike the top five solutions, there is no need for fine-tuning or manually adjusting the results. The only preprocessing required is transforming the data from a wide to a long format and removing the leading zeros of each series, which represent a product-client-warehouse combination. 
+
+The competition provided prices as exogenous variables, but TimeGPT can achieve second place without using them.
+
+The official competition results and TimeGPT's score are shown below. 
+
+<div style="display: flex; justify-content: center;">
+  <table style="border-collapse: collapse; width: 60%;">
+    <thead>
+      <tr>
+        <th style="text-align: center; padding: 8px; border: 1px solid #ddd; width: 66.67%;">Model</th>
+        <th style="text-align: center; padding: 8px; border: 1px solid #ddd; width: 33.33%;">Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">1st</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">0.4637</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd; font-weight: bold;">TimeGPT</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd; font-weight: bold;">0.4651</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">2nd</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">0.4657</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">3rd</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">0.4758</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">4th</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">0.4774</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">5th</td>
+        <td style="text-align: center; padding: 8px; border: 1px solid #ddd;">0.4808</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+![](../man/figures/vn1.png) 
+
+TimeGPT was not an official entry in the competition as the rules required fully open-source solutions, and TimeGPT works through an API. However, with the same evaluation metric as in the competition, we can see that TimeGPT with a zero-shot approach using the long-horizon model and no exogenous variables would have placed 2nd overall. Furthermore, TimeGPT via the `nixtlar` package only requires a few lines of code, in contrast to the top five solutions that used multiple models and carefully crafted features.
+
+
+## Try It Yourself! 
+
+To reproduce TimeGPT's 2nd place submission, download the `main.R` and the `functions.R` scripts found in the `experiments/vn1-forecasting-competition` section of the `nixtlar` [GitHub repository](https://github.com/Nixtla/nixtlar) repository. Then run the `main.R` script. Make sure the `functions.R` script is in the same directory as the `main.R` script. 
+
+The output of the `main.R` script is the table shown in the previous section, which includes TimeGPT's result alongside the top five solutions.
+
+This experiment is independent of the `nixtlar` package and is not included as part of its code. 
+
+## References 
+
+- Vandeput, Nicolas. “VN1 Forecasting - Accuracy Challenge.” DataSource.ai, DataSource, 3 Oct. 2024, [https://www.datasource.ai/en/home/data-science-competitions-for-startups/phase-2-vn1-forecasting-accuracy-challenge/description](https://www.datasource.ai/en/home/data-science-competitions-for-startups/phase-2-vn1-forecasting-accuracy-challenge/description)
+
+- Garza, A., & Mergenthaler-Canseco, M. (2023). TimeGPT-1. [arXiv preprint arXiv:2310.03589](https://arxiv.org/abs/2310.03589).
+
+
