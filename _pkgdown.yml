@@ -11,8 +11,6 @@ navbar:
       href: articles/get-started.html
     - text: "Reference"
       href: reference/index.html
-    - text: "Nixtla"
-      href: https://docs.nixtla.io/
     - text: "News"
       href: news/index.html
     - text: "Articles"
@@ -39,10 +37,15 @@ navbar:
           href: articles/setting-up-your-api-key.html
         - text: "Special Topics"
           href: articles/special-topics.html
-
+    - text: "Experiments"
+      menu:
+        - text: "VN1 Competition"
+          href: articles/vn1-forecasting-competition.html
   right:
     - icon: "fa-github"
       href: https://github.com/Nixtla/nixtlar
+    - text: "Nixtla"
+      href: https://docs.nixtla.io/
 
 home:
   links:
