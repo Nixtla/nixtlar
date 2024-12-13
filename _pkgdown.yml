@@ -40,7 +40,7 @@ navbar:
     - text: "Experiments"
       menu:
         - text: "VN1 Competition"
-        - href: articles/vn1-forecasting-competition.html
+          href: articles/vn1-forecasting-competition.html
   right:
     - icon: "fa-github"
       href: https://github.com/Nixtla/nixtlar
