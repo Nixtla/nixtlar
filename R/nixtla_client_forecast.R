@@ -11,7 +11,7 @@
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param quantiles Quantiles to forecast. Should be between 0 and 1.
 #' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
-#' @param finetune_depth The depth of the fine-tuning. Accepts an integer value from 1 to 5, where 1 (default) means little fine-tuning and 5 means that the entire model is fine-tuned.
+#' @param finetune_depth The depth of the fine-tuning. Accepts an integer value from 1 to 5, where 1 (default) means little fine-tuning and 5 means that the entire model is fine-tuned to your dataset.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param add_history Return fitted values of the model.
