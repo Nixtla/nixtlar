@@ -9,6 +9,7 @@
 #' @param level The confidence levels (0-100) for the prediction intervals.
 #' @param quantiles Quantiles to forecast. Should be between 0 and 1.
 #' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
+#' @param finetune_depth The depth of the fine-tuning. Accepts an integer value from 1 to 5, where 1 (default) means little fine-tuning and 5 means that the entire model is fine-tuned.
 #' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
@@ -24,7 +25,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
