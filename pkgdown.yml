@@ -7,6 +7,7 @@ articles:
   cross-validation: cross-validation.html
   data-requirements: data-requirements.html
   exogenous-variables: exogenous-variables.html
+  fine-tuning: fine-tuning.html
   get-started: get-started.html
   historical-forecast: historical-forecast.html
   long-horizon: long-horizon.html
@@ -15,7 +16,7 @@ articles:
   setting-up-your-api-key: setting-up-your-api-key.html
   special-topics: special-topics.html
   vn1-forecasting-competition: vn1-forecasting-competition.html
-last_built: 2024-12-13T22:33Z
+last_built: 2024-12-19T04:41Z
 urls:
   reference: https://nixtla.github.io/nixtlar/reference
   article: https://nixtla.github.io/nixtlar/articles

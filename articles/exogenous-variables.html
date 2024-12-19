@@ -86,7 +86,9 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="exogenous-variables">1. Exogenous variables<a class="anchor" aria-label="anchor" href="#exogenous-variables"></a>
 </h2>
@@ -173,12 +175,12 @@ exogenous variables using the <code>X_df</code> argument.</p>
 <span><span class="co">#&gt; Using future exogenous features: Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst_exo_vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 74.54077</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.34429</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42921</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09440</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38914</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08574</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 74.54068</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.34399</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42881</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09382</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38807</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08492</span></span></code></pre></div>
 <p>For comparison, we will also generate a forecast without exogenous
 variables.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -188,12 +190,12 @@ variables.</p>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19067</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24491</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95889</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79668</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20456</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10912</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-timegpt-forecast">4. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>

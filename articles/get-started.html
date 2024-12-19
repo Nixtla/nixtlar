@@ -86,7 +86,9 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
 <p><code>nixtlar</code> provides an R interface to <a href="https://docs.nixtla.io/" class="external-link">Nixtla’s TimeGPT</a>, a generative
 pre-trained forecasting model for time series data. <code>TimeGPT</code>
 is the first foundation model capable of producing accurate forecasts
@@ -194,19 +196,19 @@ of the column that contains the ids, which in this case is
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nixtla_client_fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-95 TimeGPT-lo-80</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19045      30.49691      35.50842</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24445      28.96423      35.37463</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95839      27.06667      35.34079</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79649      27.96751      32.32625</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20454      24.66072      30.99895</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10878      23.05056      32.43504</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19067      30.49690      35.50871</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24491      28.96405      35.37627</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95889      27.06674      35.34068</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79668      27.96726      32.32737</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20456      24.66173      30.99833</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10912      23.05270      32.43550</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-80 TimeGPT-hi-95</span></span>
-<span><span class="co">#&gt; 1      54.87248      59.88399</span></span>
-<span><span class="co">#&gt; 2      51.11427      57.52467</span></span>
-<span><span class="co">#&gt; 3      48.57599      56.85011</span></span>
-<span><span class="co">#&gt; 4      47.26672      51.62546</span></span>
-<span><span class="co">#&gt; 5      47.41012      53.74836</span></span>
-<span><span class="co">#&gt; 6      47.78252      57.16700</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      54.87264      59.88444</span></span>
+<span><span class="co">#&gt; 2      51.11356      57.52577</span></span>
+<span><span class="co">#&gt; 3      48.57710      56.85105</span></span>
+<span><span class="co">#&gt; 4      47.26598      51.62609</span></span>
+<span><span class="co">#&gt; 5      47.41079      53.74739</span></span>
+<span><span class="co">#&gt; 6      47.78273      57.16553</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-timegpt-forecast">3. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>
