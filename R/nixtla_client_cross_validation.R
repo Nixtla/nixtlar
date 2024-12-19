@@ -11,8 +11,9 @@
 #' @param quantiles Quantiles to forecast. Should be between 0 and 1.
 #' @param n_windows Number of windows to evaluate.
 #' @param step_size Step size between each cross validation window. If NULL, it will equal the forecast horizon (h).
-#' @param finetune_steps Number of steps used to finetune 'TimeGPT' in the new data.
-#' @param finetune_loss Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
+#' @param finetune_steps Number of steps used to fine-tune 'TimeGPT' in the new data.
+#' @param finetune_depth The depth of the fine-tuning. Uses a scale from 1 to 5, where 1 means little fine-tuning and 5 means that the entire model is fine-tuned.
+#' @param finetune_loss Loss function to use for fine-tuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
@@ -27,7 +28,7 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
@@ -130,6 +131,7 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id
     freq = freq,
     clean_ex_first = clean_ex_first,
     finetune_steps = finetune_steps,
+    finetune_depth = finetune_depth,
     finetune_loss = finetune_loss
   )
 
