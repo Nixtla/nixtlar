@@ -5,7 +5,7 @@ output:
     toc: true 
     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Azure Quickstart}
+  %\VignetteIndexEntry{TimeGEN-1 Quickstart (Azure)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
