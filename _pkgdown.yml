@@ -25,6 +25,8 @@ navbar:
           href: articles/data-requirements.html
         - text: "Exogenous Variables"
           href: articles/exogenous-variables.html
+        - text: "Fine-tuning"
+          href: articles/fine-tuning.html
         - text: "Historical Forecast"
           href: articles/historical-forecast.html
         - text: "Long Horizon Forecast"
