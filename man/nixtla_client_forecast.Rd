@@ -42,11 +42,11 @@ nixtla_client_forecast(
 
 \item{quantiles}{Quantiles to forecast. Should be between 0 and 1.}
 
-\item{finetune_steps}{Number of steps used to finetune 'TimeGPT' in the new data.}
+\item{finetune_steps}{Number of steps used to fine-tune 'TimeGPT' in the new data.}
 
-\item{finetune_depth}{The depth of the fine-tuning. Accepts an integer value from 1 to 5, where 1 (default) means little fine-tuning and 5 means that the entire model is fine-tuned.}
+\item{finetune_depth}{The depth of the fine-tuning. Uses a scale from 1 to 5, where 1 means little fine-tuning and 5 means that the entire model is fine-tuned.}
 
-\item{finetune_loss}{Loss function to use for finetuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
+\item{finetune_loss}{Loss function to use for fine-tuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 

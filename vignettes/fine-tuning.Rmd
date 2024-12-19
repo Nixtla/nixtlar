@@ -1,0 +1,113 @@
+---
+title: "Fine-tuning"
+output: 
+  rmarkdown::html_vignette:
+    toc: true 
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Fine-tuning}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include=FALSE}
+library(httptest2)
+.mockPaths("../tests/mocks")
+start_vignette(dir = "../tests/mocks")
+
+original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 7, 
+  fig.height = 4
+)
+```
+
+```{r}
+library(nixtlar)
+```
+
+## 1. Introduction
+
+Foundation models, such as TimeGPT, are trained on large and diverse datasets, enabling them to generate predictions for data not seen during training. This process, where the model is used directly to solve a forecasting task, is known as **zero-shot learning**. It is also possible, however, to further train the model on a new dataset, starting from its pre-trained parameters. This process, called **fine-tuning**, aims to improve the accuracy of predictions by tailoring the model to the specific characteristics of the new data.
+
+By default, TimeGPT employs a zero-shot approach for faster computation. However, several options are available for fine-tuning TimeGPT to your data. While fine-tuning increases the total execution time, it can improve forecast accuracy.
+
+In this vignette, we explain how to fine-tune TimeGPT using the `nixtlar` package. It assumes you have already set up your API key. If you haven’t done this, please read the [Get Started](https://nixtla.github.io/nixtlar/articles/get-started.html) vignette first.
+
+## 2. Fine-tuning parameters
+
+The parameters that can be used for fine-tuning TimeGPT via `nixtlar` are:
+
+- `finetune_steps` (int): The number of training iterations on the input data. Forecasts are then produced using the updated model.
+
+- `finetune_depth` (int, from 1 to 5): A value controlling how many parameters of TimeGPT are fine-tuned on your dataset. When set to 1, only a few parameters are fine-tuned, while setting it to 5 fine-tunes all parameters. ^[It is not possible to select the specific parameters manually.]
+
+- `finetune_loss` (string, see options): The name of the loss function used during fine-tuning. Options available are:
+  - `default`: A proprietary loss function robust to outliers
+  - `mae`: Mean Absolute Error
+  - `mse`: Mean Squared Error
+  - `rmse`: Root Mean Squared Error
+  - `mape`: Mean Absolute Percentage Error
+  - `smape`: Symmetric Mean Absolute Percentage Error
+
+**Note that the `finetune_depth` and `finetune_loss` parameters will only work when `finetune_steps > 0`. Otherwise, these parameters will be ignored.**
+
+The fine-tuning parameters are available in the following `nixtlar` functions:
+
+- `nixtla_client_forecast`
+- `nixtla_client_historic`
+- `nixtla_client_cross_validation`
+
+## 3. Example
+
+In this section, we will show a simple example where fine-tuning improves the accuracy of the forecast. We will forecast the last 24 hours of the electricity consumption dataset included in `nixtlar`.
+
+```{r}
+df <- nixtlar::electricity
+
+train_df <- df |> 
+  dplyr::group_by(unique_id) |> 
+  dplyr::slice(1:(dplyr::n()-24)) 
+
+test_df <- df |> 
+  dplyr::group_by(unique_id) |> 
+  dplyr::slice_tail(n = 24) 
+```
+
+After splitting the data into training and test sets, we will generate a forecast using the zero-shot model of TimeGPT and another two using `finetune_steps` and `finetune_depth`. 
+
+```{r}
+fc_zeroshot <- nixtlar::nixtla_client_forecast(train_df, h = 24)
+fc_finetune <- nixtlar::nixtla_client_forecast(train_df, h = 24, finetune_steps = 100)  
+fc_finetune_depth <- nixtlar::nixtla_client_forecast(train_df, h = 24, finetune_steps = 100, finetune_depth = 2) 
+```
+
+Next, we will evaluate the accuracy of the predictions using the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE), a widely used metric for evaluating forecasts. Note that we need to convert the timestamps in the test set to merge them with the forecasts. This is because the `nixtla_client_forecast` function returns timestamps as date objects for plotting with the `nixtla_client_plot` function.
+
+````{r}
+test_df$ds <- lubridate::ymd_hms(test_df$ds)
+
+compute_mae <- function(forecast, test){
+  res <- merge(test, forecast, by = c("unique_id", "ds")) |> 
+    dplyr::mutate(abs_error = abs(y-TimeGPT))
+  
+  mae <- round(mean(res$abs_error), 2)
+  return(mae)
+}
+
+print(paste0("MAE zero-shot model: ", compute_mae(test_df, fc_zeroshot)))
+print(paste0("MAE fine-tune model: ", compute_mae(test_df, fc_finetune)))
+print(paste0("MAE fine-tune model with depth: ", compute_mae(test_df, fc_finetune_depth)))
+````
+
+## 4. Final recommendations
+
+Fine-tuning can involve a trial-and-error process. We recommend monitoring the performance of your model and adjusting the fine-tuning parameters as needed. Keep in mind that fine-tuning may lead to longer training times and can increase the risk of overfitting, so use it with caution.
+
+```{r, include=FALSE}
+options(original_options)
+end_vignette()
+```
+
