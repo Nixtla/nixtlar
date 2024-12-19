@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-## Version 0.6.2 of nixtlar is now available! (2024-10-28)
+## Version 0.6.2 of nixtlar is now available on CRAN! (2024-10-28)
 
 We are happy to announce the release of `nixtlar` version 0.6.2, introducing support for `TimeGEN-1`, `TimeGPT` optimized for Azure.
 
