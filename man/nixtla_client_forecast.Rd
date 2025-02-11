@@ -19,7 +19,7 @@ nixtla_client_forecast(
   finetune_depth = 1,
   finetune_loss = "default",
   clean_ex_first = TRUE,
-  hist_exog_list = FALSE,
+  hist_exog_list = NULL,
   add_history = FALSE,
   model = "timegpt-1"
 )

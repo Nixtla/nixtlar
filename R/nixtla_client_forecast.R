@@ -29,7 +29,7 @@
 #'   fcst <- nixtlar::nixtla_client_forecast(df, h=8, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, hist_exog_list=FALSE, add_history=FALSE, model="timegpt-1"){
+nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", X_df=NULL, level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, hist_exog_list=NULL, add_history=FALSE, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
@@ -141,6 +141,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
   }
 
   # Add exogenous variables ----
+  # contains_exogenous can be either TRUE or FALSE and has been defined by this point
   if(contains_exogenous){
     if(!is.null(X_df)){
      if(is.null(hist_exog_list)){
@@ -166,6 +167,10 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
        payload$series$X_future <- future_exogenous
      }else{
        # hist_exog_list is non-empty
+       missing_vars <- hist_exog_list[!hist_exog_list %in% names(df)]
+       if(length(missing_vars) > 0){
+         stop("Variables [", missing_vars, "] not found in `df`")
+       }
        not_hist_exog_list <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
        if(!is.null(not_hist_exog_list)){
          message(paste0("The following features were declared as historic but found in `X_df`:: [", paste(hist_exog_list, collapse=", "), "]. They will be considered as historic."))
@@ -194,6 +199,10 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
         message(paste0("Input contains the following exogenous features: [", paste(setdiff(names(df), c("unique_id", "ds", "y")), collapse=", "), "] but `X_df` was not provided and they were not declared in `hist_exog_list`. They will be ignored."))
       }else{
         # hist_exog_list is non-empty
+        missing_vars <- hist_exog_list[!hist_exog_list %in% names(df)]
+        if(length(missing_vars) > 0){
+          stop("Variables [", missing_vars, "] not found in `df`")
+        }
         unused_exogenous <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
         if (length(unused_exogenous) > 0) {
           message(paste0("Input contains the following exogenous features: [", paste(unused_exogenous, collapse=", "), "] but `X_df` was not provided and they were not declared in `hist_exog_list`. They will be ignored."))
