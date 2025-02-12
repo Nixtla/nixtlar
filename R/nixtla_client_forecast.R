@@ -140,72 +140,73 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
     payload[["level"]] <- as.list(lvl$level)
   }
 
-  # Add exogenous variables ----
-  # contains_exogenous can be either TRUE or FALSE and has been defined by this point
+  # Add exogenous variables
+  missing_vars <- hist_exog_list[!hist_exog_list %in% names(df)]
+  if(length(missing_vars) > 0){
+    stop("Variables [", paste(missing_vars, collapse=", "), "] not found in `df`")
+  }
+
   if(contains_exogenous){
     if(!is.null(X_df)){
-     if(is.null(hist_exog_list)){
-       exogenous <- df |>
-         dplyr::select(-dplyr::all_of(c("unique_id", "ds", "y"))) |>
-         as.list()
+      .validate_exogenous(df, h, X_df) # check if the future exogenous cover the horizon
 
-       names(exogenous) <- NULL
-       payload$series$X <- exogenous
-
-       # validate future exogenous
-       vals_df <- .validate_exogenous(df, h, X_df)
-
-       X_df <- X_df |> # same order as df
-         dplyr::select(dplyr::all_of(c("unique_id", "ds", vals_df)))
-
-       future_exogenous <- X_df |>
-         dplyr::select(-dplyr::all_of(c("unique_id", "ds"))) |>
-         as.list()
-
-       message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
-       names(future_exogenous) <- NULL
-       payload$series$X_future <- future_exogenous
-     }else{
-       # hist_exog_list is non-empty
-       missing_vars <- hist_exog_list[!hist_exog_list %in% names(df)]
-       if(length(missing_vars) > 0){
-         stop("Variables [", missing_vars, "] not found in `df`")
-       }
-       not_hist_exog_list <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
-       if(!is.null(not_hist_exog_list)){
-         message(paste0("The following features were declared as historic but found in `X_df`:: [", paste(hist_exog_list, collapse=", "), "]. They will be considered as historic."))
-       }
-
-       exogenous <- df |>
-         dplyr::select(dplyr::all_of(c(not_hist_exog_list, hist_exog_list))) |>
-         as.list()
-
-       names(exogenous) <- NULL
-       payload$series$X <- exogenous
-
-       future_exogenous <- X_df |>
-         dplyr::select(not_hist_exog_list) |>
-         as.list()
-
-       message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
-       names(future_exogenous) <- NULL
-       payload$series$X_future <- future_exogenous
-
-       message(paste0("Using historical exogenous features: [", paste(hist_exog_list, collapse=", "), "]"))
-     }
-
-    }else{
       if(is.null(hist_exog_list)){
-        message(paste0("Input contains the following exogenous features: [", paste(setdiff(names(df), c("unique_id", "ds", "y")), collapse=", "), "] but `X_df` was not provided and they were not declared in `hist_exog_list`. They will be ignored."))
+        exogenous <- df |>
+          dplyr::select(-dplyr::all_of(c("unique_id", "ds", "y"))) |>
+          as.list()
+
+        names(exogenous) <- NULL
+        payload$series$X <- exogenous
+
+        diff_var <- setdiff(names(X_df), names(df))
+        if(length(diff_var) > 0){
+          stop(paste0("The following exogenous features are present in `X_df` but not in `df`[", paste(diff_var, collapse = ", "), "]."))
+        }
+
+        X_df <- X_df |> # same order as df
+          dplyr::select(dplyr::all_of(setdiff(names(df), "y")))
+
+        future_exogenous <- X_df |>
+          dplyr::select(-dplyr::all_of(c("unique_id", "ds"))) |>
+          as.list()
+
+        message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
+        names(future_exogenous) <- NULL
+        payload$series$X_future <- future_exogenous
       }else{
         # hist_exog_list is non-empty
-        missing_vars <- hist_exog_list[!hist_exog_list %in% names(df)]
-        if(length(missing_vars) > 0){
-          stop("Variables [", missing_vars, "] not found in `df`")
+        not_hist_exog_list <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
+        if(!is.null(not_hist_exog_list)){
+          message(paste0("The following features were declared as historic but found in X_df:: [", paste(hist_exog_list, collapse=", "), "]. They will be considered historic."))
         }
+
+        exogenous <- df |>
+          dplyr::select(dplyr::all_of(c(not_hist_exog_list, hist_exog_list))) |>
+          as.list()
+
+        names(exogenous) <- NULL
+        payload$series$X <- exogenous
+
+        future_exogenous <- X_df |>
+          dplyr::select(not_hist_exog_list) |>
+          as.list()
+
+        message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
+        names(future_exogenous) <- NULL
+        payload$series$X_future <- future_exogenous
+
+        message(paste0("Using historical exogenous features: [", paste(hist_exog_list, collapse=", "), "]"))
+      }
+
+    }else{
+      # No X_df
+      if(is.null(hist_exog_list)){
+        message(paste0("Input contains the following exogenous features: [", paste(setdiff(names(df), c("unique_id", "ds", "y")), collapse=", "), "] but X_df was not provided and they were not declared in hist_exog_list. They will be ignored."))
+      }else{
+        # hist_exog_list is non-empty
         unused_exogenous <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
         if (length(unused_exogenous) > 0) {
-          message(paste0("Input contains the following exogenous features: [", paste(unused_exogenous, collapse=", "), "] but `X_df` was not provided and they were not declared in `hist_exog_list`. They will be ignored."))
+          message(paste0("Input contains the following exogenous features: [", paste(unused_exogenous, collapse=", "), "] but X_df was not provided and they were not declared in hist_exog_list. They will be ignored."))
         }
 
         exogenous <- df |>

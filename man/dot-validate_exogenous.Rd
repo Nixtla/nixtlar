@@ -15,7 +15,7 @@ This is a private function of 'nixtlar'}
 \item{X_df}{A tsibble or a data frame with future exogenous variables.}
 }
 \value{
-Returns a vector with the exogenous variable names if the validation is successful. If the validation fails, it stops execution and returns an error message, indicating what went wrong.
+If the validation is successful, the function executes without errors. If the validation fails, it stops execution and returns an error message indicating that the future exogenous variables must cover the forecast horizon.
 }
 \description{
 Validate future exogenous variables (if applicable)
