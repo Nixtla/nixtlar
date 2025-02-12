@@ -15,6 +15,7 @@
 #' @param finetune_depth The depth of the fine-tuning. Uses a scale from 1 to 5, where 1 means little fine-tuning and 5 means that the entire model is fine-tuned.
 #' @param finetune_loss Loss function to use for fine-tuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
+#' @param hist_exog_list A vector containing the column names of the historical exogenous features.
 #' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
 #'
 #' @return A data frame with 'TimeGPT''s cross validation result.
@@ -28,7 +29,7 @@
 #'   fcst <- nixtlar::nixtla_client_cross_validation(df, h = 8, id_col = "unique_id", n_windows = 5)
 #' }
 #'
-nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, n_windows=1, step_size=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, hist_exog_list=NULL, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
@@ -155,13 +156,35 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id
 
   # Add exogenous variables ----
   if(contains_exogenous){
-    exogenous <- df |>
-      dplyr::select(-dplyr::all_of(c("unique_id", "ds", "y"))) |>
-      as.list()
+    if(is.null(hist_exog_list)){
+      exogenous <- df |>
+        dplyr::select(dplyr::all_of(setdiff(names(df), c("unique_id", "ds", "y")))) |>
+        as.list()
 
-    message(paste0("Using historical exogenous features: ", paste(names(exogenous), collapse=", ")))
-    names(exogenous) <- NULL
-    payload$series$X <- exogenous
+      message(paste0("Using future exogenous features: [", paste(names(exogenous), collapse=", "), "]"))
+      names(exogenous) <- NULL
+      payload$series$X <- exogenous
+
+    }else{
+      # hist_exog_list is non-empty
+      unused_exogenous <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
+
+      exogenous <- df |>
+        dplyr::select(dplyr::all_of(c(unused_exogenous, hist_exog_list))) |>
+        as.list()
+
+      future_exogenous <- df |>
+        dplyr::select(dplyr::all_of(unused_exogenous)) |>
+        as.list()
+
+      message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
+
+      message(paste0("Using historical exogenous features: [", paste(hist_exog_list, collapse=", "), "]"))
+      names(exogenous) <- NULL
+      payload$series$X <- exogenous
+
+      payload$hist_exog <- c(length(exogenous)-2,length(exogenous)-1)
+    }
   }
 
   # Make request ----
