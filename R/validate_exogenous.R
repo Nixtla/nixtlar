@@ -5,7 +5,7 @@
 #' @param h Forecast horizon.
 #' @param X_df A tsibble or a data frame with future exogenous variables.
 #'
-#' @return Returns a vector with the exogenous variable names if the validation is successful. If the validation fails, it stops execution and returns an error message, indicating what went wrong.
+#' @return If the validation is successful, the function executes without errors. If the validation fails, it stops execution and returns an error message indicating that the future exogenous variables must cover the forecast horizon.
 #' @export
 #' @keywords internal
 #'
@@ -18,14 +18,6 @@
 #'
 .validate_exogenous <- function(df, h, X_df){
 
-  # Check if df and X_df contain the same exogenous variables
-  vals_df <- setdiff(names(df), c("unique_id", "ds", "y"))
-  vals_X_df <- setdiff(names(X_df), c("unique_id", "ds"))
-
-  if(!setequal(vals_df, vals_X_df)){
-    stop("df and X_df must contain the same exogenous variables.")
-  }
-
   # Check if the future values of the exogenous variables cover the forecast horizon
   future_vals <- X_df |>
     dplyr::group_by(.data$unique_id) |>
@@ -34,6 +26,4 @@
   if(length(unique(future_vals$unique_id)) != length(unique(X_df$unique_id))){
     stop("The future values of the exogenous variables must cover the forecast horizon.")
   }
-
-  return(vals_df)
 }

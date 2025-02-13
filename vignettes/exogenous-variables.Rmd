@@ -38,39 +38,60 @@ Exogenous variables are external factors that provide additional information abo
 
 For this vignette, we will use the electricity consumption dataset with exogenous variables included in `nixtlar`. This dataset contains hourly prices from five different electricity markets, along with two exogenous variables related to the prices and binary variables indicating the day of the week.
 
-````{r}
+```{r}
 df_exo_vars <- nixtlar::electricity_exo_vars
 head(df_exo_vars)
-````
+```
 
-When using exogenous variables, `nixtlar` distinguishes between historical and future exogenous variables:
+There are two types of exogenous variables: **historic** and **future**.  
 
-- **Historical Exogenous Variables**: These should be included in the input data immediately following the `id_col`, `ds`, and `y` columns. If your dataset contains additional columns that are not exogenous variables, you must remove them before using any core functions of `nixtlar`.
+- **Historic Exogenous Variables**: They should be included directly in the input dataset `df`.  
+- **Future Exogenous Variables**: They must be included in the `X_df` parameter.  
 
-- **Future Exogenous Variables**: These correspond to the `X_df` parameter and should cover the entire forecast horizon. This dataset must include columns with the appropriate timestamps and, if applicable, unique identifiers. 
+To specify which variables should be treated as historic, use the `hist_exog_list` parameter. This parameter is available in both the `forecast` and `cross_validation` functions.  
 
-````{r}
+- If `df` contains exogenous variables but they are not found in `X_df` nor declared in `hist_exog_list`, they will be ignored.  
+- If exogenous variables were declared as historic but found in `X_df`, then they will be considered as historic.  
+
+In the next section, we will explore different cases for forecasting with exogenous variables.  
+
+## 3a. Forecasting electricity prices using historic and future exogenous variables  
+  
+If both historic and future values of all exogenous variables are available, include the historic exogenous variables in `df` and the future exogenous variables in `X_df`. 
+
+```{r}
 future_exo_vars <- nixtlar::electricity_future_exo_vars
 head(future_exo_vars)
-````
 
-## 3. Forecast with exogenous variables 
-
-To generate a forecast with exogenous variables, use the `nixtla_client_forecast` function as you would for forecasts without them. The only difference is that you must add the future exogenous variables using the `X_df` argument.
-
-````{r}
 fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, X_df = future_exo_vars)
 head(fcst_exo_vars)
-````
+```
 
-For comparison, we will also generate a forecast without exogenous variables. 
+## 3b. Forecasting electricity prices using only historic exogenous variables
 
-````{r}
-df <- nixtlar::electricity # same dataset but without exogenous variables
+If future values of the exogenous variables are not available, you can still generate forecasts using only their historical values. In this case, simply include them in `df`. 
 
-fcst <- nixtla_client_forecast(df, h = 24)
-head(fcst)
-````
+```{r}
+fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24)
+head(fcst_exo_vars)
+```
+
+**Important:** If you include historical exogenous variables without explicitly defining their future values, you are implicitly assuming that their historical patterns will continue into the future. Whenever possible, it is recommended to use future exogenous variables to make these assumptions explicit.  
+
+## 3c. Forecasting future exogenous variables  
+
+When future exogenous variables are not available, an alternative approach is to forecast them separately using TimeGPT. First, generate forecasts for the exogenous variables and then pass the predicted values in `X_df` for the main forecast.  
+
+## 3d. Forecasting electricity prices using both future and historic exogenous variables  
+
+In some cases, only a subset of future exogenous variables is available. For example, if future values of `Exogenous1` and `Exogenous2` are unknown, add them to `hist_exog_list`. 
+
+```{r}
+future_exo_vars <- future_exo_vars |> 
+  dplyr::select(-dplyr::all_of(c("Exogenous1", "Exogenous2")))
+
+fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, hist_exog_list = c("Exogenous1", "Exogenous2"))
+```
 
 ## 4. Plot TimeGPT forecast
 

@@ -20,6 +20,7 @@ nixtla_client_cross_validation(
   finetune_depth = 1,
   finetune_loss = "default",
   clean_ex_first = TRUE,
+  hist_exog_list = NULL,
   model = "timegpt-1"
 )
 }
@@ -51,6 +52,8 @@ nixtla_client_cross_validation(
 \item{finetune_loss}{Loss function to use for fine-tuning. Options are: "default", "mae", "mse", "rmse", "mape", and "smape".}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
+
+\item{hist_exog_list}{A vector containing the column names of the historical exogenous features.}
 
 \item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
 }
