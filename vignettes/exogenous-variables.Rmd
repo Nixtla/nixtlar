@@ -38,7 +38,7 @@ Exogenous variables are external factors that provide additional information abo
 
 For this vignette, we will use the electricity consumption dataset with exogenous variables included in `nixtlar`. This dataset contains hourly prices from five different electricity markets, along with two exogenous variables related to the prices and binary variables indicating the day of the week.
 
-```{r, eval=FALSE}
+```{r}
 df_exo_vars <- nixtlar::electricity_exo_vars
 head(df_exo_vars)
 ```
@@ -59,7 +59,7 @@ In the next section, we will explore different cases for forecasting with exogen
   
 If both historic and future values of all exogenous variables are available, include the historic exogenous variables in `df` and the future exogenous variables in `X_df`. 
 
-```{r, eval=FALSE}
+```{r}
 future_exo_vars <- nixtlar::electricity_future_exo_vars
 head(future_exo_vars)
 
@@ -71,7 +71,7 @@ head(fcst_exo_vars)
 
 If future values of the exogenous variables are not available, you can still generate forecasts using only their historical values. In this case, simply include them in `df`. 
 
-```{r, eval=FALSE}
+```{r}
 fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24)
 head(fcst_exo_vars)
 ```
@@ -86,7 +86,7 @@ When future exogenous variables are not available, an alternative approach is to
 
 In some cases, only a subset of future exogenous variables is available. For example, if future values of `Exogenous1` and `Exogenous2` are unknown, add them to `hist_exog_list`. 
 
-```{r, eval=FALSE}
+```{r}
 future_exo_vars <- future_exo_vars |> 
   dplyr::select(-dplyr::all_of(c("Exogenous1", "Exogenous2")))
 
@@ -97,7 +97,7 @@ fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, hist_exog_list = c(
 
 `nixtlar` includes a function to plot the historical data and any output from `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_anomaly_detection` and `nixtla_client_cross_validation`. If you have long series, you can use `max_insample_length` to only plot the last N historical values (the forecast will always be plotted in full). 
 
-```{r, eval=FALSE}
+```{r}
 nixtla_client_plot(df_exo_vars, fcst_exo_vars, max_insample_length = 500)
 ```
 
