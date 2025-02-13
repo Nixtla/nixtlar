@@ -47,44 +47,38 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/Nixtla/nixtlar/blob/v0.6.4/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/Nixtla/nixtlar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.2" id="nixtlar-062">nixtlar 0.6.2<a class="anchor" aria-label="anchor" href="#nixtlar-062"></a></h2><p class="text-muted">CRAN release: 2024-10-28</p>
-<ul><li>Current version of <code>nixtlar</code>. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.2" class="external-link">here</a>
-</li>
+<h2 class="pkg-version" data-toc-text="0.6.4" id="nixtlar-064">nixtlar 0.6.4<a class="anchor" aria-label="anchor" href="#nixtlar-064"></a></h2>
+<ul><li>Development version. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.4" class="external-link">here</a>.<br></li>
+<li>Added support for distinguishing between historic and future exogenous variables in forecasting and cross-validation functions. Users can now specify which exogenous variables have only historical values and which include both historical and future values.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.1" id="nixtlar-061-2024-10-07">nixtlar 0.6.1 (2024-10-07)<a class="anchor" aria-label="anchor" href="#nixtlar-061-2024-10-07"></a></h2><p class="text-muted">CRAN release: 2024-10-10</p>
-<p>We are excited to announce the release of <code>nixtlar</code> version 0.6.0, which integrates the <a href="https://github.com/Nixtla/nixtla/releases/v0.6.1" class="external-link">latest release</a> of the <code>TimeGPT</code> API—v2. This update focuses on what matters most to our users: speed, scalability, and reliability.</p>
-<p><strong>Key updates include</strong>:</p>
-<ul><li><p><strong>Data Structures</strong>: <code>nixtlar</code> now extends support to <code>tibbles</code>, in addition to the previously supported data frames and tsibbles. This broadens the range of data structures that can be used in your workflows.</p></li>
-<li><p><strong>Date Formats</strong>: For efficiency, <code>nixtlar</code> now strictly requires dates to be in the format <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, either as character strings or date-time objects. For more details, please refer to our <a href="https://nixtla.github.io/nixtlar/articles/get-started.html">Get Started</a> guide and <a href="https://nixtla.github.io/nixtlar/articles/data-requirements.html">Data Requirements</a> vignette.</p></li>
-<li><p><strong>Default ID Column</strong>: In alignment with the Python SDK, <code>nixtlar</code> now defaults the <code>id_col</code> to <code>unique_id</code>. This means you no longer need to specify this column if it is already named <code>unique_id</code>. If your dataset contains only one series, simply set <code>id_col=NULL</code>. The <code>id_col</code> only accepts characters or integers.</p></li>
-</ul><p>These changes leverage the capabilities of <code>TimeGPT</code>’s new API and align <code>nixtlar</code> more closely with the Python SDK, ensuring a better user experience. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.1" class="external-link">here</a></p>
-</div>
+<h2 class="pkg-version" data-toc-text="0.6.2" id="nixtlar-062">nixtlar 0.6.2<a class="anchor" aria-label="anchor" href="#nixtlar-062"></a></h2><p class="text-muted">CRAN release: 2024-10-28</p>
+<ul><li>Current stable release. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.2" class="external-link">here</a>.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.1" id="nixtlar-061">nixtlar 0.6.1<a class="anchor" aria-label="anchor" href="#nixtlar-061"></a></h2><p class="text-muted">CRAN release: 2024-10-10</p>
+<ul><li>Updated to support <code>TimeGPT</code> API v2.<br></li>
+<li>Added support for <code>tibbles</code>, in addition to data frames and tsibbles.<br></li>
+<li>Standardized date format requirements to <code>YYYY-MM-DD</code> or <code>YYYY-MM-DD hh:mm:ss</code>, as character strings or date-time objects.<br></li>
+<li>Default <code>id_col</code> set to <code>unique_id</code>, aligning with the Python SDK. If the dataset contains a single series, <code>id_col=NULL</code> should be used. Only character or integer values are accepted for <code>id_col</code>.<br></li>
+<li>Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.1" class="external-link">here</a>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="nixtlar-060">nixtlar 0.6.0<a class="anchor" aria-label="anchor" href="#nixtlar-060"></a></h2>
-<ul><li>New version that uses <code>TimeGPT</code> API—v2. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.0" class="external-link">here</a>
-</li>
+<ul><li>Updated to use <code>TimeGPT</code> API v2. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.0" class="external-link">here</a>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.4" id="nixtlar-054">nixtlar 0.5.4<a class="anchor" aria-label="anchor" href="#nixtlar-054"></a></h2>
-<ul><li>Development version. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.4" class="external-link">here</a>
-</li>
+<ul><li>Development version. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.4" class="external-link">here</a>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.3" id="nixtlar-053">nixtlar 0.5.3<a class="anchor" aria-label="anchor" href="#nixtlar-053"></a></h2>
-<ul><li>Development version. See release notes <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3" class="external-link">here</a>
-</li>
+<ul><li>Development version. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.5.3" class="external-link">here</a>.</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.2" id="nixtlar-052">nixtlar 0.5.2<a class="anchor" aria-label="anchor" href="#nixtlar-052"></a></h2><p class="text-muted">CRAN release: 2024-06-01</p>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.1" id="nixtlar-051">nixtlar 0.5.1<a class="anchor" aria-label="anchor" href="#nixtlar-051"></a></h2>
-</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="nixtlar-050">nixtlar 0.5.0<a class="anchor" aria-label="anchor" href="#nixtlar-050"></a></h2>
 <ul><li>Initial CRAN submission.</li>
