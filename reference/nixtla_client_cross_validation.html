@@ -75,6 +75,7 @@ This is a private function of 'nixtlar'</p>
 <span>  finetune_depth <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  finetune_loss <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  clean_ex_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  hist_exog_list <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"timegpt-1"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -137,6 +138,10 @@ This is a private function of 'nixtlar'</p>
 
 <dt id="arg-clean-ex-first">clean_ex_first<a class="anchor" aria-label="anchor" href="#arg-clean-ex-first"></a></dt>
 <dd><p>Clean exogenous signal before making the forecasts using 'TimeGPT'.</p></dd>
+
+
+<dt id="arg-hist-exog-list">hist_exog_list<a class="anchor" aria-label="anchor" href="#arg-hist-exog-list"></a></dt>
+<dd><p>A vector containing the column names of the historical exogenous features.</p></dd>
 
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>

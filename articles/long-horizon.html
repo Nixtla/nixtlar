@@ -87,9 +87,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="long-horizon-forecasting">1. Long-horizon forecasting<a class="anchor" aria-label="anchor" href="#long-horizon-forecasting"></a>
 </h2>
@@ -179,12 +177,12 @@ Error</a> (MAE) of the two models.</p>
 <span><span class="co">#&gt; The specified horizon h exceeds the model horizon. This may lead to less accurate forecasts. Please consider using a smaller horizon.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-27 00:00:00 45.21978</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-27 01:00:00 42.56768</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-27 02:00:00 41.56037</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-27 03:00:00 39.12515</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-27 04:00:00 36.47123</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-27 05:00:00 37.22324</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-27 00:00:00 45.21921</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-27 01:00:00 42.56666</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-27 02:00:00 41.55990</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-27 03:00:00 39.12502</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-27 04:00:00 36.47087</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-27 05:00:00 37.22281</span></span></code></pre></div>
 <p>We will rename the <code>TimeGPT</code> long-horizon model to merge
 it with the default <code>TimeGPT</code> model. After that, we will
 combine them with the actual values from the test set and compute the
@@ -201,15 +199,15 @@ merge the actual values, we will convert the dates to characters.</p>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">test</span>, <span class="va">res</span><span class="op">)</span> <span class="co"># merge with actual values</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y  TimeGPT TimeGPT-long-horizon</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-27 01:00:00 38.33 42.56768             38.03184</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-27 02:00:00 41.04 41.56037             35.11706</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-27 03:00:00 34.62 39.12515             34.53464</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-27 04:00:00 29.69 36.47123             34.11326</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-27 05:00:00 28.35 37.22324             38.36180</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-27 06:00:00 30.99 42.28075             47.14175</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-27 01:00:00 38.33 42.56666             38.03184</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-27 02:00:00 41.04 41.55990             35.11706</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-27 03:00:00 34.62 39.12502             34.53464</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-27 04:00:00 29.69 36.47087             34.11326</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-27 05:00:00 28.35 37.22281             38.36180</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-27 06:00:00 30.99 42.28119             47.14175</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAE TimeGPT: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">y</span><span class="op">-</span><span class="va">res</span><span class="op">$</span><span class="va">TimeGPT</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "MAE TimeGPT: 8.89937971816304"</span></span>
+<span><span class="co">#&gt; [1] "MAE TimeGPT: 8.89928802286956"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAE TimeGPT long-horizon: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">y</span><span class="op">-</span><span class="va">res</span><span class="op">$</span><span class="va">`TimeGPT-long-horizon`</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "MAE TimeGPT long-horizon: 7.09790721521739"</span></span></code></pre></div>
 <p>As we can see, the long-horizon version of <code>TimeGPT</code>

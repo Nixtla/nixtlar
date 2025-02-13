@@ -87,9 +87,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -205,9 +203,9 @@ function.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAE zero-shot model: "</span>, <span class="fu">compute_mae</span><span class="op">(</span><span class="va">test_df</span>, <span class="va">fc_zeroshot</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "MAE zero-shot model: 4.35"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAE fine-tune model: "</span>, <span class="fu">compute_mae</span><span class="op">(</span><span class="va">test_df</span>, <span class="va">fc_finetune</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "MAE fine-tune model: 4.02"</span></span>
+<span><span class="co">#&gt; [1] "MAE fine-tune model: 4.08"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MAE fine-tune model with depth: "</span>, <span class="fu">compute_mae</span><span class="op">(</span><span class="va">test_df</span>, <span class="va">fc_finetune_depth</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "MAE fine-tune model with depth: 3.85"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "MAE fine-tune model with depth: 3.88"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="final-recommendations">4. Final recommendations<a class="anchor" aria-label="anchor" href="#final-recommendations"></a>

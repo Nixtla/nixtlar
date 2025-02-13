@@ -88,9 +88,7 @@
     
 <hr>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="uncertainty-quantification-via-quantiles">1. Uncertainty quantification via quantiles<a class="anchor" aria-label="anchor" href="#uncertainty-quantification-via-quantiles"></a>
 </h2>
@@ -148,19 +146,19 @@ quantification, but not both.</p>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-q-10 TimeGPT-q-20 TimeGPT-q-30</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19067     35.50871     38.47798     40.71659</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24491     35.37627     37.77041     39.32019</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95889     35.34068     37.21913     39.44595</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79668     32.32737     34.98781     35.96059</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20456     30.99833     32.74744     34.72205</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10912     32.43550     34.24884     35.10877</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19067     35.50871     38.47807     40.71672</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24491     35.37606     37.77021     39.32019</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95889     35.34064     37.21904     39.44587</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79668     32.32713     34.98742     35.96046</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20456     30.99962     32.74742     34.72213</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10912     32.43535     34.24889     35.10847</span></span>
 <span><span class="co">#&gt;   TimeGPT-q-40 TimeGPT-q-50 TimeGPT-q-60 TimeGPT-q-70 TimeGPT-q-80 TimeGPT-q-90</span></span>
-<span><span class="co">#&gt; 1     43.92536     45.19067     46.45599     49.66475     51.90336     54.87264</span></span>
-<span><span class="co">#&gt; 2     42.58577     43.24491     43.90405     47.16964     48.71941     51.11356</span></span>
-<span><span class="co">#&gt; 3     40.85597     41.95889     43.06182     44.47183     46.69866     48.57710</span></span>
-<span><span class="co">#&gt; 4     37.46490     39.79668     42.12846     43.63277     44.60554     47.26598</span></span>
-<span><span class="co">#&gt; 5     36.01383     39.20456     42.39529     43.68706     45.66167     47.41079</span></span>
-<span><span class="co">#&gt; 6     38.76737     40.10912     41.45086     45.10946     45.96939     47.78273</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     43.92536     45.19067     46.45599     49.66462     51.90328     54.87264</span></span>
+<span><span class="co">#&gt; 2     42.58577     43.24491     43.90405     47.16964     48.71962     51.11376</span></span>
+<span><span class="co">#&gt; 3     40.85597     41.95889     43.06182     44.47191     46.69875     48.57715</span></span>
+<span><span class="co">#&gt; 4     37.46490     39.79668     42.12846     43.63290     44.60593     47.26623</span></span>
+<span><span class="co">#&gt; 5     36.01357     39.20456     42.39555     43.68699     45.66169     47.40950</span></span>
+<span><span class="co">#&gt; 6     38.76706     40.10912     41.45117     45.10976     45.96934     47.78288</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-quantiles">4. Plot quantiles<a class="anchor" aria-label="anchor" href="#plot-quantiles"></a>

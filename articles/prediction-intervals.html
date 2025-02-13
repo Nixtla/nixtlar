@@ -88,9 +88,7 @@
     
 <hr>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">#&gt;   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nixtla.github.io/nixtlar/">nixtlar</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="uncertainty-quantification-via-prediction-intervals">1. Uncertainty quantification via prediction intervals<a class="anchor" aria-label="anchor" href="#uncertainty-quantification-via-prediction-intervals"></a>
 </h2>
@@ -149,19 +147,19 @@ between 0 and 100. You can use either <code>quantiles</code> or
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT TimeGPT-lo-95 TimeGPT-lo-80</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19067      30.49690      35.50871</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24491      28.96405      35.37627</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95889      27.06674      35.34068</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79668      27.96726      32.32737</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20456      24.66173      30.99833</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10912      23.05270      32.43550</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19122      30.49719      35.50965</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24537      28.96447      35.37618</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95892      27.06669      35.34091</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79675      27.96763      32.32674</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20512      24.66191      31.00021</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10902      23.05225      32.43594</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-80 TimeGPT-hi-95</span></span>
-<span><span class="co">#&gt; 1      54.87264      59.88444</span></span>
-<span><span class="co">#&gt; 2      51.11356      57.52577</span></span>
-<span><span class="co">#&gt; 3      48.57710      56.85105</span></span>
-<span><span class="co">#&gt; 4      47.26598      51.62609</span></span>
-<span><span class="co">#&gt; 5      47.41079      53.74739</span></span>
-<span><span class="co">#&gt; 6      47.78273      57.16553</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      54.87278      59.88525</span></span>
+<span><span class="co">#&gt; 2      51.11456      57.52628</span></span>
+<span><span class="co">#&gt; 3      48.57694      56.85116</span></span>
+<span><span class="co">#&gt; 4      47.26675      51.62587</span></span>
+<span><span class="co">#&gt; 5      47.41004      53.74834</span></span>
+<span><span class="co">#&gt; 6      47.78209      57.16578</span></span></code></pre></div>
 <p>Note that the <code>level</code> argument in the
 <code><a href="../reference/nixtla_client_detect_anomalies.html">nixtlar::nixtla_client_detect_anomalies()</a></code> function only
 uses the maximum value when multiple values are provided. Therefore,
@@ -172,19 +170,19 @@ to setting <code>level = c(99)</code>, which is the default value.</p>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">anomalies</span><span class="op">)</span> <span class="co"># only the 99% confidence level is used </span></span>
 <span><span class="co">#&gt;   unique_id                  ds     y anomaly  TimeGPT TimeGPT-lo-99</span></span>
-<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58   FALSE 56.07256     -28.58787</span></span>
-<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86   FALSE 52.41305     -32.24738</span></span>
-<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31   FALSE 52.80585     -31.85458</span></span>
-<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66   FALSE 52.58125     -32.07918</span></span>
-<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98   FALSE 52.66716     -31.99328</span></span>
-<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31   FALSE 54.10136     -30.55907</span></span>
+<span><span class="co">#&gt; 1        BE 2016-10-27 00:00:00 52.58   FALSE 56.07206     -28.58840</span></span>
+<span><span class="co">#&gt; 2        BE 2016-10-27 01:00:00 44.86   FALSE 52.41392     -32.24654</span></span>
+<span><span class="co">#&gt; 3        BE 2016-10-27 02:00:00 42.31   FALSE 52.80694     -31.85352</span></span>
+<span><span class="co">#&gt; 4        BE 2016-10-27 03:00:00 39.66   FALSE 52.58330     -32.07716</span></span>
+<span><span class="co">#&gt; 5        BE 2016-10-27 04:00:00 38.98   FALSE 52.66963     -31.99083</span></span>
+<span><span class="co">#&gt; 6        BE 2016-10-27 05:00:00 42.31   FALSE 54.10218     -30.55829</span></span>
 <span><span class="co">#&gt;   TimeGPT-hi-99</span></span>
-<span><span class="co">#&gt; 1      140.7330</span></span>
-<span><span class="co">#&gt; 2      137.0735</span></span>
-<span><span class="co">#&gt; 3      137.4663</span></span>
-<span><span class="co">#&gt; 4      137.2417</span></span>
-<span><span class="co">#&gt; 5      137.3276</span></span>
-<span><span class="co">#&gt; 6      138.7618</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      140.7325</span></span>
+<span><span class="co">#&gt; 2      137.0744</span></span>
+<span><span class="co">#&gt; 3      137.4674</span></span>
+<span><span class="co">#&gt; 4      137.2438</span></span>
+<span><span class="co">#&gt; 5      137.3301</span></span>
+<span><span class="co">#&gt; 6      138.7626</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-prediction-intervals">4. Plot prediction intervals<a class="anchor" aria-label="anchor" href="#plot-prediction-intervals"></a>
