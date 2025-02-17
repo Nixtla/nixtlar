@@ -179,17 +179,21 @@ and the future exogenous variables in <code>X_df</code>.</p>
 <span><span class="co">#&gt; 5     0     1     0</span></span>
 <span><span class="co">#&gt; 6     0     1     0</span></span>
 <span></span>
-<span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, h <span class="op">=</span> <span class="fl">24</span>, X_df <span class="op">=</span> <span class="va">future_exo_vars</span><span class="op">)</span></span>
+<span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span></span>
+<span>  <span class="va">df_exo_vars</span>, </span>
+<span>  h <span class="op">=</span> <span class="fl">24</span>, </span>
+<span>  X_df <span class="op">=</span> <span class="va">future_exo_vars</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
 <span><span class="co">#&gt; Using future exogenous features: [Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst_exo_vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 74.54068</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.34399</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42881</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09382</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38807</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08492</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 74.54077</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.34429</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 44.42921</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 38.09440</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 37.38914</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 39.08574</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="b--forecasting-electricity-prices-using-only-historic-exogenous-variables">3b. Forecasting electricity prices using only historic exogenous
@@ -197,19 +201,28 @@ variables<a class="anchor" aria-label="anchor" href="#b--forecasting-electricity
 </h2>
 <p>If future values of the exogenous variables are not available, you
 can still generate forecasts using only their historical values. In this
-case, simply include them in <code>df</code>.</p>
+case, simply include them in <code>df</code> and declare them in
+<code>hist_exog_list</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, h <span class="op">=</span> <span class="fl">24</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span></span>
+<span>  <span class="va">df_exo_vars</span>,</span>
+<span>  h <span class="op">=</span> <span class="fl">24</span>, </span>
+<span>  hist_exog_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Exogenous1"</span>, <span class="st">"Exogenous2"</span>, <span class="st">"day_0"</span>, <span class="st">"day_1"</span>, <span class="st">"day_2"</span>, <span class="st">"day_3"</span>, <span class="st">"day_4"</span>, <span class="st">"day_5"</span>, <span class="st">"day_6"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
-<span><span class="co">#&gt; Input contains the following exogenous features: [Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6] but X_df was not provided and they were not declared in hist_exog_list. They will be ignored.</span></span>
+<span><span class="co">#&gt; Using historical exogenous features: [Exogenous1, Exogenous2, day_0, day_1, day_2, day_3, day_4, day_5, day_6]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst_exo_vars</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
-<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.19122</span></span>
-<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 43.24537</span></span>
-<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 41.95892</span></span>
-<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 39.79675</span></span>
-<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 39.20512</span></span>
-<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 40.10902</span></span></code></pre></div>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 45.76938</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 47.99101</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 49.49613</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 49.51081</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 48.51056</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 50.20716</span></span></code></pre></div>
+<p>Note that if you don’t declare the exogenous variables in
+<code>hist_exog_list</code>, they will be ignored. If we hadn’t declared
+them above, the output would be the same as the TimeGPT forecast using
+only the target variable <code>y</code>.</p>
 <p><strong>Important:</strong> If you include historical exogenous
 variables without explicitly defining their future values, you are
 implicitly assuming that their historical patterns will continue into
@@ -236,10 +249,24 @@ available. For example, if future values of <code>Exogenous1</code> and
 <code class="sourceCode R"><span><span class="va">future_exo_vars</span> <span class="op">&lt;-</span> <span class="va">future_exo_vars</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Exogenous1"</span>, <span class="st">"Exogenous2"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span><span class="va">df_exo_vars</span>, h <span class="op">=</span> <span class="fl">24</span>, hist_exog_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Exogenous1"</span>, <span class="st">"Exogenous2"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fcst_exo_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nixtla_client_forecast.html">nixtla_client_forecast</a></span><span class="op">(</span></span>
+<span>  <span class="va">df_exo_vars</span>, </span>
+<span>  h <span class="op">=</span> <span class="fl">24</span>, </span>
+<span>  X_df <span class="op">=</span> <span class="va">future_exo_vars</span>, </span>
+<span>  hist_exog_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Exogenous1"</span>, <span class="st">"Exogenous2"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Frequency chosen: h</span></span>
-<span><span class="co">#&gt; Input contains the following exogenous features: [day_0, day_1, day_2, day_3, day_4, day_5, day_6] but X_df was not provided and they were not declared in hist_exog_list. They will be ignored.</span></span>
-<span><span class="co">#&gt; Using historical exogenous features: [Exogenous1, Exogenous2]</span></span></code></pre></div>
+<span><span class="co">#&gt; The following features were declared as historic but found in X_df:: [Exogenous1, Exogenous2]. They will be considered historic.</span></span>
+<span><span class="co">#&gt; Using future exogenous features: [day_0, day_1, day_2, day_3, day_4, day_5, day_6]</span></span>
+<span><span class="co">#&gt; Using historical exogenous features: [Exogenous1, Exogenous2]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcst_exo_vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   unique_id                  ds  TimeGPT</span></span>
+<span><span class="co">#&gt; 1        BE 2016-12-31 00:00:00 47.05948</span></span>
+<span><span class="co">#&gt; 2        BE 2016-12-31 01:00:00 49.28110</span></span>
+<span><span class="co">#&gt; 3        BE 2016-12-31 02:00:00 50.78623</span></span>
+<span><span class="co">#&gt; 4        BE 2016-12-31 03:00:00 50.80090</span></span>
+<span><span class="co">#&gt; 5        BE 2016-12-31 04:00:00 49.80066</span></span>
+<span><span class="co">#&gt; 6        BE 2016-12-31 05:00:00 51.49725</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="plot-timegpt-forecast">4. Plot TimeGPT forecast<a class="anchor" aria-label="anchor" href="#plot-timegpt-forecast"></a>
