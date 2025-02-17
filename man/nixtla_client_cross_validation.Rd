@@ -2,8 +2,7 @@
 % Please edit documentation in R/nixtla_client_cross_validation.R
 \name{nixtla_client_cross_validation}
 \alias{nixtla_client_cross_validation}
-\title{Sequential version of 'nixtla_client_cross_validation'
-This is a private function of 'nixtlar'}
+\title{\code{TimeGPT} cross-validation}
 \usage{
 nixtla_client_cross_validation(
   df,
@@ -61,8 +60,7 @@ nixtla_client_cross_validation(
 A data frame with 'TimeGPT''s cross validation result.
 }
 \description{
-Sequential version of 'nixtla_client_cross_validation'
-This is a private function of 'nixtlar'
+\code{TimeGPT} cross-validation
 }
 \examples{
 \dontrun{

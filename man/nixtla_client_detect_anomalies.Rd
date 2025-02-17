@@ -2,8 +2,7 @@
 % Please edit documentation in R/nixtla_client_detect_anomalies.R
 \name{nixtla_client_detect_anomalies}
 \alias{nixtla_client_detect_anomalies}
-\title{Sequential version of 'nixtla_client_detect_anomalies'
-This is a private function of 'nixtlar'}
+\title{\code{TimeGPT} detect anomalies}
 \usage{
 nixtla_client_detect_anomalies(
   df,
@@ -37,8 +36,7 @@ nixtla_client_detect_anomalies(
 A data frame with the anomalies detected in the historical period.
 }
 \description{
-Sequential version of 'nixtla_client_detect_anomalies'
-This is a private function of 'nixtlar'
+\code{TimeGPT} detect anomalies
 }
 \examples{
 \dontrun{

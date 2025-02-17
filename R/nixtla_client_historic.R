@@ -1,5 +1,4 @@
-#' Sequential version of 'nixtla_client_historic'
-#' This is a private function of 'nixtlar'
+#' `TimeGPT` historic forecast
 #'
 #' @param df A tsibble or a data frame with time series data.
 #' @param freq Frequency of the data.

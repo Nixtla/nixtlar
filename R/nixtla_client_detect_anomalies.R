@@ -1,5 +1,4 @@
-#' Sequential version of 'nixtla_client_detect_anomalies'
-#' This is a private function of 'nixtlar'
+#' `TimeGPT` detect anomalies
 #'
 #' @param df A data frame with time series data.
 #' @param freq Frequency of the data.
@@ -132,7 +131,7 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col="unique_id", ti
     dplyr::group_by(.data$unique_id) |>
     dplyr::group_split()
 
-  df_tail <- purrr::map2_dfr(grouped_df_list, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
+  df_tail <- purrr::map2_dfr(grouped_df_list, df_info$fitted_sizes, ~slice_tail(.x, n = .y))
 
   nch <- nchar(df_tail$ds[1])
   if(nch <= 10){

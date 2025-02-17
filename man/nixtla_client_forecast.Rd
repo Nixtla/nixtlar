@@ -2,8 +2,7 @@
 % Please edit documentation in R/nixtla_client_forecast.R
 \name{nixtla_client_forecast}
 \alias{nixtla_client_forecast}
-\title{Sequential version of 'nixtla_client_forecast'
-This is a private function of 'nixtlar'}
+\title{\code{TimeGPT} forecast}
 \usage{
 nixtla_client_forecast(
   df,
@@ -61,8 +60,7 @@ nixtla_client_forecast(
 'TimeGPT''s forecast.
 }
 \description{
-Sequential version of 'nixtla_client_forecast'
-This is a private function of 'nixtlar'
+\code{TimeGPT} forecast
 }
 \examples{
 \dontrun{
