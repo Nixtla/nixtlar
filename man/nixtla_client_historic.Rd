@@ -2,8 +2,7 @@
 % Please edit documentation in R/nixtla_client_historic.R
 \name{nixtla_client_historic}
 \alias{nixtla_client_historic}
-\title{Sequential version of 'nixtla_client_historic'
-This is a private function of 'nixtlar'}
+\title{\code{TimeGPT} historic forecast}
 \usage{
 nixtla_client_historic(
   df,
@@ -49,8 +48,7 @@ nixtla_client_historic(
 'TimeGPT''s forecast for the in-sample period.
 }
 \description{
-Sequential version of 'nixtla_client_historic'
-This is a private function of 'nixtlar'
+\code{TimeGPT} historic forecast
 }
 \examples{
 \dontrun{

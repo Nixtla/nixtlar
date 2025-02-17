@@ -1,5 +1,4 @@
-#' Sequential version of 'nixtla_client_forecast'
-#' This is a private function of 'nixtlar'
+#' `TimeGPT` forecast
 #'
 #' @param df A data frame with time series data.
 #' @param h Forecast horizon.
@@ -293,7 +292,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
   }
 
   dates_long_df <- dates_long_df |>
-      dplyr::arrange(.data$unique_id)
+    dplyr::arrange(.data$unique_id)
 
   forecast <- cbind(dates_long_df, fc)
 
@@ -323,7 +322,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
       finetune_depth=finetune_depth,
       finetune_loss=finetune_loss,
       clean_ex_first=clean_ex_first
-      )
+    )
 
     forecast <- dplyr::bind_rows(fitted, forecast)
   }

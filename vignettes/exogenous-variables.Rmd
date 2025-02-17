@@ -63,18 +63,28 @@ If both historic and future values of all exogenous variables are available, inc
 future_exo_vars <- nixtlar::electricity_future_exo_vars
 head(future_exo_vars)
 
-fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, X_df = future_exo_vars)
+fcst_exo_vars <- nixtla_client_forecast(
+  df_exo_vars, 
+  h = 24, 
+  X_df = future_exo_vars
+)
 head(fcst_exo_vars)
 ```
 
 ## 3b. Forecasting electricity prices using only historic exogenous variables
 
-If future values of the exogenous variables are not available, you can still generate forecasts using only their historical values. In this case, simply include them in `df`. 
+If future values of the exogenous variables are not available, you can still generate forecasts using only their historical values. In this case, simply include them in `df` and declare them in `hist_exog_list`. 
 
 ```{r}
-fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24)
+fcst_exo_vars <- nixtla_client_forecast(
+  df_exo_vars,
+  h = 24, 
+  hist_exog_list = c("Exogenous1", "Exogenous2", "day_0", "day_1", "day_2", "day_3", "day_4", "day_5", "day_6")
+)
 head(fcst_exo_vars)
 ```
+
+Note that if you don't declare the exogenous variables in `hist_exog_list`, they will be ignored. If we hadn't declared them above, the output would be the same as the TimeGPT forecast using only the target variable `y`.
 
 **Important:** If you include historical exogenous variables without explicitly defining their future values, you are implicitly assuming that their historical patterns will continue into the future. Whenever possible, it is recommended to use future exogenous variables to make these assumptions explicit.  
 
@@ -90,7 +100,13 @@ In some cases, only a subset of future exogenous variables is available. For exa
 future_exo_vars <- future_exo_vars |> 
   dplyr::select(-dplyr::all_of(c("Exogenous1", "Exogenous2")))
 
-fcst_exo_vars <- nixtla_client_forecast(df_exo_vars, h = 24, hist_exog_list = c("Exogenous1", "Exogenous2"))
+fcst_exo_vars <- nixtla_client_forecast(
+  df_exo_vars, 
+  h = 24, 
+  X_df = future_exo_vars, 
+  hist_exog_list = c("Exogenous1", "Exogenous2")
+)
+head(fcst_exo_vars)
 ```
 
 ## 4. Plot TimeGPT forecast

@@ -1,5 +1,4 @@
-#' Sequential version of 'nixtla_client_cross_validation'
-#' This is a private function of 'nixtlar'
+#' `TimeGPT` cross-validation
 #'
 #' @param df A data frame with time series data.
 #' @param h Forecast horizon.
