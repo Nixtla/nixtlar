@@ -77,7 +77,15 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     freq = freq,
     clean_ex_first = clean_ex_first,
     finetune_steps = finetune_steps,
-    finetune_loss = finetune_loss
+    finetune_loss = finetune_loss,
+    # full_history introduced in https://github.com/Nixtla/nixtla/pull/824
+    # When full_history = TRUE, the server derives the horizon and number of
+    # windows, so h, step_size, and n_windows are required by the endpoint but
+    # sent as placeholders and ignored. See https://github.com/Nixtla/nixtla/pull/712
+    h = 1,
+    step_size = 1,
+    n_windows = 1,
+    full_history = TRUE
   )
 
   # Add level or quantiles ----
@@ -113,7 +121,8 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
 
   # Make request ----
   setup <- .get_client_steup()
-  req <- httr2::request(paste0(setup$base_url, "v2/historic_forecast")) |>
+  # Related update on deprecation of v2/historic_forecast: https://github.com/Nixtla/nixtla/pull/712
+  req <- httr2::request(paste0(setup$base_url, "v2/cross_validation")) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
