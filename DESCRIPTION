@@ -1,6 +1,6 @@
 Package: nixtlar
 Title: A Software Development Kit for 'Nixtla''s 'TimeGPT'
-Version: 0.6.4
+Version: 0.6.5
 Authors@R: c(
     person("Mariana", "Menchero", email = "mariana@nixtla.io", role = c("aut", "cre"), comment = "First author and maintainer"),
     person("Nixtla", role = "cph", comment = "Copyright held by 'Nixtla'")
@@ -20,8 +20,6 @@ Depends:
 LazyData: true
 Imports: 
     dplyr,
-    future,
-    future.apply,
     ggplot2,
     httr2,
     lubridate,

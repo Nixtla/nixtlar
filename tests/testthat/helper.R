@@ -1,8 +1,8 @@
 
 skip_if_no_token <- function() {
   tryCatch({
-    nixtlar::.get_token()
+    nixtlar::.get_client_steup()
   }, error = function(e) {
-    testthat::skip("TIMEGPT_TOKEN is not set")
+    testthat::skip("NIXTLA_API_KEY is not set")
   })
 }

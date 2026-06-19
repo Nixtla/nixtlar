@@ -13,14 +13,12 @@ nixtla_validate_api_key <- function(){
 
   setup <- .get_client_steup()
 
-  req <- httr2::request(paste0(setup$base_url, "validate_token")) |>
+  req <- httr2::request(paste0(setup$base_url, "validate_api_key")) |>
     httr2::req_headers(
       "accept" = "application/json",
-      "content-type" = "application/json",
       "authorization" = paste("Bearer", setup$api_key)
     ) |>
-    httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = NULL)
+    httr2::req_user_agent("nixtlar")
 
 
   resp <- tryCatch({

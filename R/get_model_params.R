@@ -15,20 +15,14 @@
 #'
 .get_model_params <- function(model, freq){
 
-  payload_params <- list(
-    model = model,
-    freq = freq
-  )
-
   setup <- .get_client_steup()
   req <- httr2::request(paste0(setup$base_url, "model_params")) |>
+    httr2::req_url_query(model = model, freq = freq) |>
     httr2::req_headers(
       "accept" = "application/json",
-      "content-type" = "application/json",
       "authorization" = paste("Bearer", setup$api_key)
     ) |>
     httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = payload_params) |>
     httr2::req_retry(
       max_tries = 6,
       is_transient = .transient_errors
