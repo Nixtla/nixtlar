@@ -18,6 +18,7 @@ tests = [
     "forecast_intervals",
     "forecast_quantiles",
     "forecast_finetune",
+    "forecast_add_history",
     "historic",
     "cross_validation",
     "anomaly_detection",
@@ -45,10 +46,7 @@ def compare_test(name):
     p = load(name, "py")
 
     keys = [c for c in key_candidates if c in r.columns and c in p.columns]
-    # ToDo (MM): The historic in-sample length differs between the libraries, 
-    # so for now we will use an inner join. 
-    how = "inner" if name == "historic" else "outer"
-    merged = r.merge(p, on=keys, suffixes=("_r", "_py"), how=how)
+    merged = r.merge(p, on=keys, suffixes=("_r", "_py"), how="outer")
     nrows = len(merged)
 
     compare_cols = [

@@ -38,26 +38,30 @@ write_output(
     "forecast_finetune",
 )
 
-# 5. historic (in-sample) forecast: add_history, then keep only in-sample rows.
+# 5. forecast with add_history=True
+write_output(nixtla_client.forecast(df, h=h, add_history=True), "forecast_add_history")
+
+# 6. historic forecast
+# nixtla returns the in-sample values and the h future values, so we need to keep only the in-sample rows.
 hist = nixtla_client.forecast(df, h=h, add_history=True)
 last_ds = df.groupby("unique_id")["ds"].max().rename("last_ds")
 hist = hist.merge(last_ds, on="unique_id")
 hist = hist[hist["ds"] <= hist["last_ds"]].drop(columns="last_ds")
 write_output(hist, "historic")
 
-# 6. cross-validation
+# 7. cross-validation
 write_output(nixtla_client.cross_validation(df, h=h), "cross_validation")
 
-# 7. anomaly detection
+# 8. anomaly detection
 write_output(nixtla_client.detect_anomalies(df), "anomaly_detection")
 
-# 8. forecast with historic exogenous variables
+# 9. forecast with historic exogenous variables
 write_output(
     nixtla_client.forecast(df_exo, h=h, hist_exog_list=hist_exog_list),
     "forecast_hist_exog",
 )
 
-# 9. forecast with future exogenous variables
+# 10. forecast with future exogenous variables
 write_output(nixtla_client.forecast(df_exo, h=h, X_df=df_future_exo), "forecast_future_exog")
 
 print("Python parity tests complete. Outputs in parity-tests/output/")

@@ -42,22 +42,27 @@ write_output(
   "forecast_finetune"
 )
 
-# 5. historic (in-sample) forecast
+# 5. forecast with add_history=True
+write_output(nixtla_client_forecast(df, h = h, add_history = TRUE), "forecast_add_history")
+
+# 6. historic forecast (only returns in-sample values)
+# There is no real equivalent method to this in nixtla, as the forecast method with 
+# add_history=True returns the in-sample values and the h future values.
 write_output(nixtla_client_historic(df, id_col = "unique_id"), "historic")
 
-# 6. cross-validation
+# 7. cross-validation
 write_output(nixtla_client_cross_validation(df, h = h), "cross_validation")
 
-# 7. anomaly detection
+# 8. anomaly detection
 write_output(nixtla_client_detect_anomalies(df), "anomaly_detection")
 
-# 8. forecast with historic exogenous variables
+# 9. forecast with historic exogenous variables
 write_output(
   nixtla_client_forecast(df_exo, h = h, hist_exog_list = hist_exog_list),
   "forecast_hist_exog"
 )
 
-# 9. forecast with future exogenous variables
+# 10. forecast with future exogenous variables
 write_output(
   nixtla_client_forecast(df_exo, h = h, X_df = df_future_exo),
   "forecast_future_exog"
