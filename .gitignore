@@ -6,5 +6,6 @@
 .quarto
 docs
 inst/doc
-.cursor/ 
+.cursor/
 .env
+parity-tests/output/
