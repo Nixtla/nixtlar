@@ -16,7 +16,8 @@ nixtla_validate_api_key <- function(){
   req <- httr2::request(paste0(setup$base_url, "validate_api_key")) |>
     httr2::req_headers(
       "accept" = "application/json",
-      "authorization" = paste("Bearer", setup$api_key)
+      "authorization" = paste("Bearer", setup$api_key),
+      "nixtla-client-version" = .get_client_version()
     ) |>
     httr2::req_user_agent("nixtlar")
 
