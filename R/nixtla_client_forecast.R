@@ -171,7 +171,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
 
         message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
         names(future_exogenous) <- NULL
-        payload$series$X_future <- future_exogenous
+        payload$series$X_future <- lapply(future_exogenous, as.list) 
       }else{
         # hist_exog_list is non-empty
         not_hist_exog_list <- setdiff(names(df), c("unique_id", "ds", "y", hist_exog_list))
@@ -192,7 +192,7 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
 
         message(paste0("Using future exogenous features: [", paste(names(future_exogenous), collapse=", "), "]"))
         names(future_exogenous) <- NULL
-        payload$series$X_future <- future_exogenous
+        payload$series$X_future <- lapply(future_exogenous, as.list)
 
         message(paste0("Using historical exogenous features: [", paste(hist_exog_list, collapse=", "), "]"))
       }
@@ -268,16 +268,11 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
 
   # Add unique ids and dates to forecast ----
   if(inherits(df_info$last_ds, "character")){
-    if(length(df_info$last_ds) > 1){
-      dt <- sample(df_info$last_ds, 2)
-    }else{
-      dt <- df_info$last_ds[1]
-    }
-    nch <- max(nchar(as.character(dt)))
+    nch <- max(nchar(df_info$last_ds))
     if(nch <= 10){
       df_info$dates <- lubridate::ymd(df_info$last_ds)
     }else{
-      df_info$dates <- lubridate::ymd_hms(df_info$last_ds)
+      df_info$dates <- lubridate::ymd_hms(df_info$last_ds, truncated = 3)
     }
   }else{
     # assumes df_info$last_ds is already a date-object
