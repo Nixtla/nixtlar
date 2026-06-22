@@ -1,0 +1,114 @@
+# Special Topics
+
+``` r
+
+library(nixtlar)
+```
+
+## Special topics
+
+This vignette explains some special topics regarding the use of
+`TimeGPT` via `nixtlar`.
+
+## 1. Handling missing values
+
+Before using `TimeGPT`, you need to ensure that:
+
+1.  The target column contains no missing values (`NA`).  
+2.  Given the frequency of the data, the dates are continuous, with no
+    missing dates between the start and the end dates.
+
+Regarding the second point, it is worth mentioning that it is possible
+to have multiple time series that start and end on different dates, but
+each series must contain uninterrupted data for its given time frame.
+
+There are several ways to check for missing values in R. One method is
+with the `any` and `is.na` functions from base R.
+
+``` r
+
+df <- nixtlar::electricity # load data 
+
+# create some missing values at random 
+index <- sample(nrow(df), 10)
+df$y[index] <- NA
+
+# check for missing values 
+any(is.na(df)) # will return TRUE if there are missing values 
+#> [1] TRUE
+```
+
+If you find missing values in your data, you need to decide how to fill
+them, which is very context-dependent. For example, if you are dealing
+with daily retail data, a missing value most likely indicates that there
+were no sales on that day, and you can probably fill it with zero.
+However, if you are working with hourly temperature data, a missing
+value likely means that the thermometer was not functioning correctly,
+and you might prefer to use interpolation to fill the missing values.
+Whatever you decide to do, always keep in mind the nature of your data.
+
+Checking if there are missing dates is more complicated since it depends
+on the frequency of the data. Sometimes plotting can help spot large
+gaps. `nixtlar` has a plotting function called `nixtla_client_plot` that
+can be used for this.
+
+However, this method is ineffective when the missing dates are not
+continuous. One possible solution is to compare the dates for every
+unique id with a vector of dates generated using the start date, the end
+date, and the frequency of your data. This requires knowing such
+information, which can become tricky when working with hundreds or
+thousands of time series.
+
+## 2. Specifying the frequency of your data
+
+The frequency parameter is crucial when working with time series data
+because it informs the model about the expected intervals between data
+points. The core functions of `nixtlar` that interface with `TimeGPT`,
+such as `nixtla_client_forecast`, `nixtla_client_historic`,
+`nixtla_client_detect_anomalies`, and `nixtla_client_cross_validation`,
+include a frequency parameter called `freq`, which has a default value
+of `NULL`. If you know the frequency of your data, please specify it. If
+you don’t, `nixtlar` will try to deduce it from the data using the
+[`nixtlar::infer_frequency`](https://nixtla.github.io/nixtlar/reference/infer_frequency.md)
+function.
+
+The `freq` parameter supports the following aliases:
+
+| Frequency                 | Alias        |
+|---------------------------|--------------|
+| Yearly                    | Y            |
+| Quarterly                 | Q, QS, or QE |
+| Monthly                   | M, MS, or MS |
+| Weekly (starting Sundays) | W            |
+| Daily                     | d            |
+| Hourly                    | h            |
+| Minute-level              | min          |
+| Second-level              | s            |
+| Business day              | B            |
+
+In this table, QS and MS stand for quarter and month start, while QE and
+ME stand for quarter and month end. For quarter-end, the following dates
+are used.
+
+| End of Quarter Dates |
+|----------------------|
+| YYYY-03-31           |
+| YYYY-06-30           |
+| YYYY-09-30           |
+| YYYY-12-31           |
+
+For month-end, the last day of each month is used.
+
+Hourly and sub-hourly frequencies can be preceded by an integer, such as
+“6h”, “10min” or “30s”. **Only the aliases “min” and “s” are allowed for
+minute and second-level frequencies**.
+
+``` r
+
+
+df <- nixtlar::electricity
+
+# infer the frequency when `freq` is not specified 
+fcst <- nixtlar::nixtla_client_forecast(df, h = 8, level = c(80,95)) # freq = "h"
+#> Frequency chosen: h
+```
