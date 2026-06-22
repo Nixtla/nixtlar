@@ -9,3 +9,4 @@ inst/doc
 .cursor/
 .env
 parity-tests/output/
+developer-notes.md

@@ -14,7 +14,6 @@ Description: A Software Development Kit for working with 'Nixtla''s 'TimeGPT', a
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Depends: 
     R (>= 2.10)
 LazyData: true
@@ -37,3 +36,4 @@ Config/testthat/edition: 3
 URL: https://nixtla.github.io/nixtlar/, https://docs.nixtla.io/, https://github.com/Nixtla/nixtlar
 VignetteBuilder: knitr
 BugReports: https://github.com/Nixtla/nixtlar/issues
+Config/roxygen2/version: 8.0.0

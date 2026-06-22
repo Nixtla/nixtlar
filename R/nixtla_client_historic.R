@@ -24,7 +24,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_historic <- function(df, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
@@ -173,7 +173,7 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     dplyr::group_by(.data$unique_id) |>
     dplyr::group_split()
 
-  dates <- purrr::map2_dfr(ddf, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
+  dates <- purrr::map2_dfr(ddf, df_info$fitted_sizes, ~slice_tail(.x, n = .y))
 
   dates <- dates |>
     dplyr::select(dplyr::all_of(c("unique_id", "ds")))

@@ -48,7 +48,7 @@ write_output(nixtla_client_forecast(df, h = h, add_history = TRUE), "forecast_ad
 # 6. historic forecast (only returns in-sample values)
 # There is no real equivalent method to this in nixtla, as the forecast method with 
 # add_history=True returns the in-sample values and the h future values.
-write_output(nixtla_client_historic(df, id_col = "unique_id"), "historic")
+write_output(nixtla_client_historic(df), "historic")
 
 # 7. cross-validation
 write_output(nixtla_client_cross_validation(df, h = h), "cross_validation")
