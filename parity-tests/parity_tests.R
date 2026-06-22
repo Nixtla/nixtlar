@@ -4,7 +4,7 @@
 library(nixtlar)
 readRenviron("../.env") # load the API key from .env into the session.
 
-h <- 24
+h <- 24 # forecast horizon
 
 df_url <- "https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short.csv"
 df_exo_url <- "https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/electricity-short-with-ex-vars.csv"

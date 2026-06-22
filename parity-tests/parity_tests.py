@@ -1,9 +1,13 @@
 """Parity tests for nixtla (Python) vs nixtlar (R). Run from the parity-tests folder."""
 
 import os
+from pathlib import Path
 
 import pandas as pd
+from dotenv import load_dotenv
 from nixtla import NixtlaClient
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 h = 24
 

@@ -84,14 +84,14 @@ def compare_test(name):
 
 def main():
     records = []
-    print(f"{'test':<22}{'col':<16}{'status':<8}{'max_abs_diff':<16}{'max_rel_diff':<16}rows")
-    print("-" * 90)
+    print(f"{'test':<22}{'col':<16}{'status':<8}{'max_abs_diff':<16}{'max_rel_diff':<24}rows")
+    print("-" * 98)
 
     all_pass = True
     for name in tests:
         result = compare_test(name)
         for test, status, nrows, col, max_abs, max_rel in result["rows"]:
-            print(f"{test:<22}{col:<16}{status:<8}{max_abs:<16}{max_rel:<16}{nrows}")
+            print(f"{test:<22}{col:<16}{status:<8}{max_abs:<16}{max_rel:<24}{nrows}")
             records.append(
                 {
                     "test": test,
@@ -108,7 +108,7 @@ def main():
     summary = pd.DataFrame.from_records(records)
     summary.to_csv("output/comparison_summary.csv", index=False)
 
-    print("-" * 90)
+    print("-" * 98)
     print(f"Overall: {'ALL TESTS PASS' if all_pass else 'SOME TESTS FAILED'} "
           f"(rtol={rtol}, atol={atol})")
     print("Summary written to output/comparison_summary.csv")
