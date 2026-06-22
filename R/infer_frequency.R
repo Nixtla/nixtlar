@@ -70,7 +70,9 @@ infer_frequency <- function(df, freq){
   }else{
     # assumes dates in format YYYY-MM-DD hh:mm:ss
     if(inherits(df$ds, "character")){
-      dates <- lubridate::ymd_hms(sort(unique(df$ds)))
+      # truncated = 3 lets midnight timestamps that render as 
+      # ("YYYY-MM-DD") still parse, avoiding the vanishing dates issue.
+      dates <- lubridate::ymd_hms(sort(unique(df$ds)), truncated = 3)
     }else{
       dates <- sort(unique(df$ds))
     }

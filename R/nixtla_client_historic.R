@@ -182,7 +182,9 @@ nixtla_client_historic <- function(df, freq=NULL, id_col="unique_id", time_col="
   if(nch <= 10){
     dates$ds <- lubridate::ymd(dates$ds)
   }else{
-    dates$ds <- lubridate::ymd_hms(dates$ds)
+    # truncated = 3 lets midnight timestamps that render as date-only
+    # ("YYYY-MM-DD") still parse, avoiding NA timestamps in the output.
+    dates$ds <- lubridate::ymd_hms(dates$ds, truncated = 3)
   }
 
   forecast <- cbind(dates, fc)
