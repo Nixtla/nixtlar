@@ -77,7 +77,9 @@ nixtla_client_plot <- function(df, fcst=NULL, h=NULL, id_col="unique_id", time_c
     if(nch <= 10){
       df$ds <- lubridate::ymd(df$ds)
     }else{
-      df$ds <- lubridate::ymd_hms(df$ds)
+      # truncated = 3 lets midnight timestamps that render as date-only
+      # ("YYYY-MM-DD") still parse, avoiding NA timestamps in the output.
+      df$ds <- lubridate::ymd_hms(df$ds, truncated = 3)
     }
   }
 

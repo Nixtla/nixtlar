@@ -135,11 +135,11 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col="unique_id", ti
 
   df_tail <- purrr::map2_dfr(grouped_df_list, df_info$fitted_sizes, ~slice_tail(.x, n = .y))
 
-  nch <- nchar(df_tail$ds[1])
+  nch <- max(nchar(df_tail$ds))
   if(nch <= 10){
     df_tail$ds <- lubridate::ymd(df_tail$ds)
   }else{
-    df_tail$ds <- lubridate::ymd_hms(df_tail$ds)
+    df_tail$ds <- lubridate::ymd_hms(df_tail$ds, truncated = 3)
   }
 
   forecast <- cbind(df_tail, fc)

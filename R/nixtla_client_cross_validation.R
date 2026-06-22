@@ -239,7 +239,6 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id
   idxs <- unlist(resp$idxs)+1 # R indices start at 0
 
   dates <- df$ds[idxs]
-  dates <- as.POSIXct(dates)
 
   yvals <- df$y[idxs]
 
@@ -247,7 +246,19 @@ nixtla_client_cross_validation <- function(df, h=8, freq=NULL, id_col="unique_id
   cutoff_idxs <- rep(idxs[window_starts + 1] - 1, each = h)
   cutoff_dates <- df$ds[unique(cutoff_idxs)]
   cutoff <- do.call(c, sapply(cutoff_dates, function(i) rep(i, times = h), simplify = FALSE))
-  cutoff <- as.POSIXct(cutoff)
+
+  if(inherits(df$ds, "character")){
+    if(max(nchar(df$ds)) <= 10){
+      dates <- lubridate::ymd(dates)
+      cutoff <- lubridate::ymd(cutoff)
+    }else{
+      dates <- lubridate::ymd_hms(dates, truncated = 3)
+      cutoff <- lubridate::ymd_hms(cutoff, truncated = 3)
+    }
+  }else{
+    dates <- as.POSIXct(dates)
+    cutoff <- as.POSIXct(cutoff)
+  }
 
   dt <- data.frame(
     unique_id = ids,

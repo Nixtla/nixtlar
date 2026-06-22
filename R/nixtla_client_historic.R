@@ -179,12 +179,10 @@ nixtla_client_historic <- function(df, freq=NULL, id_col="unique_id", time_col="
   dates <- dates |>
     dplyr::select(dplyr::all_of(c("unique_id", "ds")))
 
-  nch <- nchar(dates$ds[1])
+  nch <- max(nchar(dates$ds))
   if(nch <= 10){
     dates$ds <- lubridate::ymd(dates$ds)
   }else{
-    # truncated = 3 lets midnight timestamps that render as date-only
-    # ("YYYY-MM-DD") still parse, avoiding NA timestamps in the output.
     dates$ds <- lubridate::ymd_hms(dates$ds, truncated = 3)
   }
 
