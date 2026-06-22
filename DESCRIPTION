@@ -25,7 +25,8 @@ Imports:
     purrr,
     rlang,
     tidyr,
-    tidyselect
+    tidyselect,
+    utils
 Suggests: 
     httptest2,
     knitr,

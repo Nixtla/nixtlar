@@ -20,7 +20,8 @@
     httr2::req_url_query(model = model, freq = freq) |>
     httr2::req_headers(
       "accept" = "application/json",
-      "authorization" = paste("Bearer", setup$api_key)
+      "authorization" = paste("Bearer", setup$api_key),
+      "nixtla-client-version" = .get_client_version()
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_retry(

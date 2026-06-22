@@ -2,6 +2,7 @@
 
 export(.generate_output_dates)
 export(.get_client_steup)
+export(.get_client_version)
 export(.get_model_params)
 export(.level_from_quantiles)
 export(.r_frequency)

@@ -99,7 +99,8 @@ nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col="unique_id", ti
       "accept" = "application/json",
       "content-type" = "application/json",
       "authorization" = paste("Bearer", setup$api_key),
-      "nixtla-model" = model
+      "nixtla-model" = model,
+      "nixtla-client-version" = .get_client_version()
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = payload) |>
