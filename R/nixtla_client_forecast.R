@@ -318,7 +318,8 @@ nixtla_client_forecast <- function(df, h=8, freq=NULL, id_col="unique_id", time_
       finetune_steps=finetune_steps,
       finetune_depth=finetune_depth,
       finetune_loss=finetune_loss,
-      clean_ex_first=clean_ex_first
+      clean_ex_first=clean_ex_first,
+      model=model
     )
 
     forecast <- dplyr::bind_rows(fitted, forecast)

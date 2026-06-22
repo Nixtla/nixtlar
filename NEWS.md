@@ -1,5 +1,5 @@
 
-# nixtlar 0.6.5  
+# nixtlar {PLACEHOLDER}  
 
 - Updated `.get_model_params` to use the `GET` method for the `/model_params` endpoint, passing `model` and `freq` as query parameters (the `POST` method is no longer supported).  
 - Replaced the deprecated `/validate_token` endpoint with `/validate_api_key`, now accessed via the `GET` method, in `nixtla_validate_api_key`.  
