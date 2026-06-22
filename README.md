@@ -98,7 +98,7 @@ library(nixtlar)
 ```
 
 1.  Set your API key. Get yours at
-    [dashboard.nixtla.io](https://dashboard.nixtla.io/sign_in)
+    [nixtla.io/dashboard](https://nixtla.io/dashboard)
 
 ``` r
 nixtla_set_api_key(api_key = "Your API key here")

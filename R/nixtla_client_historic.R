@@ -24,7 +24,7 @@
 #'   fcst <- nixtlar::nixtla_client_historic(df, id_col="unique_id", level=c(80,95))
 #' }
 #'
-nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
+nixtla_client_historic <- function(df, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=NULL, quantiles=NULL, finetune_steps=0, finetune_depth=1, finetune_loss="default", clean_ex_first=TRUE, model="timegpt-1"){
 
   # Validate input ----
   if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
@@ -77,7 +77,15 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     freq = freq,
     clean_ex_first = clean_ex_first,
     finetune_steps = finetune_steps,
-    finetune_loss = finetune_loss
+    finetune_loss = finetune_loss,
+    # full_history introduced in https://github.com/Nixtla/nixtla/pull/824
+    # When full_history = TRUE, the server derives the horizon and number of
+    # windows, so h, step_size, and n_windows are required by the endpoint but
+    # sent as placeholders and ignored. See https://github.com/Nixtla/nixtla/pull/712
+    h = 1,
+    step_size = 1,
+    n_windows = 1,
+    full_history = TRUE
   )
 
   # Add level or quantiles ----
@@ -113,11 +121,14 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
 
   # Make request ----
   setup <- .get_client_steup()
-  req <- httr2::request(paste0(setup$base_url, "v2/historic_forecast")) |>
+  # Related update on deprecation of v2/historic_forecast: https://github.com/Nixtla/nixtla/pull/712
+  req <- httr2::request(paste0(setup$base_url, "v2/cross_validation")) |>
     httr2::req_headers(
       "accept" = "application/json",
       "content-type" = "application/json",
-      "authorization" = paste("Bearer", setup$api_key)
+      "authorization" = paste("Bearer", setup$api_key),
+      "nixtla-model" = model,
+      "nixtla-client-version" = .get_client_version()
     ) |>
     httr2::req_user_agent("nixtlar") |>
     httr2::req_body_json(data = payload) |>
@@ -163,7 +174,7 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
     dplyr::group_by(.data$unique_id) |>
     dplyr::group_split()
 
-  dates <- purrr::map2_dfr(ddf, unique(df_info$fitted_sizes), ~slice_tail(.x, n = .y))
+  dates <- purrr::map2_dfr(ddf, df_info$fitted_sizes, ~slice_tail(.x, n = .y))
 
   dates <- dates |>
     dplyr::select(dplyr::all_of(c("unique_id", "ds")))
@@ -172,7 +183,9 @@ nixtla_client_historic <- function(df, freq=NULL, id_col=NULL, time_col="ds", ta
   if(nch <= 10){
     dates$ds <- lubridate::ymd(dates$ds)
   }else{
-    dates$ds <- lubridate::ymd_hms(dates$ds)
+    # truncated = 3 lets midnight timestamps that render as date-only
+    # ("YYYY-MM-DD") still parse, avoiding NA timestamps in the output.
+    dates$ds <- lubridate::ymd_hms(dates$ds, truncated = 3)
   }
 
   forecast <- cbind(dates, fc)

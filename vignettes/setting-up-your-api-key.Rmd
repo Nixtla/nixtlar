@@ -42,7 +42,7 @@ An API key is a unique string of characters that is used to authenticate your re
 ```
 
 ## 2. How can I get one? 
-To obtain you API key, please sign up here: https://dashboard.nixtla.io/sign_in
+To obtain you API key, please sign up here: https://nixtla.io/dashboard
 
 After registering, you will have access to your developer dashboard. Under `API keys`, you will find your personal API key. Please note that your API key should not be shared with others, and it is your responsibility to keep it safe. 
 

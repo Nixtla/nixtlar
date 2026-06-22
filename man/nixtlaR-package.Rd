@@ -23,6 +23,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Mariana Menchero \email{mariana@nixtla.io} (First author and maintainer)
 
+Authors:
+\itemize{
+  \item Mariana Menchero \email{mariana@nixtla.io} (First author and maintainer)
+}
+
 Other contributors:
 \itemize{
   \item Nixtla (Copyright held by 'Nixtla') [copyright holder]

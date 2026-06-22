@@ -11,3 +11,7 @@
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^experiments$
+^parity-tests$
+^\.env$
+^\.cursor$
+^developer-notes\.md$
