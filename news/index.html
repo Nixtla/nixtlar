@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nixtlar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-experiments"><li><a class="dropdown-item" href="../articles/vn1-forecasting-competition.html">VN1 Competition</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://github.com/Nixtla/nixtlar"><span class="fa fa-github"></span></a></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://docs.nixtla.io/">Nixtla</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://www.nixtla.io/docs">Nixtla</a></li>
       </ul></div>
 
 
@@ -50,6 +50,28 @@
       <small>Source: <a href="https://github.com/Nixtla/nixtlar/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="nixtlar-100">nixtlar 1.0.0<a class="anchor" aria-label="anchor" href="#nixtlar-100"></a></h2>
+<p>This release consolidates all changes since the last CRAN release (0.6.2), including the development versions 0.6.3 and 0.6.4.</p>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
+<ul><li>
+<code>nixtlar</code> now requires R (&gt;= 4.1.0).</li>
+<li>Set default value for <code>id_col</code> to <code>unique_id</code> in <code>nixtla_client_historic</code> to match the other core functions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
+<ul><li>Added support for distinguishing between historic and future exogenous variables in the forecasting and cross-validation functions. This feature was available in the development versions 0.6.3 and 0.6.4, but not in the CRAN version (0.6.2).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<ul><li>Fixed an HTTP 422 error when using future exogenous variables with <code>h = 1</code>.<br></li>
+<li>Updated internal functions to use the <code>GET</code> method, as the <code>POST</code> method is no longer supported.</li>
+<li>Fixed in-sample timestamp reconstruction in <code>nixtla_client_historic</code> for series that share some but not all in-sample sizes.<br></li>
+<li>Fixed handling of mixed date-only and datetime character <code>ds</code> values that previously produced “failed to parse” warnings and <code>NA</code> timestamps.<br></li>
+<li>Made output date-format detection robust across the whole <code>ds</code> column in <code>nixtla_client_historic</code>, <code>nixtla_client_detect_anomalies</code>, <code>nixtla_client_forecast</code>, and <code>nixtla_client_cross_validation</code>, so a leading midnight value no longer truncates the time component of the remaining rows.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.4" id="nixtlar-064">nixtlar 0.6.4<a class="anchor" aria-label="anchor" href="#nixtlar-064"></a></h2>
 <ul><li>Development version. Release notes available <a href="https://github.com/Nixtla/nixtlar/releases/tag/v0.6.4" class="external-link">here</a>.<br></li>

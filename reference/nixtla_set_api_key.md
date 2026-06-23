@@ -13,7 +13,7 @@ nixtla_set_api_key(api_key)
 
 - api_key:
 
-  The user's 'API' key. Get yours here: https://nixtla.io/dashboard/
+  The user's 'API' key. Get yours here: https://www.nixtla.io/dashboard
 
 ## Value
 

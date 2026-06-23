@@ -5,7 +5,8 @@ foundation model for time series forecasting. 'API' is an acronym for
 'application programming interface'; this package allows users to
 interact with 'TimeGPT' via the 'API'. You can set and validate 'API'
 keys and generate forecasts via 'API' calls. It is compatible with
-'tsibble' and base R. For more details visit <https://docs.nixtla.io/>.
+'tsibble' and base R. For more details visit
+<https://www.nixtla.io/docs>.
 
 ## See also
 
@@ -13,7 +14,7 @@ Useful links:
 
 - <https://nixtla.github.io/nixtlar/>
 
-- <https://docs.nixtla.io/>
+- <https://www.nixtla.io/docs>
 
 - <https://github.com/Nixtla/nixtlar>
 

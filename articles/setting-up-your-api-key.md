@@ -27,7 +27,7 @@ key to use any of the core functions from `nixtlar` that interact with
 ## 2. How can I get one?
 
 To obtain you API key, please sign up here:
-<https://nixtla.io/dashboard>
+<https://www.nixtla.io/dashboard>
 
 After registering, you will have access to your developer dashboard.
 Under `API keys`, you will find your personal API key. Please note that

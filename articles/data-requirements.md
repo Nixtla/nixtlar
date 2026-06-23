@@ -160,7 +160,7 @@ For certain scenarios, more than one observation may be necessary:
 
 The minimum data requirement varies with the frequency of the data,
 detailed in the official [TimeGPT
-documentation](https://docs.nixtla.io/docs/getting-started-data_requirements).
+documentation](https://www.nixtla.io/docs/data_requirements/data_requirements).
 
 When using
 [`nixtlar::nixtla_client_cross_validation`](https://nixtla.github.io/nixtlar/reference/nixtla_client_cross_validation.md),
