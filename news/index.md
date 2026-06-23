@@ -2,6 +2,8 @@
 
 ## nixtlar 1.0.0
 
+CRAN release: 2026-06-23
+
 This release consolidates all changes since the last CRAN release
 (0.6.2), including the development versions 0.6.3 and 0.6.4.
 

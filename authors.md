@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/Nixtla/nixtlar/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/Nixtla/nixtlar/blob/v1.0.0/DESCRIPTION)
 
 Menchero M (2026). *nixtlar: A Software Development Kit for 'Nixtla”s
 'TimeGPT'*. R package version 1.0.0,
