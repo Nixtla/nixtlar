@@ -1,7 +1,7 @@
 #' Set base 'ULR' and 'API' key in global environment
 #'
 #' @param base_url Custom base 'URL'. If NULL, defaults to "https://api.nixtla.io/".
-#' @param api_key The user's 'API' key. Get yours here: https://nixtla.io/dashboard/
+#' @param api_key The user's 'API' key. Get yours here: https://www.nixtla.io/dashboard
 #'
 #' @return A message indicating the configuration status.
 #' @export
@@ -23,7 +23,7 @@ nixtla_client_setup <- function(base_url = NULL, api_key = NULL) {
   options("NIXTLA_BASE_URL" = base_url)
 
   if (is.null(api_key)) {
-    stop("API key must be provided. Get yours at https://nixtla.io/dashboard/")
+    stop("API key must be provided. Get yours at https://www.nixtla.io/dashboard")
   } else {
     options("NIXTLA_API_KEY" = api_key)
     message("API key has been set for the current session.")

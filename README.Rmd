@@ -31,16 +31,18 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](https://www.apache.org/licenses/LICENSE-2.0)
 <!-- badges: end -->
 
-## Version 0.6.2 of nixtlar is now available on CRAN! (2024-10-28)
+## Version 1.0.0 of nixtlar is now available on CRAN! (2026-06-22)
 
-We are happy to announce the release of `nixtlar` version 0.6.2, introducing support for `TimeGEN-1`, `TimeGPT` optimized for Azure.
+We are happy to announce the release of `nixtlar` version 1.0.0, our first major release.
 
 **Key updates include**:
 
-- **Azure Integration**: You can now use `TimeGEN-1`, a version of `TimeGPT` optimized for the Azure infrastructure, directly through `nixtlar`. Simply configure your API key and Base URL to get started. For setup instructions, please check out our [Azure Quickstart](https://nixtla.github.io/nixtlar/articles/azure-quickstart.html) vignette.
-- **Enhanced Date Support**: In response to user feedback, we've improved support for date objects created with the `as.Date` function. For optimal performance, `nixtlar` now requires dates in the format `YYYY-MM-DD` or `YYYY-MM-DD hh:mm:ss`, either as characters or date-objects, and this update resolves issues with the latter format.
-- **Business-Day Frequency Inference**: `nixtlar` now supports inferring business-day frequency, which users previously had to specify directly.
-- **Bug Fixes**: This version also includes fixes for minor bugs reported by our users, ensuring overall stability and performance.
+- **Historic and Future Exogenous Variables**: The forecasting and cross-validation functions now let you distinguish between exogenous variables that have only historical values and those that include both historical and future values.
+- **Updated API Endpoints**: `nixtlar` now uses the `GET` method for the `/model_params` and `/validate_api_key` endpoints, and forwards a `nixtla-model` request header so you can work with different models.
+- **Lighter Dependencies**: We removed the unused `.make_request` helper and dropped the `future` and `future.apply` dependencies.
+- **Bug Fixes**: This version resolves several date-reconstruction issues and a problem when using future exogenous variables with `h = 1`.
+
+Note that `nixtlar` now requires R (>= 4.1.0).
 
 Thank you for your continued support and feedback, which help us make `nixtlar` better. We encourage you to update to the latest version to take advantage of these improvements.
 
@@ -88,7 +90,7 @@ devtools::install_github("Nixtla/nixtlar")
 library(nixtlar)
 ```
 
-1. Set your API key. Get yours at [nixtla.io/dashboard](https://nixtla.io/dashboard)
+1. Set your API key. Get yours at [nixtla.io/dashboard](https://www.nixtla.io/dashboard)
 ```{r eval=FALSE}
 nixtla_set_api_key(api_key = "Your API key here")
 ```
@@ -160,9 +162,9 @@ For comprehensive documentation, please refer to our vignettes, which cover a wi
 
 The documentation is an ongoing effort, and we are working on expanding its coverage.
 
-# API Support 
+# Python SDK
 
-Are you a Python user? If yes, then check out the [Python SDK](https://github.com/Nixtla/nixtla) for `TimeGPT`. You can also refer to our [API reference](https://docs.nixtla.io/reference/forecast_forecast_post) for support in other programming languages. 
+Are you a Python user? If yes, then check out the [Python SDK](https://github.com/Nixtla/nixtla) for `TimeGPT`.
 
 # How to Cite
 

@@ -8,13 +8,13 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A Software Development Kit for working with 'Nixtla''s 'TimeGPT', a foundation model for time series forecasting. 'API' is an acronym for 'application programming interface'; this package allows users to interact with 'TimeGPT' via the 'API'. You can set and validate 'API' keys and generate forecasts via 'API' calls. It is compatible with 'tsibble' and base R. For more details visit \url{https://docs.nixtla.io/}.
+A Software Development Kit for working with 'Nixtla''s 'TimeGPT', a foundation model for time series forecasting. 'API' is an acronym for 'application programming interface'; this package allows users to interact with 'TimeGPT' via the 'API'. You can set and validate 'API' keys and generate forecasts via 'API' calls. It is compatible with 'tsibble' and base R. For more details visit \url{https://www.nixtla.io/docs}.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://nixtla.github.io/nixtlar/}
-  \item \url{https://docs.nixtla.io/}
+  \item \url{https://www.nixtla.io/docs}
   \item \url{https://github.com/Nixtla/nixtlar}
   \item Report bugs at \url{https://github.com/Nixtla/nixtlar/issues}
 }

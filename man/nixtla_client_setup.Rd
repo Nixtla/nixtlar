@@ -9,7 +9,7 @@ nixtla_client_setup(base_url = NULL, api_key = NULL)
 \arguments{
 \item{base_url}{Custom base 'URL'. If NULL, defaults to "https://api.nixtla.io/".}
 
-\item{api_key}{The user's 'API' key. Get yours here: https://nixtla.io/dashboard/}
+\item{api_key}{The user's 'API' key. Get yours here: https://www.nixtla.io/dashboard}
 }
 \value{
 A message indicating the configuration status.
