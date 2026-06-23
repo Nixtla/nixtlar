@@ -1,3 +1,9 @@
+## Submission 22/06/2026
+This is a submission for a major release of the `nixtlar` package (version 1.0.0).
+
+## R CMD check results
+0 errors | 0 warnings | 0 notes
+
 ## Resubmission 09/10/2024 
 This is a resubmission. In this version I have:
 

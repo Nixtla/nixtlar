@@ -47,7 +47,7 @@ navbar:
     - icon: "fa-github"
       href: https://github.com/Nixtla/nixtlar
     - text: "Nixtla"
-      href: https://docs.nixtla.io/
+      href: https://www.nixtla.io/docs
 
 home:
   links:

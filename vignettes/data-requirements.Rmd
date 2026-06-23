@@ -101,7 +101,7 @@ For certain scenarios, more than one observation may be necessary:
 - When incorporating exogenous variables. 
 - When including historical forecasts by setting `add_history=TRUE`. 
 
-The minimum data requirement varies with the frequency of the data, detailed in the official [TimeGPT documentation](https://docs.nixtla.io/docs/getting-started-data_requirements). 
+The minimum data requirement varies with the frequency of the data, detailed in the official [TimeGPT documentation](https://www.nixtla.io/docs/data_requirements/data_requirements). 
 
 When using `nixtlar::nixtla_client_cross_validation`, you also need to consider the forecast horizon (`h`), the number of windows (`n_windows`) and the step size (`step_size`). The formula for the minimum data points required per series is:
 

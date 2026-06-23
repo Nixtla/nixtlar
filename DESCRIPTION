@@ -1,6 +1,6 @@
 Package: nixtlar
 Title: A Software Development Kit for 'Nixtla''s 'TimeGPT'
-Version: 0.6.4
+Version: 1.0.0
 Authors@R: c(
     person("Mariana", "Menchero", email = "mariana@nixtla.io", role = c("aut", "cre"), comment = "First author and maintainer"),
     person("Nixtla", role = "cph", comment = "Copyright held by 'Nixtla'")
@@ -10,12 +10,12 @@ Description: A Software Development Kit for working with 'Nixtla''s 'TimeGPT', a
     programming interface'; this package allows users to interact with
     'TimeGPT' via the 'API'. You can set and validate 'API' keys and generate forecasts
     via 'API' calls. It is compatible with 'tsibble' and base R. For more details 
-    visit <https://docs.nixtla.io/>.
+    visit <https://www.nixtla.io/docs>.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1.0)
 LazyData: true
 Imports: 
     dplyr,
@@ -34,7 +34,7 @@ Suggests:
     testthat (>= 3.0.0),
     usethis
 Config/testthat/edition: 3
-URL: https://nixtla.github.io/nixtlar/, https://docs.nixtla.io/, https://github.com/Nixtla/nixtlar
+URL: https://nixtla.github.io/nixtlar/, https://www.nixtla.io/docs, https://github.com/Nixtla/nixtlar
 VignetteBuilder: knitr
 BugReports: https://github.com/Nixtla/nixtlar/issues
 Config/roxygen2/version: 8.0.0

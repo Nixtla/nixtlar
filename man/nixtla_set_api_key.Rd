@@ -7,7 +7,7 @@
 nixtla_set_api_key(api_key)
 }
 \arguments{
-\item{api_key}{The user's 'API' key. Get yours here: https://nixtla.io/dashboard/}
+\item{api_key}{The user's 'API' key. Get yours here: https://www.nixtla.io/dashboard}
 }
 \value{
 A message indicating the 'API' key has been set in the global environment.
