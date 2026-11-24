@@ -29,10 +29,16 @@ test_that("config reads env then options and errors without a key", {
 })
 test_that("onLoad does not import nixtla eagerly", {
   skip_if_not_installed("callr")
-  skip_if_not_installed("pkgload")
+  src <- normalizePath(testthat::test_path("../.."))
+  if (file.exists(file.path(src, "DESCRIPTION"))) skip_if_not_installed("pkgload")
   expect_false(callr::r(function(path) {
-    pkgload::load_all(path, quiet = TRUE); reticulate::py_available(initialize = FALSE)
-  }, args = list(normalizePath(testthat::test_path("../..")))))
+    if (file.exists(file.path(path, "DESCRIPTION"))) {
+      pkgload::load_all(path, quiet = TRUE)
+    } else {
+      loadNamespace("nixtlar")
+    }
+    reticulate::py_available(initialize = FALSE)
+  }, args = list(src)))
 })
 test_that("id_col NULL adds and drops unique_id", {
   skip_if_no_api()

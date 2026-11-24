@@ -37,7 +37,7 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
   args <- Filter(Negate(is.null), args)
   for (n in intersect(names(args), INT_ARGS)) {
     v <- args[[n]]
-    if (is.double(v) && all(v == trunc(v))) args[[n]] <- as.integer(v)
+    if (is.double(v) && isTRUE(all(v == trunc(v)))) args[[n]] <- as.integer(v)
   }
   for (n in intersect(names(args), LIST_ARGS)) {
     if (n == "level" && method == "detect_anomalies_online") next
