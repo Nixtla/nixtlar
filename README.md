@@ -92,6 +92,8 @@ devtools::install_github("Nixtla/nixtlar")
 
 # Forecast Using TimeGPT in 3 Easy Steps
 
+`nixtlar` runs the official Python `nixtla` client through `reticulate`. Python is set up automatically on first use (this needs an internet connection once), so you don't need to install it yourself.
+
 ``` r
 library(nixtlar)
 ```
@@ -154,7 +156,7 @@ Do anomaly detection with `TimeGPT`, also in 3 easy steps! Follow steps
 `nixtla_client_detect_anomalies` and the `nixtla_client_plot` functions.
 
 ``` r
-nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df) 
+nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, h = 24, detection_size = 168) 
 #> Frequency chosen: h
 head(nixtla_client_anomalies)
 #>   unique_id                  ds     y anomaly  TimeGPT TimeGPT-lo-99

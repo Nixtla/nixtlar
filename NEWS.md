@@ -1,3 +1,20 @@
+# nixtlar 2.0.0
+
+`nixtlar` is now a thin wrapper over the official Python `nixtla` client (0.9.0), called through `reticulate`.
+
+## Breaking changes
+
+- The engine is the Python `nixtla` client. It is installed automatically on first use (an internet connection is needed once); no manual Python setup is required.
+- The default model is now the Python client's default (`timegpt-2.1`).
+- `nixtla_client_detect_anomalies` now performs online detection: `h` and `detection_size` are required.
+- `ds` columns are returned as `POSIXct`.
+- Removed the internal `.`-prefixed exports (`.generate_output_dates`, `.get_client_steup`, `.get_client_version`, `.get_model_params`, `.level_from_quantiles`, `.r_frequency`, `.transient_errors`, `.validate_exogenous`). `httr2` and `purrr` are no longer dependencies.
+
+## New features
+
+- Fine-tuning: `nixtla_client_finetune`, `nixtla_client_finetuned_models`, `nixtla_client_finetuned_model`, `nixtla_client_delete_finetuned_model`.
+- `nixtla_client_simulate`, `nixtla_client_explain`, `nixtla_client_audit_data`, `nixtla_client_clean_data`, `nixtla_client_usage` and `nixtla_client_list_models`.
+
 
 # nixtlar 1.0.0  
 

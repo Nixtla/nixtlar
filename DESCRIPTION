@@ -20,17 +20,13 @@ LazyData: true
 Imports: 
     dplyr,
     ggplot2,
-    httr2,
     lubridate,
-    purrr,
     reticulate (>= 1.41),
     rlang,
     tidyr,
-    tidyselect,
-    utils
+    tidyselect
 Suggests: 
     callr,
-    httptest2,
     pkgload,
     knitr,
     rmarkdown,
@@ -41,4 +37,4 @@ Config/testthat/edition: 3
 URL: https://nixtla.github.io/nixtlar/, https://www.nixtla.io/docs, https://github.com/Nixtla/nixtlar
 VignetteBuilder: knitr
 BugReports: https://github.com/Nixtla/nixtlar/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

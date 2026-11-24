@@ -5,18 +5,12 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-options("NIXTLA_API_KEY"="dummy_api_key")
-options(digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -86,6 +80,8 @@ devtools::install_github("Nixtla/nixtlar")
 
 # Forecast Using TimeGPT in 3 Easy Steps 
 
+`nixtlar` runs the official Python `nixtla` client through `reticulate`. Python is set up automatically on first use (this needs an internet connection once), so you don't need to install it yourself.
+
 ```{r}
 library(nixtlar)
 ```
@@ -120,7 +116,7 @@ nixtla_client_plot(df, nixtla_client_fcst, max_insample_length = 200)
 Do anomaly detection with `TimeGPT`, also in 3 easy steps! Follow steps 1 and 2 from the previous section and then use the `nixtla_client_detect_anomalies` and the `nixtla_client_plot` functions. 
 
 ```{r}
-nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df) 
+nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, h = 24, detection_size = 168) 
 head(nixtla_client_anomalies)
 ```
 
@@ -183,7 +179,3 @@ We welcome your input and contributions to the `nixtlar` package!
 - **Report Issues**: If you encounter a bug or have a suggestion to improve the package, please open an [issue](https://github.com/Nixtla/nixtlar/issues) in GitHub. 
 
 - **Contribute**: You can contribute by opening a [pull request](https://github.com/Nixtla/nixtlar/pulls) in our repository. Whether it is fixing a bug, adding a new feature, or improving the documentation, we appreciate your help in making `nixtlar` better.
-
-```{r, include=FALSE}
-end_vignette()
-```
