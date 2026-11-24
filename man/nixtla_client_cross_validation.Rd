@@ -13,14 +13,15 @@ nixtla_client_cross_validation(
   target_col = "y",
   level = NULL,
   quantiles = NULL,
-  n_windows = 1,
+  n_windows = NULL,
   step_size = NULL,
-  finetune_steps = 0,
-  finetune_depth = 1,
-  finetune_loss = "default",
-  clean_ex_first = TRUE,
+  finetune_steps = NULL,
+  finetune_depth = NULL,
+  finetune_loss = NULL,
+  clean_ex_first = NULL,
   hist_exog_list = NULL,
-  model = "timegpt-1"
+  model = NULL,
+  ...
 )
 }
 \arguments{
@@ -54,7 +55,9 @@ nixtla_client_cross_validation(
 
 \item{hist_exog_list}{A vector containing the column names of the historical exogenous features.}
 
-\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+\item{model}{Model to use, e.g. "timegpt-1" or "timegpt-1-long-horizon". If NULL (default), the Python client's default model is used.}
+
+\item{...}{Additional arguments passed on to the Python client, e.g. \code{date_features}, \code{num_partitions}, \code{feature_contributions}.}
 }
 \value{
 A data frame with 'TimeGPT''s cross validation result.
