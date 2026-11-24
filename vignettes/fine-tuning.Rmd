@@ -99,11 +99,11 @@ print(paste0("MAE fine-tune model with depth: ", compute_mae(test_df, fc_finetun
 
 ### Reusing a fine-tuned model
 
-Instead of fine-tuning on every call, you can fine-tune once with `nixtlar::nixtla_client_finetune`, which saves the model in your account and returns its ID. You can then pass that ID to the forecasting functions with `finetuned_model`. 
+Instead of fine-tuning on every call, you can fine-tune once with `nixtlar::nixtla_client_finetune`, which saves the model in your account and returns its ID. You can then pass that ID to the forecasting functions with `finetuned_model_id`. 
 
 ```{r, eval=FALSE}
 model_id <- nixtlar::nixtla_client_finetune(train_df, finetune_steps = 100, output_model_id = "my-electricity-model")
-fc_saved <- nixtlar::nixtla_client_forecast(train_df, h = 24, finetuned_model = model_id)
+fc_saved <- nixtlar::nixtla_client_forecast(train_df, h = 24, finetuned_model_id = model_id)
 
 nixtlar::nixtla_client_finetuned_models()                      # list your fine-tuned models
 nixtlar::nixtla_client_delete_finetuned_model(model_id)        # delete a model you no longer need

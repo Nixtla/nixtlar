@@ -123,22 +123,7 @@ head(df)
 
 ``` r
 nixtla_client_fcst <- nixtla_client_forecast(df, h = 8, level = c(80,95))
-#> Frequency chosen: h
 head(nixtla_client_fcst)
-#>   unique_id                  ds  TimeGPT TimeGPT-lo-95 TimeGPT-lo-80
-#> 1        BE 2016-12-31 00:00:00 45.19122      30.49719      35.50965
-#> 2        BE 2016-12-31 01:00:00 43.24537      28.96447      35.37618
-#> 3        BE 2016-12-31 02:00:00 41.95892      27.06669      35.34091
-#> 4        BE 2016-12-31 03:00:00 39.79675      27.96763      32.32674
-#> 5        BE 2016-12-31 04:00:00 39.20512      24.66191      31.00021
-#> 6        BE 2016-12-31 05:00:00 40.10902      23.05225      32.43594
-#>   TimeGPT-hi-80 TimeGPT-hi-95
-#> 1      54.87278      59.88525
-#> 2      51.11456      57.52628
-#> 3      48.57694      56.85116
-#> 4      47.26675      51.62587
-#> 5      47.41004      53.74834
-#> 6      47.78209      57.16578
 ```
 
 Optionally, plot the results
@@ -157,22 +142,7 @@ Do anomaly detection with `TimeGPT`, also in 3 easy steps! Follow steps
 
 ``` r
 nixtla_client_anomalies <- nixtlar::nixtla_client_detect_anomalies(df, h = 24, detection_size = 168) 
-#> Frequency chosen: h
 head(nixtla_client_anomalies)
-#>   unique_id                  ds     y anomaly  TimeGPT TimeGPT-lo-99
-#> 1        BE 2016-10-27 00:00:00 52.58   FALSE 56.07206     -28.58840
-#> 2        BE 2016-10-27 01:00:00 44.86   FALSE 52.41392     -32.24654
-#> 3        BE 2016-10-27 02:00:00 42.31   FALSE 52.80694     -31.85352
-#> 4        BE 2016-10-27 03:00:00 39.66   FALSE 52.58330     -32.07716
-#> 5        BE 2016-10-27 04:00:00 38.98   FALSE 52.66963     -31.99083
-#> 6        BE 2016-10-27 05:00:00 42.31   FALSE 54.10218     -30.55829
-#>   TimeGPT-hi-99
-#> 1      140.7325
-#> 2      137.0744
-#> 3      137.4674
-#> 4      137.2438
-#> 5      137.3301
-#> 6      138.7626
 ```
 
 ``` r
