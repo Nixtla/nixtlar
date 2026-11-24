@@ -30,7 +30,10 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
   if (!is.data.frame(df)) {
     stop("Only data frames, tibbles, and tsibbles are allowed.", call. = FALSE)
   }
-  as.data.frame(df)
+  df <- as.data.frame(df)
+  # pandas needs datetime64; R Dates would arrive as python objects
+  for (n in names(df)) if (inherits(df[[n]], "Date")) df[[n]] <- as.POSIXct(df[[n]], tz = "UTC")
+  df
 }
 
 .coerce_args <- function(method, args) {

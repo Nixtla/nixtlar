@@ -1,17 +1,8 @@
 # audit_data / clean_data are local: they never call the API, so no key is needed.
-.py_unnamed <- function() nixtla_py$NixtlaClient(api_key = "unused")
-
-.to_r_df <- function(x) { attr(x, "pandas.index") <- NULL; x }
-
-# pandas needs datetime64, not R Dates (which arrive as python objects).
-.dates_to_posix <- function(df, time_col) {
-  df <- .prep_df(df)
-  if (inherits(df[[time_col]], "Date")) df[[time_col]] <- as.POSIXct(df[[time_col]], tz = "UTC")
-  df
-}
+.local_client <- function() nixtla_py$NixtlaClient(api_key = "unused")
 
 .audit_result <- function(res) {
-  list(pass = res[[1]], fail = res[[2]], case_specific = res[[3]])
+  list(pass = res[[1]], fail = lapply(res[[2]], .to_r), case_specific = lapply(res[[3]], .to_r))
 }
 
 #' Audit data quality
@@ -35,10 +26,10 @@
 #' }
 nixtla_client_audit_data <- function(df, freq, id_col = "unique_id", time_col = "ds", target_col = "y", ...) {
   force(freq)
-  args <- .coerce_args("audit_data", list(df = .dates_to_posix(df, time_col), freq = freq, id_col = id_col,
+  args <- .coerce_args("audit_data", list(df = .prep_df(df), freq = freq, id_col = id_col,
                                           time_col = time_col, target_col = target_col, ...))
   res <- do.call(nixtla_py$NixtlaClient$audit_data, args)
-  .audit_result(reticulate::py_to_r(res))
+  .audit_result(res)
 }
 
 #' Clean data
@@ -65,10 +56,10 @@ nixtla_client_audit_data <- function(df, freq, id_col = "unique_id", time_col = 
 #' }
 nixtla_client_clean_data <- function(df, fail_dict, case_specific_dict, freq, id_col = "unique_id", time_col = "ds", target_col = "y", ...) {
   force(freq)
-  args <- .coerce_args("clean_data", list(df = .dates_to_posix(df, time_col), fail_dict = reticulate::r_to_py(fail_dict),
+  args <- .coerce_args("clean_data", list(df = .prep_df(df), fail_dict = reticulate::r_to_py(fail_dict),
                                           case_specific_dict = reticulate::r_to_py(case_specific_dict),
                                           freq = freq, id_col = id_col, time_col = time_col,
                                           target_col = target_col, ...))
-  res <- reticulate::py_to_r(do.call(.py_unnamed()$clean_data, args))
-  c(list(df = .to_r_df(res[[1]])), .audit_result(res[-1]))
+  res <- do.call(.local_client()$clean_data, args)
+  c(list(df = .to_r(res[[1]])), .audit_result(res[-1]))
 }

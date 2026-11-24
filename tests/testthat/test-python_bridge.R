@@ -51,3 +51,8 @@ test_that("pandas result is a plain data.frame", {
   out <- .call_client("forecast", df = nixtlar::electricity, h = 2, freq = "h")
   expect_identical(class(out), "data.frame"); expect_null(attr(out, "pandas.index"))
 })
+
+test_that(".prep_df converts Date columns to POSIXct", {
+  out <- .prep_df(data.frame(ds = as.Date("2024-01-01") + 0:1, y = 1:2))
+  expect_s3_class(out$ds, "POSIXct")
+})
