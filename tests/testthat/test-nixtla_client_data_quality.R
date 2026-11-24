@@ -1,0 +1,11 @@
+test_that("audit and clean data work locally", {
+  skip_if_no_python()
+  df <- data.frame(unique_id = "a", ds = as.Date("2024-01-01") + c(0, 1, 1, 3, 4), y = c(1, 2, 2, 4, 5))
+  a <- nixtla_client_audit_data(df, freq = "D")
+  expect_false(a$pass)
+  expect_true(length(a$fail) > 0)
+  cl <- nixtla_client_clean_data(df, a$fail, a$case_specific, freq = "D", agg_dict = list(y = "mean"))
+  expect_s3_class(cl$df, "data.frame")
+  expect_lt(nrow(cl$df[duplicated(cl$df[c("unique_id", "ds")]), ]), 1)
+  expect_true(is.logical(cl$pass))
+})
