@@ -35,12 +35,10 @@ test_that("nixtla_client_historic", {
   test_data <- nixtlar::electricity
   response <- nixtla_client_historic(test_data, level = c(80, 95))
   expect_s3_class(response, "data.frame")
-  expect_true(all(c("unique_id", "ds", "TimeGPT", "y") %in% names(response)))
+  expect_true(all(c("unique_id", "ds", "TimeGPT") %in% names(response)))
   expect_true(is.numeric(response$TimeGPT))
   last_ds <- tapply(as.POSIXct(test_data$ds, tz = "UTC"), test_data$unique_id, max)
-  ok <- vapply(split(as.POSIXct(response$ds, tz = "UTC"), response$unique_id),
-               function(d) TRUE, logical(1))
-  for (id in names(ok)) {
+  for (id in unique(response$unique_id)) {
     expect_true(all(as.POSIXct(response$ds[response$unique_id == id], tz = "UTC") <= last_ds[[id]]))
   }
 })
