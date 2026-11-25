@@ -70,7 +70,7 @@ nixtlar::nixtla_client_plot(train, fcst_long_horizon, max_insample_length = 200)
 
 ## 5. Evaluate the long-horizon model 
 
-To evaluate the long-horizon forecast, we will generate the same forecast with the default model of `TimeGPT`, which is `timegpt-1`, and then we will compute and compare the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) of the two models. 
+To evaluate the long-horizon forecast, we will generate the same forecast with the default model of `TimeGPT`, which is the model the Python `nixtla` client selects when `model` is not set (currently `timegpt-2.1`), and then we will compute and compare the [Mean Absolute Error](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) of the two models. 
 
 ```{r}
 fcst <- nixtlar::nixtla_client_forecast(train, h=96)
