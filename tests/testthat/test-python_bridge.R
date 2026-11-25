@@ -43,10 +43,14 @@ test_that("onLoad does not import nixtla eagerly", {
 test_that("load survives Python without nixtla", {
   skip_on_cran()
   skip_if_not_installed("callr")
-  py <- Sys.which("python3")
-  skip_if(!nzchar(py), "no python3 available")
-  skip_if(system2(py, c("-c", shQuote("import nixtla")), stdout = FALSE, stderr = FALSE) == 0,
-          "python3 already has nixtla")
+  has_nixtla <- function(py) system2(py, c("-c", shQuote("import nixtla")), stdout = FALSE, stderr = FALSE) == 0
+  cands <- c(Sys.getenv("NIXTLAR_TEST_BARE_PYTHON"),
+             tryCatch(reticulate::virtualenv_starter(all = TRUE)$path, error = function(e) character()),
+             "/opt/homebrew/bin/python3", "/usr/local/bin/python3", "/usr/bin/python3")
+  cands <- cands[nzchar(cands) & file.exists(cands) & !grepl("/.cache/uv/", cands, fixed = TRUE)]
+  cands <- Filter(Negate(has_nixtla), cands)
+  skip_if(length(cands) == 0, "no Python without nixtla outside the uv cache")
+  py <- cands[[1]]
   src <- normalizePath(testthat::test_path("../.."))
   if (file.exists(file.path(src, "DESCRIPTION"))) skip_if_not_installed("pkgload")
   res <- callr::r(function(path, py) {
@@ -118,4 +122,28 @@ test_that("tsibble yearmonth index becomes a timestamp", {
   out <- .prep_df(df)
   expect_s3_class(out$ds, "POSIXct")
   expect_identical(format(out$ds, "%Y-%m-%d"), c("2024-01-01", "2024-02-01"))
+})
+
+test_that("sub-daily DST data keeps instants: no duplicates, regular steps", {
+  x <- seq(as.POSIXct("2024-10-26 12:00", tz = "Europe/Berlin"), by = "hour", length.out = 72)
+  out <- .prep_df(data.frame(ds = x, y = 1:72))
+  expect_false(anyDuplicated(out$ds) > 0)
+  expect_true(all(diff(as.numeric(out$ds)) == 3600))
+  expect_null(attr(out, "forced_tz")$ds)
+  skip_if_no_python()
+  skip_if_not(reticulate::py_module_available("nixtla"))
+  pd <- reticulate::import("pandas")
+  pp <- reticulate::import("nixtla._preprocessing")
+  d <- pd$DataFrame(list(unique_id = rep("a", 72), ds = out$ds, y = out$y))
+  expect_no_error(pp$`_validate_freq_regularity`(d, "h", "unique_id", "ds"))
+})
+test_that("results come back in the caller's zone for date-like input", {
+  x <- as.POSIXct(c("2024-03-09", "2024-03-10"), tz = "America/New_York")
+  local_mocked_bindings(.get_client = function() list(forecast = function(df, ...) {
+    data.frame(ds = as.POSIXct(format(df$ds), tz = "UTC"), y = df$y)
+  }), .package = "nixtlar")
+  out <- .call_client("forecast", df = data.frame(ds = x, y = 1:2))
+  expect_identical(attr(out$ds, "tzone"), "America/New_York")
+  expect_identical(format(out$ds, "%H:%M"), c("00:00", "00:00"))
+  expect_equal(out$ds, x)
 })

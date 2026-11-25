@@ -31,16 +31,26 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
     stop("Only data frames, tibbles, and tsibbles are allowed.", call. = FALSE)
   }
   df <- as.data.frame(df)
+  zones <- list()
   # pandas needs datetime64; R Dates would arrive as python objects
   for (n in names(df)) {
     x <- df[[n]]
     # tsibble period indexes would reach pandas as float64
     if (inherits(x, c("yearmonth", "yearquarter", "yearweek"))) x <- as.Date(x)
     if (inherits(x, "Date")) x <- as.POSIXct(x, tz = "UTC")
-    # keep wall-clock time: converting instants to UTC makes local days 23h/25h across DST
-    else if (inherits(x, "POSIXct") && !identical(attr(x, "tzone"), "UTC")) x <- lubridate::force_tz(x, "UTC")
+    # Date-like (all midnight) local times keep wall-clock: converting instants to UTC makes
+    # local days 23h/25h across DST. Sub-daily times keep the instant: wall-clock would
+    # duplicate/skip hours at DST changes. The zone forced is recorded for .call_client.
+    else if (inherits(x, "POSIXct") && !identical(attr(x, "tzone"), "UTC")) {
+      if (all(format(x, "%H:%M:%S") == "00:00:00", na.rm = TRUE)) {
+        z <- attr(x, "tzone")[1]
+        zones[[n]] <- if (is.null(z) || is.na(z) || !nzchar(z)) Sys.timezone() else z
+        x <- lubridate::force_tz(x, "UTC")
+      } else x <- lubridate::with_tz(x, "UTC")
+    }
     df[[n]] <- x
   }
+  attr(df, "forced_tz") <- zones
   df
 }
 
@@ -78,6 +88,11 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
 .call_client <- function(.method, ...) {
   args <- list(...)
   for (n in intersect(names(args), c("df", "X_df"))) args[[n]] <- .prep_df(args[[n]])
+  # zone of the time column if .prep_df forced it; results come back UTC otherwise
+  # (sub-daily instants stay in UTC)
+  tc <- if (is.null(args$time_col)) "ds" else args$time_col
+  tz <- attr(args$df, "forced_tz")[[tc]]
+  for (n in intersect(names(args), c("df", "X_df"))) attr(args[[n]], "forced_tz") <- NULL
   drop_id <- "id_col" %in% names(args) && is.null(args$id_col)
   if (drop_id) {
     for (n in intersect(names(args), c("df", "X_df"))) {
@@ -97,5 +112,8 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
     res <- .to_r(call())
   }
   if (drop_id && is.data.frame(res)) res$unique_id <- NULL
+  if (!is.null(tz) && is.data.frame(res) && inherits(res[[tc]], "POSIXct")) {
+    res[[tc]] <- lubridate::force_tz(res[[tc]], tz)
+  }
   res
 }

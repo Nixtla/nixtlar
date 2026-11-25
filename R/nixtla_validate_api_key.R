@@ -1,7 +1,8 @@
 #' Validate 'API' key
 #'
-#' @return TRUE if the API key is valid, FALSE otherwise, or NA on 'Azure' endpoints,
-#'   where validation is not supported.
+#' @return TRUE if the API key is valid, FALSE if Python rejects it, or NA on 'Azure' endpoints,
+#'   where validation is not supported. Other errors, such as a missing
+#'   API key or Python package, are raised.
 #' @export
 #'
 #' @examples
@@ -17,6 +18,7 @@ nixtla_validate_api_key <- function(){
                message("API key validation is not supported on Azure endpoints.")
                return(NA)
              }
-             FALSE
+             if (inherits(e, "python.builtin.BaseException")) return(FALSE)
+             stop(e)
            })
 }

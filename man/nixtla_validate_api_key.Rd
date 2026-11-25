@@ -7,8 +7,9 @@
 nixtla_validate_api_key()
 }
 \value{
-TRUE if the API key is valid, FALSE otherwise, or NA on 'Azure' endpoints,
-where validation is not supported.
+TRUE if the API key is valid, FALSE if Python rejects it, or NA on 'Azure' endpoints,
+where validation is not supported. Other errors, such as a missing
+API key or Python package, are raised.
 }
 \description{
 Validate 'API' key

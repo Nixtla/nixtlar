@@ -22,7 +22,7 @@ test_that("validate returns TRUE on a good key", {
   expect_true(nixtla_validate_api_key())
 })
 
-test_that("validate returns NA on Azure and FALSE on other errors", {
+test_that("validate: NA on Azure, FALSE on Python errors, R errors re-raised", {
   fake <- function(cls) function() list(validate_api_key = function(log) {
     stop(structure(class = c(cls, "error", "condition"),
                    list(message = "boom", call = NULL)))
@@ -30,6 +30,9 @@ test_that("validate returns NA on Azure and FALSE on other errors", {
   local_mocked_bindings(.get_client = fake("python.builtin.NotImplementedError"))
   expect_message(res <- nixtla_validate_api_key(), "Azure")
   expect_identical(res, NA)
-  local_mocked_bindings(.get_client = fake("simpleError"))
+  skip_if_no_python()
+  local_mocked_bindings(.get_client = function() list(validate_api_key = function(log) reticulate::import_builtins()$int("x")))
   expect_false(nixtla_validate_api_key())
+  local_mocked_bindings(.get_client = function() stop("Please set your NIXTLA_API_KEY"))
+  expect_error(nixtla_validate_api_key(), "NIXTLA_API_KEY")
 })
