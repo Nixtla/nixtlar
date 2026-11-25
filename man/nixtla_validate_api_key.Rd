@@ -7,7 +7,8 @@
 nixtla_validate_api_key()
 }
 \value{
-TRUE if the API key is valid, FALSE otherwise.
+TRUE if the API key is valid, FALSE otherwise, or NA on 'Azure' endpoints,
+where validation is not supported.
 }
 \description{
 Validate 'API' key

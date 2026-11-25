@@ -40,6 +40,29 @@ test_that("onLoad does not import nixtla eagerly", {
     reticulate::py_available(initialize = FALSE)
   }, args = list(src)))
 })
+test_that("load survives Python without nixtla", {
+  skip_on_cran()
+  skip_if_not_installed("callr")
+  py <- Sys.which("python3")
+  skip_if(!nzchar(py), "no python3 available")
+  skip_if(system2(py, c("-c", shQuote("import nixtla")), stdout = FALSE, stderr = FALSE) == 0,
+          "python3 already has nixtla")
+  src <- normalizePath(testthat::test_path("../.."))
+  if (file.exists(file.path(src, "DESCRIPTION"))) skip_if_not_installed("pkgload")
+  res <- callr::r(function(path, py) {
+    reticulate::use_python(py, required = TRUE)
+    reticulate::py_config()
+    if (file.exists(file.path(path, "DESCRIPTION"))) {
+      pkgload::load_all(path, quiet = TRUE)
+    } else {
+      loadNamespace("nixtlar")
+    }
+    msg <- tryCatch({ nixtlar:::nixtla_py$NixtlaClient; "" }, error = conditionMessage)
+    list(loaded = TRUE, msg = msg)
+  }, args = list(src, py))
+  expect_true(res$loaded)
+  expect_match(res$msg, "nixtla==0.9.0", fixed = TRUE)
+})
 test_that("id_col NULL adds and drops unique_id", {
   skip_if_no_api()
   df <- nixtlar::electricity[nixtlar::electricity$unique_id == "BE", c("ds", "y")]
