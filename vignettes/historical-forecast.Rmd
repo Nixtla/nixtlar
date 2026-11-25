@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -58,11 +53,6 @@ All the fitted values are generated using a rolling window, meaning that the fit
 
 ### 3.1 Fitted values from `nixtlar::nixtla_client_forecast`
 `nixtlar::nixtla_client_historic` is the dedicated function that calls `TimeGPT`'s method for generating fitted values. However, you can also use `nixtlar::nixtla_client_forecast` with `add_history=TRUE`. This will generate both a forecast for the historical data and for the next $h$ future observations. 
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
-```
 
 
 

@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -128,9 +123,4 @@ nixtlar::nixtla_client_setup(
 You can also use one of the more secure and permanent method described above, by specifying the `NIXTLA_BASE_URL` in addition to the `NIXTLA_API_KEY`. 
 
 To learn more, please refer to the [TimeGEN-1 Quickstart (Azure)](https://nixtla.github.io/nixtlar/articles/azure-quickstart.html) vignette. 
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
-```
 

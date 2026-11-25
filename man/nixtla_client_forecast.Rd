@@ -14,13 +14,14 @@ nixtla_client_forecast(
   X_df = NULL,
   level = NULL,
   quantiles = NULL,
-  finetune_steps = 0,
-  finetune_depth = 1,
-  finetune_loss = "default",
-  clean_ex_first = TRUE,
+  finetune_steps = NULL,
+  finetune_depth = NULL,
+  finetune_loss = NULL,
+  clean_ex_first = NULL,
   hist_exog_list = NULL,
-  add_history = FALSE,
-  model = "timegpt-1"
+  add_history = NULL,
+  model = NULL,
+  ...
 )
 }
 \arguments{
@@ -54,7 +55,9 @@ nixtla_client_forecast(
 
 \item{add_history}{Return fitted values of the model.}
 
-\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+\item{model}{Model to use, e.g. "timegpt-1" or "timegpt-1-long-horizon". If NULL (default), the Python client's default model is used.}
+
+\item{...}{Additional arguments passed on to the Python client, e.g. \code{date_features}, \code{num_partitions}, \code{feature_contributions}.}
 }
 \value{
 'TimeGPT''s forecast.

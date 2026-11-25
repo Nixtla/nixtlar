@@ -1,6 +1,6 @@
 Package: nixtlar
 Title: A Software Development Kit for 'Nixtla''s 'TimeGPT'
-Version: 1.0.0
+Version: 2.0.0
 Authors@R: c(
     person("Mariana", "Menchero", email = "mariana@nixtla.io", role = c("aut", "cre"), comment = "First author and maintainer"),
     person("Nixtla", role = "cph", comment = "Copyright held by 'Nixtla'")
@@ -20,21 +20,22 @@ LazyData: true
 Imports: 
     dplyr,
     ggplot2,
-    httr2,
     lubridate,
-    purrr,
+    reticulate (>= 1.41),
     rlang,
     tidyr,
-    tidyselect,
-    utils
+    tidyselect
 Suggests: 
-    httptest2,
+    callr,
     knitr,
+    pkgload,
     rmarkdown,
     testthat (>= 3.0.0),
-    usethis
+    tsibble,
+    usethis,
+    withr
 Config/testthat/edition: 3
 URL: https://nixtla.github.io/nixtlar/, https://www.nixtla.io/docs, https://github.com/Nixtla/nixtlar
 VignetteBuilder: knitr
 BugReports: https://github.com/Nixtla/nixtlar/issues
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

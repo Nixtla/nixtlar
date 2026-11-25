@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -93,8 +88,3 @@ To learn more about data requirements and TimeGPT's capabilities, please read th
 ## Discover the power of TimeGEN on Azure via `nixtlar`. 
 
 Deploying TimeGEN via `nixtlar` on Azure allows you to implement robust and scalable forecasting solutions. This not only simplifies the integration of advanced analytics into your workflows but also ensures that you have the power of Azure’s cutting-edge technology at your disposal through a pay-as-you-go service. To learn more, read [here](https://www.nixtla.io/news/timegen1-on-azure).
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
-```

@@ -1,13 +1,26 @@
-with_mock_dir("../mocks", {
-  test_that("nixtla_client_anomaly_detection", {
-    skip_if_no_token()
-    test_data <- nixtlar::electricity
-    response <- nixtla_client_detect_anomalies(test_data, id_col = "unique_id")
-    expect_s3_class(response, "data.frame")
-    expect_true(all(c("unique_id", "ds", "y", "anomaly", "TimeGPT-lo-99", "TimeGPT", "TimeGPT-hi-99") %in% names(response)))
-    expect_true(all(response$anomaly %in% c(0,1)))
-    expect_true(is.numeric(response$TimeGPT))
-    expect_true(is.numeric(response$`TimeGPT-lo-99`))
-    expect_true(is.numeric(response$`TimeGPT-hi-99`))
-  })
+test_that("detect_anomalies requires h and detection_size", {
+  expect_error(nixtla_client_detect_anomalies(nixtlar::electricity), 'argument "h" is missing')
+  expect_error(nixtla_client_detect_anomalies(nixtlar::electricity, h = 24), 'argument "detection_size" is missing')
+})
+
+test_that("detect_anomalies calls detect_anomalies_online and forwards args and ...", {
+  got <- NULL
+  local_mocked_bindings(
+    .call_client = function(method, ...) { got <<- list(method = method, args = list(...)); data.frame() },
+    .package = "nixtlar"
+  )
+  nixtla_client_detect_anomalies(data.frame(), h = 24, detection_size = 48, level = 99, num_partitions = 2)
+  expect_equal(got$method, "detect_anomalies_online")
+  expect_equal(got$args$h, 24)
+  expect_equal(got$args$detection_size, 48)
+  expect_equal(got$args$level, 99)
+  expect_equal(got$args$num_partitions, 2)
+  expect_null(got$args$model)
+})
+
+test_that("online detection flags the trailing window", {
+  skip_if_no_api()
+  out <- nixtla_client_detect_anomalies(nixtlar::electricity, h = 24, detection_size = 48, level = 99)
+  expect_true(all(c("unique_id", "ds", "y", "TimeGPT", "anomaly") %in% names(out)))
+  expect_equal(nrow(out), 48 * dplyr::n_distinct(nixtlar::electricity$unique_id))
 })

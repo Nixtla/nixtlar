@@ -46,6 +46,8 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - uses: astral-sh/setup-uv@v6
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

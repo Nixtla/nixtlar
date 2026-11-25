@@ -7,7 +7,7 @@
 nixtla_client_setup(base_url = NULL, api_key = NULL)
 }
 \arguments{
-\item{base_url}{Custom base 'URL'. If NULL, defaults to "https://api.nixtla.io/".}
+\item{base_url}{Custom base 'URL'. If NULL, the Python client uses its default.}
 
 \item{api_key}{The user's 'API' key. Get yours here: https://www.nixtla.io/dashboard}
 }

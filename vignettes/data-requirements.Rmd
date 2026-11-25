@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -110,10 +105,5 @@ When using `nixtlar::nixtla_client_cross_validation`, you also need to consider 
 \end{equation}
 
 Here, $\text{Min per frequency}$ refers to the values specified in the table from the official documentation.
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
-```
 
 

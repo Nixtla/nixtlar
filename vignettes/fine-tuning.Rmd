@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -102,12 +97,19 @@ print(paste0("MAE fine-tune model: ", compute_mae(test_df, fc_finetune)))
 print(paste0("MAE fine-tune model with depth: ", compute_mae(test_df, fc_finetune_depth)))
 ````
 
+### Reusing a fine-tuned model
+
+Instead of fine-tuning on every call, you can fine-tune once with `nixtlar::nixtla_client_finetune`, which saves the model in your account and returns its ID. You can then pass that ID to the forecasting functions with `finetuned_model_id`. 
+
+```{r, eval=FALSE}
+model_id <- nixtlar::nixtla_client_finetune(train_df, finetune_steps = 100, output_model_id = "my-electricity-model")
+fc_saved <- nixtlar::nixtla_client_forecast(train_df, h = 24, finetuned_model_id = model_id)
+
+nixtlar::nixtla_client_finetuned_models()                      # list your fine-tuned models
+nixtlar::nixtla_client_delete_finetuned_model(model_id)        # delete a model you no longer need
+```
+
 ## 4. Final recommendations
 
 Fine-tuning can involve a trial-and-error process. We recommend monitoring the performance of your model and adjusting the fine-tuning parameters as needed. Keep in mind that fine-tuning may lead to longer training times and can increase the risk of overfitting, so use it with caution.
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
-```
 

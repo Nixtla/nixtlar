@@ -10,17 +10,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 ```{r setup, include=FALSE}
-library(httptest2)
-.mockPaths("../tests/mocks")
-start_vignette(dir = "../tests/mocks")
-
-original_options <- options("NIXTLA_API_KEY"="dummy_api_key", digits=7)
-
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>", 
   fig.width = 7, 
-  fig.height = 4
+  fig.height = 4,
+  eval = nzchar(Sys.getenv("NIXTLA_API_KEY"))
 )
 ```
 
@@ -62,7 +57,7 @@ However, this method is ineffective when the missing dates are not continuous. O
 
 ## 2. Specifying the frequency of your data 
 
-The frequency parameter is crucial when working with time series data because it informs the model about the expected intervals between data points. The core functions of `nixtlar` that interface with `TimeGPT`, such as `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_detect_anomalies`, and `nixtla_client_cross_validation`, include a frequency parameter called `freq`, which has a default value of `NULL`. If you know the frequency of your data, please specify it. If you don't, `nixtlar` will try to deduce it from the data using the `nixtlar::infer_frequency` function. 
+The frequency parameter is crucial when working with time series data because it informs the model about the expected intervals between data points. The core functions of `nixtlar` that interface with `TimeGPT`, such as `nixtla_client_forecast`, `nixtla_client_historic`, `nixtla_client_detect_anomalies`, and `nixtla_client_cross_validation`, include a frequency parameter called `freq`, which has a default value of `NULL`. If you know the frequency of your data, please specify it. If you don't, the Python `nixtla` client will try to deduce it from the data.
 
 The `freq` parameter supports the following aliases: 
 
@@ -97,10 +92,5 @@ df <- nixtlar::electricity
 
 # infer the frequency when `freq` is not specified 
 fcst <- nixtlar::nixtla_client_forecast(df, h = 8, level = c(80,95)) # freq = "h"
-```
-
-```{r, include=FALSE}
-options(original_options)
-end_vignette()
 ```
 

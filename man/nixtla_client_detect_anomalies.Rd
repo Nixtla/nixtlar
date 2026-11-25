@@ -6,17 +6,31 @@
 \usage{
 nixtla_client_detect_anomalies(
   df,
+  h,
+  detection_size,
+  threshold_method = NULL,
   freq = NULL,
   id_col = "unique_id",
   time_col = "ds",
   target_col = "y",
-  level = c(99),
-  clean_ex_first = TRUE,
-  model = "timegpt-1"
+  level = NULL,
+  clean_ex_first = NULL,
+  step_size = NULL,
+  finetune_steps = NULL,
+  finetune_depth = NULL,
+  finetune_loss = NULL,
+  model = NULL,
+  ...
 )
 }
 \arguments{
 \item{df}{A data frame with time series data.}
+
+\item{h}{Forecast horizon used for each detection window.}
+
+\item{detection_size}{Number of trailing observations of each series to evaluate for anomalies.}
+
+\item{threshold_method}{Method used to decide what counts as an anomaly, e.g. "univariate" or "multivariate". If NULL (default), the Python client's default is used.}
 
 \item{freq}{Frequency of the data.}
 
@@ -26,23 +40,33 @@ nixtla_client_detect_anomalies(
 
 \item{target_col}{Column that contains the target variable.}
 
-\item{level}{The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.}
+\item{level}{The confidence level (0-100) for the prediction interval used in anomaly detection. Must be a single value.}
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
-\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+\item{step_size}{Step size between detection windows. If NULL (default), it equals \code{h}.}
+
+\item{finetune_steps}{Number of steps used to fine-tune 'TimeGPT' in the new data.}
+
+\item{finetune_depth}{The depth of the fine-tuning. Uses a scale from 1 to 5.}
+
+\item{finetune_loss}{Loss function to use for fine-tuning.}
+
+\item{model}{Model to use, e.g. "timegpt-1" or "timegpt-1-long-horizon". If NULL (default), the Python client's default model is used.}
+
+\item{...}{Additional arguments passed on to the Python client, e.g. \code{num_partitions}.}
 }
 \value{
-A data frame with the anomalies detected in the historical period.
+A data frame with the anomalies detected in the last \code{detection_size} observations of each series.
 }
 \description{
-\code{TimeGPT} detect anomalies
+Online anomaly detection: forecasts the last \code{detection_size} observations of each series using the preceding history, in windows of \code{h} steps, and flags the points that fall outside the prediction interval.
 }
 \examples{
 \dontrun{
   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
   df <- nixtlar::electricity
-  fcst <- nixtlar::nixtla_client_anomaly_detection(df, id_col="unique_id")
+  anomalies <- nixtlar::nixtla_client_detect_anomalies(df, h=24, detection_size=48, level=99)
 }
 
 }

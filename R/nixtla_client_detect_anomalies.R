@@ -1,15 +1,25 @@
 #' `TimeGPT` detect anomalies
 #'
+#' Online anomaly detection: forecasts the last `detection_size` observations of each series using the preceding history, in windows of `h` steps, and flags the points that fall outside the prediction interval.
+#'
 #' @param df A data frame with time series data.
+#' @param h Forecast horizon used for each detection window.
+#' @param detection_size Number of trailing observations of each series to evaluate for anomalies.
+#' @param threshold_method Method used to decide what counts as an anomaly, e.g. "univariate" or "multivariate". If NULL (default), the Python client's default is used.
 #' @param freq Frequency of the data.
 #' @param id_col Column that identifies each series.
 #' @param time_col Column that identifies each timestep.
 #' @param target_col Column that contains the target variable.
-#' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Default is 99.
+#' @param level The confidence level (0-100) for the prediction interval used in anomaly detection. Must be a single value.
 #' @param clean_ex_first Clean exogenous signal before making the forecasts using 'TimeGPT'.
-#' @param model Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.
+#' @param step_size Step size between detection windows. If NULL (default), it equals `h`.
+#' @param finetune_steps Number of steps used to fine-tune 'TimeGPT' in the new data.
+#' @param finetune_depth The depth of the fine-tuning. Uses a scale from 1 to 5.
+#' @param finetune_loss Loss function to use for fine-tuning.
+#' @param model Model to use, e.g. "timegpt-1" or "timegpt-1-long-horizon". If NULL (default), the Python client's default model is used.
+#' @param ... Additional arguments passed on to the Python client, e.g. `num_partitions`.
 #'
-#' @return A data frame with the anomalies detected in the historical period.
+#' @return A data frame with the anomalies detected in the last `detection_size` observations of each series.
 #' @export
 #' @keywords internal
 #'
@@ -17,144 +27,14 @@
 #' \dontrun{
 #'   nixtlar::nixtla_set_api_key("YOUR_API_KEY")
 #'   df <- nixtlar::electricity
-#'   fcst <- nixtlar::nixtla_client_anomaly_detection(df, id_col="unique_id")
+#'   anomalies <- nixtlar::nixtla_client_detect_anomalies(df, h=24, detection_size=48, level=99)
 #' }
 #'
-nixtla_client_detect_anomalies <- function(df, freq=NULL, id_col="unique_id", time_col="ds", target_col="y", level=c(99), clean_ex_first=TRUE, model="timegpt-1"){
-
-  # Validate input ----
-  if(!is.data.frame(df) & !inherits(df, "tbl_df") & !inherits(df, "tsibble")){
-    stop("Only data frames, tibbles, and tsibbles are allowed.")
-  }
-
-  # Rename columns ----
-  names(df)[which(names(df) == time_col)] <- "ds"
-  names(df)[which(names(df) == target_col)] <- "y"
-
-  cols <- c("ds", "y") %in% names(df)
-  if(any(!cols)){
-    stop(paste0("The following columns are missing: ", paste(c("ds", "y")[!cols], collapse = ", ")))
-  }
-
-  if(is.null(id_col)){
-    # create unique_id for single series
-    df <- df |>
-      dplyr::mutate(unique_id = "ts_0") |>
-      dplyr::select(c("unique_id", tidyselect::everything()))
-  }else{
-    names(df)[which(names(df) == id_col)] <- "unique_id"
-  }
-
-  # More input validation ----
-  if(any(is.na(df$y))){
-    stop(paste0("Target column '", target_col, "' cannot contain missing values."))
-  }
-
-  # Infer frequency if necessary ----
-  freq <- infer_frequency(df, freq)
-
-  # Extract unique ids, sizes, and last times ----
-  uids <- unique(df$unique_id)
-
-  df_info <- df |>
-    dplyr::group_by(.data$unique_id) |>
-    dplyr::summarise(
-      size = dplyr::n(),
-      last_ds = dplyr::nth(.data$ds, -1)
-    )
-
-  # Select level ----
-  if(length(level) > 1){
-    message(paste0("Multiple levels are not allowed for anomaly detection. Defaulting to the largest level: ", max(level)))
-  }
-
-  # Create payload ----
-  payload <- list(
-    series =  list(
-      sizes = as.list(df_info$size),
-      y = as.list(df$y)
-    ),
-    model = model,
-    freq = freq,
-    clean_ex_first = clean_ex_first,
-    level = max(level)
-  )
-
-  # Add exogenous variables ----
-  contains_exogenous <- any(!(names(df) %in% c("unique_id", "ds", "y")))
-  if(contains_exogenous){
-    exogenous <- df |>
-      dplyr::select(-dplyr::all_of(c("unique_id", "ds", "y"))) |>
-      as.list()
-
-    message(paste0("Using historical exogenous features: ", paste(names(exogenous), collapse=", ")))
-    names(exogenous) <- NULL
-    payload$series$X <- exogenous
-  }
-
-  # Make request ----
-  setup <- .get_client_steup()
-  req <- httr2::request(paste0(setup$base_url, "v2/anomaly_detection")) |>
-    httr2::req_headers(
-      "accept" = "application/json",
-      "content-type" = "application/json",
-      "authorization" = paste("Bearer", setup$api_key),
-      "nixtla-model" = model,
-      "nixtla-client-version" = .get_client_version()
-    ) |>
-    httr2::req_user_agent("nixtlar") |>
-    httr2::req_body_json(data = payload) |>
-    httr2::req_retry(
-      max_tries = 6,
-      is_transient = .transient_errors
-    )
-
-  resp <- req |>
-    httr2::req_perform() |>
-    httr2::resp_body_json()
-
-  # Extract response ----
-  fc <- data.frame(
-    anomaly = unlist(resp$anomaly),
-    TimeGPT = unlist(resp$mean)
-  )
-
-  if("intervals" %in% names(resp) & !is.null(resp$intervals)){
-    intervals <- data.frame(lapply(resp$intervals, unlist))
-    names(intervals) <- paste0("TimeGPT-", names(resp$intervals))
-    fc <- cbind(fc, intervals)
-  }
-
-  # Add unique ids and dates to forecast ----
-  df_info$fitted_sizes <- unlist(resp$sizes)
-
-  grouped_df_list <- df |>
-    dplyr::select(dplyr::all_of(c("unique_id", "ds", "y"))) |>
-    dplyr::group_by(.data$unique_id) |>
-    dplyr::group_split()
-
-  df_tail <- purrr::map2_dfr(grouped_df_list, df_info$fitted_sizes, ~slice_tail(.x, n = .y))
-
-  nch <- max(nchar(df_tail$ds))
-  if(nch <= 10){
-    df_tail$ds <- lubridate::ymd(df_tail$ds)
-  }else{
-    df_tail$ds <- lubridate::ymd_hms(df_tail$ds, truncated = 3)
-  }
-
-  forecast <- cbind(df_tail, fc)
-
-  # Rename columns back ----
-  if(is.null(id_col)){
-    forecast <- forecast |>
-      dplyr::select(-dplyr::all_of(c("unique_id")))
-  }else if(id_col != "unique_id"){
-    names(forecast)[which(names(forecast) == "unique_id")] <- id_col
-  }
-
-  if(time_col != "ds"){
-    names(forecast)[which(names(forecast) == "ds")] <- time_col
-  }
-
-  return(forecast)
+nixtla_client_detect_anomalies <- function(df, h, detection_size, threshold_method = NULL, freq = NULL, id_col = "unique_id", time_col = "ds", target_col = "y", level = NULL, clean_ex_first = NULL, step_size = NULL, finetune_steps = NULL, finetune_depth = NULL, finetune_loss = NULL, model = NULL, ...) {
+  force(h); force(detection_size)
+  .call_client("detect_anomalies_online", df = df, h = h, detection_size = detection_size,
+               threshold_method = threshold_method, freq = freq, id_col = id_col, time_col = time_col,
+               target_col = target_col, level = level, clean_ex_first = clean_ex_first,
+               step_size = step_size, finetune_steps = finetune_steps, finetune_depth = finetune_depth,
+               finetune_loss = finetune_loss, model = model, ...)
 }

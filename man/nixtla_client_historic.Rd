@@ -12,11 +12,12 @@ nixtla_client_historic(
   target_col = "y",
   level = NULL,
   quantiles = NULL,
-  finetune_steps = 0,
-  finetune_depth = 1,
-  finetune_loss = "default",
-  clean_ex_first = TRUE,
-  model = "timegpt-1"
+  finetune_steps = NULL,
+  finetune_depth = NULL,
+  finetune_loss = NULL,
+  clean_ex_first = NULL,
+  model = NULL,
+  ...
 )
 }
 \arguments{
@@ -42,7 +43,9 @@ nixtla_client_historic(
 
 \item{clean_ex_first}{Clean exogenous signal before making the forecasts using 'TimeGPT'.}
 
-\item{model}{Model to use, either "timegpt-1" or "timegpt-1-long-horizon". Use "timegpt-1-long-horizon" if you want to forecast more than one seasonal period given the frequency of the data.}
+\item{model}{Model to use, e.g. "timegpt-1" or "timegpt-1-long-horizon". If NULL (default), the Python client's default model is used.}
+
+\item{...}{Additional arguments passed on to the Python client, e.g. \code{date_features}, \code{num_partitions}, \code{feature_contributions}.}
 }
 \value{
 'TimeGPT''s forecast for the in-sample period.
