@@ -6,6 +6,8 @@
 \usage{
 nixtla_client_explain(
   df,
+  method = NULL,
+  features = NULL,
   freq = NULL,
   id_col = "unique_id",
   time_col = "ds",
@@ -16,6 +18,10 @@ nixtla_client_explain(
 \arguments{
 \item{df}{A data frame with time series data (including exogenous variables).}
 
+\item{method}{Explanation method, "granger" or "transfer_entropy". If NULL (default), the Python client's default ("granger") is used.}
+
+\item{features}{Character vector of features to explain. If NULL (default), all features are used.}
+
 \item{freq}{Frequency of the data.}
 
 \item{id_col}{Column that identifies each series.}
@@ -24,7 +30,7 @@ nixtla_client_explain(
 
 \item{target_col}{Column that contains the target variable.}
 
-\item{...}{Passed to the Python method, e.g. \code{h} and \code{X_df}.}
+\item{...}{Additional arguments passed on to the Python client, e.g. \code{categorical_exog_list}.}
 }
 \value{
 A data frame with the explanations.

@@ -56,3 +56,21 @@ test_that(".prep_df converts Date columns to POSIXct", {
   out <- .prep_df(data.frame(ds = as.Date("2024-01-01") + 0:1, y = 1:2))
   expect_s3_class(out$ds, "POSIXct")
 })
+
+test_that("job_timeout_seconds is an integer arg; huge whole doubles stay double", {
+  expect_identical(.coerce_args("forecast", list(job_timeout_seconds = 60))$job_timeout_seconds, 60L)
+  expect_identical(.coerce_args("simulate", list(seed = 2^40))$seed, 2^40)
+})
+test_that("date_features wraps only character values", {
+  expect_identical(.coerce_args("forecast", list(date_features = TRUE))$date_features, TRUE)
+  expect_identical(.coerce_args("forecast", list(date_features = c("month", "year")))$date_features, list("month", "year"))
+  expect_identical(.coerce_args("forecast", list(date_features_to_one_hot = FALSE))$date_features_to_one_hot, FALSE)
+  expect_identical(.coerce_args("forecast", list(date_features_to_one_hot = "month"))$date_features_to_one_hot, list("month"))
+})
+test_that("naive pandas datetimes come back as UTC and the date is unchanged", {
+  skip_if_no_python()
+  pd <- reticulate::import("pandas")
+  r <- .to_r(pd$DataFrame(list(ds = pd$to_datetime(list("2024-01-01")))))
+  expect_identical(attr(r$ds, "tzone"), "UTC")
+  expect_identical(as.Date(r$ds), as.Date("2024-01-01"))
+})

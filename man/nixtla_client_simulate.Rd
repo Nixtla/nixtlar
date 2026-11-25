@@ -36,11 +36,11 @@ nixtla_client_simulate(
 
 \item{n_paths}{Number of sample paths to simulate.}
 
-\item{quantiles}{Quantiles (between 0 and 1) to compute.}
+\item{quantiles}{Strictly increasing marginal quantiles inside (0, 1), between 2 and 200 values. They refine the marginal distribution the paths are drawn from and add no columns to the result.}
 
 \item{seed}{Random seed.}
 
-\item{model}{Model to use, e.g. "timegpt-1".}
+\item{model}{Model used to generate the marginal forecasts. If NULL (default), the Python client's default model is used.}
 
 \item{...}{Passed to the Python method.}
 }

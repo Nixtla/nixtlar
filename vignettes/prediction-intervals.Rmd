@@ -57,10 +57,10 @@ fcst <- nixtla_client_forecast(df, h = 8, level=c(80,95))
 head(fcst)
 ```
 
-Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function only uses the maximum value when multiple values are provided. Therefore, setting `level = c(90, 95, 99)`, for example, is equivalent to setting `level = c(99)`, which is the default value.
+Note that the `level` argument in the `nixtlar::nixtla_client_detect_anomalies()` function takes a single value (not a vector), and it is also required to set `h` and `detection_size`. Here, the last 48 observations of each series are evaluated in windows of 24 steps, using a 99% prediction interval.
 
 ```{r}
-anomalies <- nixtla_client_detect_anomalies(df) # level=c(90,95,99)
+anomalies <- nixtla_client_detect_anomalies(df, h = 24, detection_size = 48, level = 99)
 head(anomalies) # only the 99% confidence level is used 
 ```
 

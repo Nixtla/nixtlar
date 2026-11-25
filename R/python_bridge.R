@@ -1,7 +1,7 @@
 INT_ARGS <- c("h", "n_windows", "step_size", "finetune_steps", "finetune_depth",
-              "num_partitions", "detection_size", "n_paths", "seed")
+              "num_partitions", "detection_size", "n_paths", "seed", "job_timeout_seconds")
 LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
-               "features")
+               "features", "date_features", "date_features_to_one_hot")
 
 # Env var first, then R option; "" counts as unset.
 .setting <- function(name) {
@@ -40,10 +40,12 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
   args <- Filter(Negate(is.null), args)
   for (n in intersect(names(args), INT_ARGS)) {
     v <- args[[n]]
-    if (is.double(v) && isTRUE(all(v == trunc(v)))) args[[n]] <- as.integer(v)
+    if (is.double(v) && isTRUE(all(v == trunc(v) & abs(v) <= .Machine$integer.max))) args[[n]] <- as.integer(v)
   }
   for (n in intersect(names(args), LIST_ARGS)) {
     if (n == "level" && method == "detect_anomalies_online") next
+    # date_features may be TRUE/FALSE: only wrap character vectors
+    if (n %in% c("date_features", "date_features_to_one_hot") && !is.character(args[[n]])) next
     args[[n]] <- as.list(args[[n]])
   }
   args
@@ -51,11 +53,17 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
 
 .to_r <- function(x) {
   r <- reticulate::py_to_r(x)
-  if (is.data.frame(r)) attr(r, "pandas.index") <- NULL
+  if (is.data.frame(r)) {
+    attr(r, "pandas.index") <- NULL
+    # naive pandas datetimes arrive without a tzone and would print in local time
+    for (n in names(r)) {
+      if (inherits(r[[n]], "POSIXct") && !nzchar(paste0(attr(r[[n]], "tzone"), ""))) attr(r[[n]], "tzone") <- "UTC"
+    }
+  }
   r
 }
 
-.call_client <- function(method, ...) {
+.call_client <- function(.method, ...) {
   args <- list(...)
   for (n in intersect(names(args), c("df", "X_df"))) args[[n]] <- .prep_df(args[[n]])
   drop_id <- "id_col" %in% names(args) && is.null(args$id_col)
@@ -65,7 +73,17 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
     }
     args$id_col <- "unique_id"
   }
-  res <- .to_r(do.call(.get_client()[[method]], .coerce_args(method, args)))
+  call <- function() do.call(.get_client()[[.method]], .coerce_args(.method, args))
+  if (.method == "detect_anomalies_online") {
+    # Python 0.9.0 emits a rename FutureWarning on every call; hide only that one
+    w <- reticulate::import("warnings")
+    res <- .to_r(with(w$catch_warnings(), {
+      w$filterwarnings("ignore", message = "detect_anomalies_online", category = reticulate::import_builtins()$FutureWarning)
+      call()
+    }))
+  } else {
+    res <- .to_r(call())
+  }
   if (drop_id && is.data.frame(res)) res$unique_id <- NULL
   res
 }

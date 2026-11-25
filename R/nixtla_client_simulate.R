@@ -10,9 +10,9 @@
 #' @param target_col Column that contains the target variable.
 #' @param X_df A data frame with future exogenous variables.
 #' @param n_paths Number of sample paths to simulate.
-#' @param quantiles Quantiles (between 0 and 1) to compute.
+#' @param quantiles Strictly increasing marginal quantiles inside (0, 1), between 2 and 200 values. They refine the marginal distribution the paths are drawn from and add no columns to the result.
 #' @param seed Random seed.
-#' @param model Model to use, e.g. "timegpt-1".
+#' @param model Model used to generate the marginal forecasts. If NULL (default), the Python client's default model is used.
 #' @param ... Passed to the Python method.
 #'
 #' @return A data frame with the simulated paths.

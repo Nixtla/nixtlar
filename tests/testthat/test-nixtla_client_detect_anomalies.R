@@ -1,5 +1,6 @@
 test_that("detect_anomalies requires h and detection_size", {
-  expect_error(nixtla_client_detect_anomalies(nixtlar::electricity), "h")
+  expect_error(nixtla_client_detect_anomalies(nixtlar::electricity), 'argument "h" is missing')
+  expect_error(nixtla_client_detect_anomalies(nixtlar::electricity, h = 24), 'argument "detection_size" is missing')
 })
 
 test_that("detect_anomalies calls detect_anomalies_online and forwards args and ...", {
