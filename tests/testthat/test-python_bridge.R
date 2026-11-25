@@ -6,8 +6,8 @@ test_that("NULL args are dropped", {
   expect_false("model" %in% names(.coerce_args("forecast", list(h = 1, model = NULL))))
 })
 test_that("level becomes a list except for online anomalies", {
-  expect_identical(.coerce_args("forecast", list(level = 90))$level, list(90))
-  expect_identical(.coerce_args("detect_anomalies_online", list(level = 99))$level, 99)
+  expect_identical(.coerce_args("forecast", list(level = 90))$level, list(90L))
+  expect_identical(.coerce_args("detect_anomalies_online", list(level = 99))$level, 99L)
   expect_identical(.coerce_args("forecast", list(hist_exog_list = "x"))$hist_exog_list, list("x"))
 })
 test_that("tsibble is flattened", {
@@ -73,4 +73,26 @@ test_that("naive pandas datetimes come back as UTC and the date is unchanged", {
   r <- .to_r(pd$DataFrame(list(ds = pd$to_datetime(list("2024-01-01")))))
   expect_identical(attr(r$ds, "tzone"), "UTC")
   expect_identical(as.Date(r$ds), as.Date("2024-01-01"))
+})
+test_that("whole-number level becomes integer", {
+  expect_identical(.coerce_args("forecast", list(level = c(80, 95)))$level, list(80L, 95L))
+  expect_identical(.coerce_args("detect_anomalies_online", list(level = 99))$level, 99L)
+  expect_identical(.coerce_args("forecast", list(level = c(80, 99.5)))$level, list(80, 99.5))
+})
+test_that("numeric freq becomes integer, character freq untouched", {
+  expect_identical(.coerce_args("forecast", list(freq = 1))$freq, 1L)
+  expect_identical(.coerce_args("forecast", list(freq = "D"))$freq, "D")
+})
+test_that("POSIXct keeps wall-clock time", {
+  x <- as.POSIXct(c("2024-03-09", "2024-03-10", "2024-03-11"), tz = "America/New_York")
+  out <- .prep_df(data.frame(ds = x, y = 1:3))
+  expect_identical(attr(out$ds, "tzone"), "UTC")
+  expect_identical(format(out$ds, "%Y-%m-%d %H:%M"), c("2024-03-09 00:00", "2024-03-10 00:00", "2024-03-11 00:00"))
+})
+test_that("tsibble yearmonth index becomes a timestamp", {
+  skip_if_not_installed("tsibble")
+  df <- data.frame(ds = tsibble::yearmonth(c("2024 Jan", "2024 Feb")), y = 1:2)
+  out <- .prep_df(df)
+  expect_s3_class(out$ds, "POSIXct")
+  expect_identical(format(out$ds, "%Y-%m-%d"), c("2024-01-01", "2024-02-01"))
 })

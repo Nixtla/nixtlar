@@ -1,5 +1,5 @@
 INT_ARGS <- c("h", "n_windows", "step_size", "finetune_steps", "finetune_depth",
-              "num_partitions", "detection_size", "n_paths", "seed", "job_timeout_seconds")
+              "num_partitions", "detection_size", "n_paths", "seed", "job_timeout_seconds", "freq")
 LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
                "features", "date_features", "date_features_to_one_hot")
 
@@ -32,16 +32,28 @@ LIST_ARGS <- c("level", "quantiles", "hist_exog_list", "categorical_exog_list",
   }
   df <- as.data.frame(df)
   # pandas needs datetime64; R Dates would arrive as python objects
-  for (n in names(df)) if (inherits(df[[n]], "Date")) df[[n]] <- as.POSIXct(df[[n]], tz = "UTC")
+  for (n in names(df)) {
+    x <- df[[n]]
+    # tsibble period indexes would reach pandas as float64
+    if (inherits(x, c("yearmonth", "yearquarter", "yearweek"))) x <- as.Date(x)
+    if (inherits(x, "Date")) x <- as.POSIXct(x, tz = "UTC")
+    # keep wall-clock time: converting instants to UTC makes local days 23h/25h across DST
+    else if (inherits(x, "POSIXct") && !identical(attr(x, "tzone"), "UTC")) x <- lubridate::force_tz(x, "UTC")
+    df[[n]] <- x
+  }
   df
+}
+
+.whole_to_int <- function(v) {
+  if (is.double(v) && isTRUE(all(v == trunc(v) & abs(v) <= .Machine$integer.max))) as.integer(v) else v
 }
 
 .coerce_args <- function(method, args) {
   args <- Filter(Negate(is.null), args)
   for (n in intersect(names(args), INT_ARGS)) {
-    v <- args[[n]]
-    if (is.double(v) && isTRUE(all(v == trunc(v) & abs(v) <= .Machine$integer.max))) args[[n]] <- as.integer(v)
+    args[[n]] <- .whole_to_int(args[[n]])
   }
+  if ("level" %in% names(args)) args$level <- .whole_to_int(args$level)
   for (n in intersect(names(args), LIST_ARGS)) {
     if (n == "level" && method == "detect_anomalies_online") next
     # date_features may be TRUE/FALSE: only wrap character vectors
